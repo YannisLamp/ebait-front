@@ -1,0 +1,6 @@
+1. clipped drawer
+2. ena mono layout - drawer mono opou xreiazetai ksexwrista se kathe selida
+3. indexes
+4. makestyles anti gia usestyles // To makestyles den douleuei, kati paizei me ta hooks
+
+5. https://medium.com/@itzgeoff/including-react-in-your-spring-boot-maven-build-ae3b8f8826e GIA MAVEN
