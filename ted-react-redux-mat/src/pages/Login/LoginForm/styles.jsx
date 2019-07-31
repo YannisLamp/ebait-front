@@ -2,13 +2,14 @@ export default theme => ({
   content: {
     height: '100%',
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    textAlign: 'center'
   },
   contentHeader: {
     display: 'flex',
     alignItems: 'center',
     paddingTop: theme.spacing.unit * 5,
-    paddingBototm: theme.spacing.unit * 2,
+    paddingBottom: theme.spacing.unit * 2,
     paddingLeft: theme.spacing.unit * 2,
     paddingRight: theme.spacing.unit * 2
   },
@@ -27,7 +28,7 @@ export default theme => ({
   form: {
     paddingLeft: '100px',
     paddingRight: '100px',
-    paddingBottom: '125px',
+    paddingBottom: '100px',
     flexBasis: '700px',
     [theme.breakpoints.down('sm')]: {
       paddingLeft: theme.spacing.unit * 2,
@@ -104,5 +105,25 @@ export default theme => ({
     alignText: 'center',
     marginBottom: theme.spacing.unit,
     marginTop: theme.spacing.unit * 2
-  }
+  },
+
+
+
+
+
+  guestInline: {
+    display: 'inline-flex',
+    marginTop: theme.spacing.unit * 10,
+  },
+  guestTitle:{
+    alignText: 'center',
+    marginRight: theme.spacing.unit * 4,
+  },
+  guestBtn: {
+    
+  },
+  guestComment: {
+    marginTop: theme.spacing.unit * 2,
+    color: theme.palette.text.primary
+  },
 });

@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
-// Externals
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
-
 // Material helpers
 import { withStyles } from '@material-ui/core';
 
@@ -38,12 +34,10 @@ import styles from './styles';
 
 class Sidebar extends Component {
   render() {
-    const { classes, className } = this.props;
-
-    const rootClassName = classNames(classes.root, className);
+    const { classes } = this.props;
 
     return (
-      <nav className={rootClassName}>
+      <nav className={classes.root}>
         <div className={classes.logoWrapper}>
           <Link
             className={classes.logoLink}
@@ -225,10 +219,5 @@ class Sidebar extends Component {
     );
   }
 }
-
-Sidebar.propTypes = {
-  className: PropTypes.string,
-  classes: PropTypes.object.isRequired
-};
 
 export default withStyles(styles)(Sidebar);

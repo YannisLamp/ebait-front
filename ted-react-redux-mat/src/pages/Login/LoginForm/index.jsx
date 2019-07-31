@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { authOperations } from '../../../store/ducks';
+//import { userOperations } from '../../../store/ducks';
 
 // Material
 import { Grid, Button, IconButton, CircularProgress, TextField, Typography} from '@material-ui/core';
+
 // For importing my custom styles  
 import { withStyles } from '@material-ui/core';
 import styles from './styles';
@@ -30,7 +31,7 @@ class LoginForm extends Component {
   handleSubmit(e) {
     e.preventDefault();
 
-    this.setState({ submitted: true });
+    /*this.setState({ submitted: true });
     const { username, password } = this.state;
     const { dispatch } = this.props;
     if (username && password) {
@@ -38,7 +39,7 @@ class LoginForm extends Component {
     }
 
     const { user } = this.props;
-    console.log(user);
+    console.log(user);*/
   }
 
   render() {
@@ -56,7 +57,7 @@ class LoginForm extends Component {
               className={classes.title}
               variant="h2"
             >
-              Sign in
+              Log in
             </Typography>
             <Typography
               className={classes.sugestion}
@@ -106,6 +107,25 @@ class LoginForm extends Component {
                 Sign up
               </Link>
             </Typography>
+            
+            <div className={classes.guestInline}>
+              <Typography
+                className={classes.guestTitle}
+                variant="h2"
+              >
+                or
+              </Typography>
+              <Button variant="outlined" color="primary" className={classes.guestBtn}>
+                Continue as guest
+              </Button>
+            </div>
+            
+            <Typography
+              className={classes.guestComment}
+              variant="body1"
+            >
+            </Typography>
+              
           </form>
         </div>
       </div>
@@ -114,7 +134,8 @@ class LoginForm extends Component {
   }
 }
 
-  
+
+
 function mapStateToProps(state) {
   const { auth } = state;
   const { user } = auth;
@@ -131,5 +152,6 @@ function mapStateToProps(state) {
   
   
 const styledLoginForm = withStyles(styles)(LoginForm);
-const connectedLoginForm = connect(mapStateToProps)(styledLoginForm);
-export { connectedLoginForm as LoginForm };
+export default styledLoginForm;
+//const connectedLoginForm = connect(mapStateToProps)(styledLoginForm);
+//export default connectedLoginForm;

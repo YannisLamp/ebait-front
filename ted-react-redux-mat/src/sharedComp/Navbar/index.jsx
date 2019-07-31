@@ -1,9 +1,11 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, Typography, Button, IconButton, TextField } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
+
+// Material icons
+import { Menu, NotificationsOutlined, Input } from '@material-ui/icons/';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 
+import useStyles from './styles';
 
 function ElevationScroll(props) {
   const { children } = props;
@@ -17,24 +19,6 @@ function ElevationScroll(props) {
   });
 }
 
-
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 0.7,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    flexGrow: 1,
-    fontSize: '35px',
-    fontWeight: '600',
-  },
-}));
-
-{/*className={classes.textField}*/}
-
 export default function ButtonAppBar(props) {
   const classes = useStyles();
 
@@ -44,19 +28,15 @@ export default function ButtonAppBar(props) {
         <AppBar>
           <Toolbar>
             <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="Menu">
-              <MenuIcon />
+              <Menu />
             </IconButton>
             <Typography variant="caption" className={classes.title}>
               EMERLD
             </Typography>
-            {/*<TextField
-            label="Password"
             
-            type="password"
-            autoComplete="current-password"
-            margin="normal"
-            />*/}
-            <Button color="inherit">Login</Button>
+            <IconButton color="inherit">
+              <Input/>
+            </IconButton>
           </Toolbar>
         </AppBar>
       </ElevationScroll>

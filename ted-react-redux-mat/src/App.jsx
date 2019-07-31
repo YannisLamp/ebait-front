@@ -1,37 +1,42 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import MyNavbar from './components/Navbar/Navbar';
-import { MyLogin } from './components/Login/Login';
-import { HomePage } from './components/HomePage/HomePage';
-import Footer from './components/Footer/Footer';
 
-import { PrivateRoute } from './routes'
+import MyNavbar from './sharedComp/Navbar';
+import Footer from './sharedComp/Footer';
 
-import './App.scss';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import { HomePage } from './pages/HomePage/HomePage';
+
+import { PrivateRoute } from './routes';
+
+// Styles
+import { withStyles } from '@material-ui/core';
+import styles from './styles';
 
 //{!this.state.user && <Redirect to='/login' />}
 
 
-function App() {
-  return (
-    <div>
-      <MyNavbar/>
-      <div className="App">
-        {/*<header className="App-header">*/}
-          <Switch>
-              <PrivateRoute exact path="/" component={HomePage} />
-              <Route path="/login" component={MyLogin} />
+function App(props) {
+    const { classes } = props;
 
-              
+    return (
+        <div>
+            <MyNavbar />
+            {/*<header className="App-header">*/}
+            <Switch>
+                <PrivateRoute exact path="/" component={HomePage} />
+                <Route path="/login" component={Login} />
+                <Route path="/register" component={Register} />
 
-              <PrivateRoute render={() => <Redirect to="/" /> } />
-              <Route render={() => <Redirect to="/login"/> } />
-          </Switch>
-        {/*</header>*/}
-        <Footer/>
-      </div>
-    </div>
-  );
+                <PrivateRoute render={() => <Redirect to="/" />} />
+                <Route render={() => <Redirect to="/login" />} />
+            </Switch>
+            {/*</header>*/}
+            <Footer />
+        </div>
+    );
 }
 
-export default App;
+const styledApp = withStyles(styles)(App);
+export default styledApp;

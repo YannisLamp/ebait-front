@@ -3,13 +3,11 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
 
-import { store } from './store';
-import { history } from './utils'; 
+import store from './store';
+import { history } from './utils';
 import App from './App';
 
 import 'typeface-roboto';
-
-import './index.css';
 
 // Material
 import { ThemeProvider } from '@material-ui/styles';
@@ -17,10 +15,7 @@ import theme from './theme';
 
 import * as serviceWorker from './serviceWorker';
 
-// setup fake backend
-import { configureFakeBackend } from './utils';
-configureFakeBackend();
-
+// Just Providers here, and the main App of course
 ReactDOM.render(
     <Provider store={store}>
         <ThemeProvider theme={theme}>

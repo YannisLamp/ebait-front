@@ -1,4 +1,6 @@
-export default theme => ({
+import { makeStyles } from '@material-ui/core/styles';
+
+export default makeStyles(theme => ({
   quote: {
     backgroundColor: theme.palette.background.default,
     height: '100%',
@@ -15,8 +17,14 @@ export default theme => ({
     textAlign: 'center',
     flexBasis: '600px'
   },
+  welcomeText: {
+    fontSize: '50px',
+    color: theme.palette.primary.main,
+    fontWeight: 400,
+    marginBottom: theme.spacing.unit * 10,
+  },
   quoteText: {
     color: theme.palette.primary.main,
     fontWeight: 300
   },
-});
+}));

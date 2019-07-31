@@ -1,26 +1,29 @@
 import { authHeader } from '../utils';
 import axios from './axiosConfig';
 
-// response.headers
-
-export const loginApi = {
-    login
+export const registerApi = {
+    register,
+    usernameExists
 };
 
-function login(username, password) {
+function register(username, password, firstName, lastName, email) {
     const jsonRequest = {
         username,
+        firstName,
+        lastName,
+        email,
         password,
     }
 
-    return axios.post('/login', jsonRequest)
+    return axios.post('/register', jsonRequest)
         .then(response => {
+
             console.log(response);
             console.log(response.data);
 
             // store user details and jwt token in local storage to keep user logged in between page refreshes
             localStorage.setItem('user', JSON.stringify(response.data));
-            
+
             return response.data;
         })
         .catch(function (error) {
@@ -45,5 +48,23 @@ function login(username, password) {
                 console.log('Error', error.message);
             }
             console.log(error.config);
+        });
+}
+
+
+function usernameExists(username) {
+    const jsonRequest = {
+        username,
+    }
+
+    axios.post('/register', { jsonRequest })
+        .then(res => {
+
+            if (!res.ok()) {
+                console.log('res not okay');
+                console.log(res);
+            }
+            console.log(res);
+            console.log(res.data);
         });
 }

@@ -1,8 +1,8 @@
 import alert from './alert';
-import auth from './auth';
+import currentUser from './currentUser';
 
 
-export const reducers = {alert, auth};
+export const reducers = {alert, currentUser};
 export { alertActions } from './alert';
-export { authOperations } from './auth';
+export { userOperations } from './currentUser';
 
