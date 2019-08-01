@@ -13,10 +13,6 @@ export default theme => ({
         paddingLeft: theme.spacing.unit * 2,
         paddingRight: theme.spacing.unit * 2
     },
-    backButton: {},
-    logoImage: {
-        marginLeft: theme.spacing.unit * 4
-    },
     contentBody: {
         flexGrow: 1,
         display: 'flex',
@@ -26,15 +22,16 @@ export default theme => ({
         }
     },
     form: {
-        paddingLeft: '100px',
-        paddingRight: '100px',
-        paddingBottom: '100px',
-        flexBasis: '700px',
+        width: '100%',
+        paddingLeft: theme.spacing.unit * 15,
+        paddingRight: theme.spacing.unit * 15,
+        paddingBottom: theme.spacing.unit * 10,
         [theme.breakpoints.down('sm')]: {
             paddingLeft: theme.spacing.unit * 2,
             paddingRight: theme.spacing.unit * 2
         }
     },
+
     title: {
         marginTop: theme.spacing.unit * 3
     },
@@ -80,21 +77,14 @@ export default theme => ({
         marginLeft: 'auto',
         marginRight: 'auto'
     },
-    signInButton: {
-        marginTop: theme.spacing.unit * 2,
-        width: '100%'
+
+    progressButtons: {
+        width: '100%',
+        display: 'inline-flex',
+        marginTop: theme.spacing.unit * 8,
+        justifyContent: 'space-between',
     },
-    signUp: {
-        marginTop: theme.spacing.unit * 2,
-        color: theme.palette.text.primary
-    },
-    signUpUrl: {
-        color: theme.palette.primary.main,
-        fontWeight: 'bold',
-        '&:hover': {
-            color: theme.palette.primary.main
-        }
-    },
+    
     fieldError: {
         color: theme.palette.danger.main,
         marginBottom: theme.spacing.unit * 2,

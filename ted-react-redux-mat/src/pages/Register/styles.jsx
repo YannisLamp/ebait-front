@@ -18,7 +18,7 @@ export default makeStyles(theme => ({
         display: 'flex',
         flexDirection: 'column'
     },
-    loginAsGuest: {
-        marginTop: theme.spacing.unit * 8,
-    },
+    formPaper: {
+        minHeight: '75vh',
+    }
 }));

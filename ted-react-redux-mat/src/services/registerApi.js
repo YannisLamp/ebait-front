@@ -9,10 +9,10 @@ export const registerApi = {
 function register(username, password, firstName, lastName, email) {
     const jsonRequest = {
         username,
+        password,
         firstName,
         lastName,
         email,
-        password,
     }
 
     return axios.post('/register', jsonRequest)
@@ -33,7 +33,7 @@ function register(username, password, firstName, lastName, email) {
                 console.log(error.response.data);
                 console.log(error.response.status);
                 console.log(error.response.headers);
-                if (response.status === 401) {
+                if (error.response.status === 401) {
                     // auto logout if 401 response returned from api
                     localStorage.removeItem('user');
                     window.location.reload(true);
@@ -42,6 +42,7 @@ function register(username, password, firstName, lastName, email) {
                 // The request was made but no response was received
                 // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
                 // http.ClientRequest in node.js
+                console.log('no response!!!');
                 console.log(error.request);
             } else {
                 // Something happened in setting up the request that triggered an Error

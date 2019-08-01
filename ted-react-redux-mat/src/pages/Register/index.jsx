@@ -23,7 +23,7 @@ export default function Register(props) {
                 container
             >
                 <Grid
-                    lg={3}
+                    lg={4}
                     xs={1}
                 />
                 {/*<Grid
@@ -36,11 +36,12 @@ export default function Register(props) {
                 <Grid
                     className={classes.content}
                     item
-                    lg={6}
+                    lg={4}
                     xs={10}
                     justify="center"
                 >
-                    <Paper>
+                    <Paper 
+                        className={classes.formPaper}>
                         <SignUpForm />
                     </Paper>
                 </Grid>

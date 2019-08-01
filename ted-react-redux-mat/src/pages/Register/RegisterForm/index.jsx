@@ -10,9 +10,11 @@ import { Grid, Button, IconButton, CircularProgress, TextField, Typography } fro
 import { withStyles } from '@material-ui/core';
 import styles from './styles';
 
-import { registerApi } from '../../../services/registerApi'
+import CredentialForm from './CredentialForm';
+import BasicInfoForm from './BasicInfoForm';
 
 
+//{/*helperText={!passwordsMatch ? "Passwords should match" : " "}*/}
 class RegisterForm extends Component {
 
     constructor(props) {
@@ -26,20 +28,21 @@ class RegisterForm extends Component {
             firstname: '',
             lastname: '',
             email: '',
-            phoneNumber: '',
+            phoneNumber: null,
+            afm: null,
+            currentStep: 1,
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
 
+        this.checkPasswordMatch = this.checkPasswordMatch.bind(this);
+
+        this.prevStep = this.prevStep.bind(this);
+        this.nextStep = this.nextStep.bind(this);
     }
 
 
-    checkPasswordMatch() {
-
-
-
-    }
 
     handleChange(e) {
         const { name, value } = e.target;
@@ -50,16 +53,32 @@ class RegisterForm extends Component {
         e.preventDefault();
 
         this.setState({ submitted: true });
-        const { username, password } = this.state;
+        const { username, password, firstName, lastName, email } = this.state;
         const { dispatch } = this.props;
-        if (username && password) {
-            dispatch(userOperations.register(this.state.username, this.state.password, 
-                'firstnameyaya', 'lastnameyaya', 'emailyaya'));
+        if (username && password && firstName && lastName && email) {
+            dispatch(userOperations.register(username, password, firstName, 
+                lastName, email));
         }
 
         const { user } = this.props;
         console.log(user);
     }
+
+    checkPasswordMatch() {
+        this.setState((prevState, props) => { return { 'passwordsMatch': prevState.password === prevState.confirmPassword } });
+    }
+
+    prevStep() {
+        this.setState((prevState, props) => { return { 'currentStep': prevState.currentStep - 1 } });
+    }
+        
+    nextStep() {
+        this.setState((prevState, props) => { return { 'currentStep': prevState.currentStep + 1 } });
+    }
+
+
+    //Step
+
 
     render() {
 
@@ -69,7 +88,7 @@ class RegisterForm extends Component {
             userStuff = user.username + ',' + user.userId + ',' + user.firstName;
         }
 
-        const { username, password } = this.state;
+        const { passwordsMatch, currentStep } = this.state;
         const submitted = false;
 
         const { classes } = this.props;
@@ -84,67 +103,28 @@ class RegisterForm extends Component {
                             variant="h2"
                         >
                             Register
-            </Typography>
-                        {/*<Typography
-              className={classes.sugestion}
-              variant="body1"
-            >
-              with your username
-            </Typography>*/}
-                        <div className={classes.fields}>
-                            <TextField
-                                className={classes.textField}
-                                label="Username"
-                                name="username"
-                                type="text"
-                                variant="outlined"
-                                onChange={this.handleChange}
-                            />
-                            <TextField
-                                className={classes.textField}
-                                label="Password"
-                                name="password"
-                                type="password"
-                                variant="outlined"
-                                onChange={this.handleChange}
-                            />
-                            <TextField
-                                className={classes.textField}
-                                label="Confirm Password"
-                                name="confirm_password"
-                                type="password"
-                                variant="outlined"
-                            />
-                            {/*<TextField
-                className={classes.textField}
-                label="First Name"
-                name="firstName"
-                type="text"
-                variant="outlined"
-              />
-              <TextField
-                className={classes.textField}
-                label="Surname"
-                name="surname"
-                type="text"
-                variant="outlined"
-              />
-              <TextField
-                className={classes.textField}
-                label="Email"
-                name="email"
-                type="email"
-                variant="outlined"
-              />
-              <TextField
-                className={classes.textField}
-                label="Phone number"
-                name="phoneNumber"
-                type="number"
-                variant="outlined"
-              />*/}
+                        </Typography>
+                        <Typography
+                            className={classes.sugestion}
+                            variant="h5"
+                        >
+                            Step {currentStep}:
+                        </Typography>
 
-                        </div>
+                        
+                        
+                        { (currentStep === 1) ? (
+                            < CredentialForm 
+                                handleChange={this.handleChange} 
+                                checkPasswordMatch={this.checkPasswordMatch}  
+                                passwordsMatch={this.state.passwordsMatch}  
+                            />
+                        ) : (
+                            < BasicInfoForm 
+                                handleChange={this.handleChange} 
+                            />
+                        )}
+
                         {/*isLoading ? (
                     <CircularProgress className={classes.progress} />
                   ) : (
@@ -159,27 +139,43 @@ class RegisterForm extends Component {
                       Sign in now
                     </Button>
                   )*/}
-                        {/*<Typography
-              className={classes.signUp}
-              variant="body1"
-            >
-              Don't have an account?{' '}
-              <Link
-                className={classes.signUpUrl}
-                to="/sign-up"
-              >
-                Sign up
-              </Link>
-            </Typography>*/}
-                        <Button
-                            className={classes.signInButton}
-                            color="primary"
-                            onClick={this.handleSubmit}
-                            size="large"
-                            variant="contained"
-                        >
-                            Register
-                    </Button>
+                        
+                        <div className={classes.progressButtons}>
+                            <Button
+                                className={classes.back}
+                                onClick={this.prevStep}
+                                size="large"
+                                variant="contained"
+                                disabled={(currentStep === 1)}
+                            >
+                                Back
+                            </Button>
+                            { (currentStep === 2) ? (
+                                <Button
+                                className={classes.signUpButton}
+                                color="primary"
+                                onClick={this.handleSubmit}
+                                size="large"
+                                variant="contained"
+                                >
+                                    Register
+                                </Button>
+                            )
+                            : (
+                                <Button
+                                    className={classes.next}
+                                    onClick={this.nextStep}
+                                    size="large"
+                                    variant="contained"
+                                    disabled={!passwordsMatch}
+                                >
+                                    Next
+                                </Button>
+                            )}
+                            
+
+                        </div>
+                        {this.passwordsMatch}, {this.password}
                         {userStuff}
                     </form>
                 </div>

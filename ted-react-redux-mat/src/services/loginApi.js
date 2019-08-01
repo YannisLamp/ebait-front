@@ -30,7 +30,7 @@ function login(username, password) {
                 console.log(error.response.data);
                 console.log(error.response.status);
                 console.log(error.response.headers);
-                if (response.status === 401) {
+                if (error.response.status === 401) {
                     // auto logout if 401 response returned from api
                     localStorage.removeItem('user');
                     window.location.reload(true);
