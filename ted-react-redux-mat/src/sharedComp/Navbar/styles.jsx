@@ -12,4 +12,8 @@ export default makeStyles(theme => ({
     fontSize: '35px',
     fontWeight: '600',
   },
+  titleLink: {
+    textDecoration: 'none',
+    color: theme.palette.text.secondary,
+  },
 }));

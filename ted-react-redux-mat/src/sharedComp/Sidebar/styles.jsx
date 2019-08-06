@@ -1,13 +1,21 @@
-export default theme => ({
+import { makeStyles } from '@material-ui/core/styles';
+
+const drawerWidth = 240;
+
+export default makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.common.white,
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
-    paddingLeft: theme.spacing.unit,
-    paddingRight: theme.spacing.unit
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1)
   },
-  logoWrapper: {
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+  },
+  /*logoWrapper: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -21,8 +29,8 @@ export default theme => ({
     cursor: 'pointer'
   },
   logoDivider: {
-    marginBottom: theme.spacing.unit * 2
-  },
+    marginBottom: theme.spacing(2)
+  },*/
   profile: {
     display: 'flex',
     flexDirection: 'column',
@@ -34,12 +42,12 @@ export default theme => ({
     height: '100px'
   },
   nameText: {
-    marginTop: theme.spacing.unit * 2
+    marginTop: theme.spacing(2)
   },
   bioText: {},
   profileDivider: {
-    marginBottom: theme.spacing.unit * 2,
-    marginTop: theme.spacing.unit * 2
+    marginBottom: theme.spacing(2),
+    marginTop: theme.spacing(2)
   },
   listSubheader: {
     color: theme.palette.text.secondary
@@ -56,7 +64,7 @@ export default theme => ({
       }
     },
     '& + &': {
-      marginTop: theme.spacing.unit
+      marginTop: theme.spacing(1)
     }
   },
   activeListItem: {
@@ -79,7 +87,7 @@ export default theme => ({
     color: theme.palette.text.secondary
   },
   listDivider: {
-    marginBottom: theme.spacing.unit * 2,
-    marginTop: theme.spacing.unit * 2
+    marginBottom: theme.spacing(2),
+    marginTop: theme.spacing(2)
   }
-});
+}));

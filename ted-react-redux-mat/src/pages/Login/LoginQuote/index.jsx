@@ -6,8 +6,8 @@ import { Typography } from '@material-ui/core';
 import useStyles from './styles';
 
 export default function LoginQuote(props) {
-  const classes = useStyles();
-
+  
+    const classes = useStyles();
   return (
       <div className={classes.quote}>
         <div className={classes.quoteInner}>

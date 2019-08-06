@@ -9,7 +9,8 @@ import useStyles from './styles';
 
 export default function CredentialForm(props) {
     const classes = useStyles();
-    const { handleChange, checkPasswordMatch, passwordsMatch } = props; 
+    const { handleChange, checkPasswordMatch, checkUsernameExists } = props; 
+    const { username, password, confirmPassword, passwordsMatch, usernameTaken } = props;
 
     return (
         <div className={classes.fields}>
@@ -17,14 +18,19 @@ export default function CredentialForm(props) {
                 className={classes.textField}
                 label="Username"
                 name="username"
+                value={username}
                 type="text"
                 variant="outlined"
                 onChange={handleChange}
+                onBlur={checkUsernameExists}
+                error={usernameTaken}
+                helperText={usernameTaken ? "Username is taken" : ""}
             />
             <TextField
                 className={classes.textField}
                 label="Password"
                 name="password"
+                value={password}
                 type="password"
                 variant="outlined"
                 onChange={(e) => { handleChange(e); checkPasswordMatch(); }}
@@ -34,10 +40,12 @@ export default function CredentialForm(props) {
                 className={classes.textField}
                 label="Confirm Password"
                 name="confirmPassword"
+                value={confirmPassword}
                 type="password"
                 variant="outlined"
                 onChange={(e) => { handleChange(e); checkPasswordMatch(); }}
                 error={!passwordsMatch}
+                helperText={!passwordsMatch ? "Passwords should match" : ""}
             />
         </div>
     );

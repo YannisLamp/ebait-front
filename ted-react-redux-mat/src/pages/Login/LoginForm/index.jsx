@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-//import { userOperations } from '../../../store/ducks';
+import { authOperations } from '../../../store/ducks';
 
 // Material
 import { Grid, Button, IconButton, CircularProgress, TextField, Typography} from '@material-ui/core';
@@ -10,12 +10,11 @@ import { Grid, Button, IconButton, CircularProgress, TextField, Typography} from
 import { withStyles } from '@material-ui/core';
 import styles from './styles';
 
-
 class LoginForm extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {username : '', password: ''};
+    this.state = {username : '', password: '', loading: false};
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -31,26 +30,25 @@ class LoginForm extends Component {
   handleSubmit(e) {
     e.preventDefault();
 
-    /*this.setState({ submitted: true });
+    this.setState({ loading: true });
     const { username, password } = this.state;
+    //const { login } = this.props;
     const { dispatch } = this.props;
     if (username && password) {
-      dispatch(authOperations.login(username, password));
+        console.log('username and pass');
+        dispatch(authOperations.login(username, password));
+        //login(username, password);
     }
-
-    const { user } = this.props;
-    console.log(user);*/
   }
 
   render() {
-    const { username, password } = this.state;
+    const { username, password, loading } = this.state;
     const submitted = false;
       
     const { classes } = this.props;
 
     return (
       <div className={classes.content}>
-        <div className={classes.contentHeader}/>
         <div className={classes.contentBody}>
           <form className={classes.form}>
             <Typography
@@ -72,6 +70,7 @@ class LoginForm extends Component {
                 name="username"
                 type="text"
                 variant="outlined"
+                onChange={this.handleChange}
               />
               <TextField
                 className={classes.textField}
@@ -79,22 +78,23 @@ class LoginForm extends Component {
                 name="password"
                 type="password"
                 variant="outlined"
+                onChange={this.handleChange}
               />
             </div>
-                  {/*isLoading ? (
-                    <CircularProgress className={classes.progress} />
-                  ) : (
-                    <Button
-                      className={classes.signInButton}
-                      color="primary"
-                      disabled={!isValid}
-                      onClick={this.handleSignIn}
-                      size="large"
-                      variant="contained"
-                    >
-                      Sign in now
-                    </Button>
-                  )*/}
+            {loading ? (
+                <CircularProgress className={classes.progress} />
+            ) : (
+                <Button
+                    className={classes.signInButton}
+                    color="primary"
+                    type="submit"
+                    onClick={this.handleSubmit}
+                    size="large"
+                    variant="contained"
+                >
+                    Log in
+                </Button>
+            )}
             <Typography
               className={classes.signUp}
               variant="body1"
@@ -102,9 +102,9 @@ class LoginForm extends Component {
               Don't have an account?{' '}
               <Link
                 className={classes.signUpUrl}
-                to="/sign-up"
+                to="/register"
               >
-                Sign up
+                Register
               </Link>
             </Typography>
             
@@ -129,7 +129,7 @@ class LoginForm extends Component {
           </form>
         </div>
       </div>
-    )
+    );
 
   }
 }
@@ -152,6 +152,5 @@ function mapStateToProps(state) {
   
   
 const styledLoginForm = withStyles(styles)(LoginForm);
-export default styledLoginForm;
-//const connectedLoginForm = connect(mapStateToProps)(styledLoginForm);
-//export default connectedLoginForm;
+const connectedLoginForm = connect(mapStateToProps)(styledLoginForm);
+export default connectedLoginForm;

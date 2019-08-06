@@ -16,10 +16,10 @@ export default function Footer(props) {
                 className={classes.company}
                 variant="body1"
             >
-                &copy; Di
+                &copy; Stackoverflow
             </Typography>
             <Typography variant="subtitle2">
-                iHamod koita arxige
+                Epaggelmatiko site
             </Typography>
         </div>
     );

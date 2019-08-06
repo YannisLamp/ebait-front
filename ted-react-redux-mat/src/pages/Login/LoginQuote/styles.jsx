@@ -21,7 +21,7 @@ export default makeStyles(theme => ({
     fontSize: '50px',
     color: theme.palette.primary.main,
     fontWeight: 400,
-    marginBottom: theme.spacing.unit * 10,
+    marginBottom: theme.spacing(10),
   },
   quoteText: {
     color: theme.palette.primary.main,

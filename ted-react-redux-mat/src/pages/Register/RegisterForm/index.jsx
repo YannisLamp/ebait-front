@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { history } from '../../../utils';
 import { connect } from 'react-redux';
-import { userOperations } from '../../../store/ducks';
+import { authOperations } from '../../../store/ducks';
+import axios from '../../../axiosConfig';
 
 // Material
-import { Grid, Button, IconButton, CircularProgress, TextField, Typography } from '@material-ui/core';
+import { IconButton, CircularProgress, TextField, Typography } from '@material-ui/core';
 
 // For importing my custom styles  
 import { withStyles } from '@material-ui/core';
@@ -12,9 +14,11 @@ import styles from './styles';
 
 import CredentialForm from './CredentialForm';
 import BasicInfoForm from './BasicInfoForm';
+import LocationForm from './LocationForm';
+
+import ProgressButtons from './ProgressButtons';
 
 
-//{/*helperText={!passwordsMatch ? "Passwords should match" : " "}*/}
 class RegisterForm extends Component {
 
     constructor(props) {
@@ -25,21 +29,28 @@ class RegisterForm extends Component {
             password: '',
             confirmPassword: '',
             passwordsMatch: true,
-            firstname: '',
-            lastname: '',
+            firstName: '',
+            lastName: '',
             email: '',
-            phoneNumber: null,
-            afm: null,
+            phoneNumber: '',
+            country: '',
+            address: '',
+            afm: '',
             currentStep: 1,
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
 
+        this.checkUsernameExists = this.checkUsernameExists.bind(this);
+
         this.checkPasswordMatch = this.checkPasswordMatch.bind(this);
 
         this.prevStep = this.prevStep.bind(this);
         this.nextStep = this.nextStep.bind(this);
+
+        this.redirectToLogin = this.redirectToLogin.bind(this);
+
     }
 
 
@@ -56,7 +67,7 @@ class RegisterForm extends Component {
         const { username, password, firstName, lastName, email } = this.state;
         const { dispatch } = this.props;
         if (username && password && firstName && lastName && email) {
-            dispatch(userOperations.register(username, password, firstName, 
+            dispatch(authOperations.register(username, password, firstName, 
                 lastName, email));
         }
 
@@ -64,21 +75,43 @@ class RegisterForm extends Component {
         console.log(user);
     }
 
+    checkUsernameExists() {
+        let username = this.state.username;
+        axios.post('/exists', { username })
+        .then(
+            response => {
+                console.log(response.headers);
+                let taken = response.data.exists;
+                this.setState((prevState, props) => { return { 'usernameTaken': taken } });
+            },
+            error => {
+                console.log('username exists error');
+                console.log(error);
+            }
+        );
+    }
+
     checkPasswordMatch() {
-        this.setState((prevState, props) => { return { 'passwordsMatch': prevState.password === prevState.confirmPassword } });
+        this.setState((prevState, props) => { 
+            return { 'passwordsMatch': prevState.password === prevState.confirmPassword } 
+        });
     }
 
     prevStep() {
-        this.setState((prevState, props) => { return { 'currentStep': prevState.currentStep - 1 } });
+        this.setState((prevState, props) => { 
+            return { 'currentStep': prevState.currentStep - 1 } 
+        });
     }
         
     nextStep() {
-        this.setState((prevState, props) => { return { 'currentStep': prevState.currentStep + 1 } });
+        this.setState((prevState, props) => {
+            return { 'currentStep': prevState.currentStep + 1 } 
+        });
     }
 
-
-    //Step
-
+    redirectToLogin() {
+        history.push('/login');
+    }
 
     render() {
 
@@ -88,11 +121,57 @@ class RegisterForm extends Component {
             userStuff = user.username + ',' + user.userId + ',' + user.firstName;
         }
 
-        const { passwordsMatch, currentStep } = this.state;
+        
+        const { passwordsMatch, currentStep, usernameTaken } = this.state;
         const submitted = false;
 
         const { classes } = this.props;
 
+        function formForStep(step, comp) {
+            if (step === 1) {
+                const { username, password, confirmPassword } = comp.state;
+                return (
+                    < CredentialForm 
+                        handleChange={comp.handleChange} 
+                        checkPasswordMatch={comp.checkPasswordMatch}  
+                        checkUsernameExists={comp.checkUsernameExists}
+
+                        username={username}
+                        password={password}
+                        confirmPassword={confirmPassword}
+                        usernameTaken={usernameTaken}
+                        passwordsMatch={passwordsMatch}  
+                    />
+                );
+            } 
+            else if (step === 2) {
+                const { firstName, lastName, email, phoneNumber } = comp.state;
+                return (
+                    < BasicInfoForm 
+                        handleChange={comp.handleChange}
+                        
+                        firstName={firstName}
+                        lastName={lastName}
+                        email={email}
+                        phoneNumber={phoneNumber}
+                    />
+                );
+            }
+            else if (step === 3) {
+                const { country, address, afm } = comp.state;
+                return (
+                    < LocationForm 
+                        handleChange={comp.handleChange}
+                        
+                        country={country}
+                        address={address}
+                        afm={afm}
+                    />
+                );
+            }
+        }
+
+        let currentForm = formForStep(currentStep, this);
         return (
             <div className={classes.content}>
                 <div className={classes.contentHeader} />
@@ -111,19 +190,12 @@ class RegisterForm extends Component {
                             Step {currentStep}:
                         </Typography>
 
+                        {currentForm}
+
+                    </form>
                         
-                        
-                        { (currentStep === 1) ? (
-                            < CredentialForm 
-                                handleChange={this.handleChange} 
-                                checkPasswordMatch={this.checkPasswordMatch}  
-                                passwordsMatch={this.state.passwordsMatch}  
-                            />
-                        ) : (
-                            < BasicInfoForm 
-                                handleChange={this.handleChange} 
-                            />
-                        )}
+                </div>
+                    
 
                         {/*isLoading ? (
                     <CircularProgress className={classes.progress} />
@@ -139,57 +211,27 @@ class RegisterForm extends Component {
                       Sign in now
                     </Button>
                   )*/}
-                        
-                        <div className={classes.progressButtons}>
-                            <Button
-                                className={classes.back}
-                                onClick={this.prevStep}
-                                size="large"
-                                variant="contained"
-                                disabled={(currentStep === 1)}
-                            >
-                                Back
-                            </Button>
-                            { (currentStep === 2) ? (
-                                <Button
-                                className={classes.signUpButton}
-                                color="primary"
-                                onClick={this.handleSubmit}
-                                size="large"
-                                variant="contained"
-                                >
-                                    Register
-                                </Button>
-                            )
-                            : (
-                                <Button
-                                    className={classes.next}
-                                    onClick={this.nextStep}
-                                    size="large"
-                                    variant="contained"
-                                    disabled={!passwordsMatch}
-                                >
-                                    Next
-                                </Button>
-                            )}
-                            
+                <div className={classes.buttonBody}> 
+                    <ProgressButtons 
+                        handleSubmit={this.handleSubmit}
+                        prevStep={this.prevStep}
+                        nextStep={this.nextStep}
+                        redirectToLogin={this.redirectToLogin}
 
-                        </div>
-                        {this.passwordsMatch}, {this.password}
-                        {userStuff}
-                    </form>
+                        currentStep={this.state.currentStep}
+                        passwordsMatch={this.state.passwordsMatch}
+                    />
                 </div>
             </div>
-        )
-
+        );
     }
 }
 
 
 
 function mapStateToProps(state) {
-    const { currentUser } = state;
-    const { user } = currentUser;
+    const { auth } = state;
+    const { user } = auth;
     return {
         user
     };

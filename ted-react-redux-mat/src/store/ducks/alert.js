@@ -32,16 +32,20 @@ export default function reducer(state = {}, action) {
     switch (action.type) {
     case alertTypes.SUCCESS:
         return {
-            type: 'alert-success',
+            open: true,
+            type: 'success',
             message: action.message
         };
     case alertTypes.ERROR:
         return {
-            type: 'alert-danger',
+            open: true,
+            type: 'error',
             message: action.message
         };
     case alertTypes.CLEAR:
-        return {};
+        return {
+            open: false,
+        };
     default:
         return state
     }

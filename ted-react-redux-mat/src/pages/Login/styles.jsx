@@ -13,12 +13,7 @@ export default makeStyles(theme => ({
       display: 'none'
     }
   },
-  content: {
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column'
-  },
   loginAsGuest: {
-    marginTop: theme.spacing.unit * 8,
+    marginTop: theme.spacing(8),
   },
 }));

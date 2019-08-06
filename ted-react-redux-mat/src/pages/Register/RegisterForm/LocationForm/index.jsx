@@ -9,35 +9,37 @@ import useStyles from './styles';
 
 export default function CredentialForm(props) {
     const classes = useStyles();
-    const { handleChange, checkPasswordMatch, passwordsMatch } = props; 
+    const { handleChange } = props; 
+    const { country, address, afm } = props;
 
     return (
         <div className={classes.fields}>
             <TextField
                 className={classes.textField}
-                label="Username"
-                name="username"
+                label="Country"
+                name="country"
+                value={country}
                 type="text"
                 variant="outlined"
                 onChange={handleChange}
             />
             <TextField
                 className={classes.textField}
-                label="Password"
-                name="password"
-                type="password"
+                label="Address"
+                name="address"
+                value={address}
+                type="text"
                 variant="outlined"
-                onChange={(e) => { handleChange(e); checkPasswordMatch(); }}
-                error={!passwordsMatch}
+                onChange={handleChange}
             />
             <TextField
                 className={classes.textField}
-                label="Confirm Password"
-                name="confirmPassword"
-                type="password"
+                label="Tax Identification Number"
+                name="afm"
+                value={afm}
+                type="text"
                 variant="outlined"
-                onChange={(e) => { handleChange(e); checkPasswordMatch(); }}
-                error={!passwordsMatch}
+                onChange={handleChange}
             />
         </div>
     );

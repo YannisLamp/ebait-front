@@ -1,5 +1,5 @@
 import { authHeader } from '../utils';
-import axios from './axiosConfig';
+import axios from '../axiosConfig';
 
 export const registerApi = {
     register,
@@ -21,12 +21,9 @@ function register(username, password, firstName, lastName, email) {
             console.log(response);
             console.log(response.data);
 
-            // store user details and jwt token in local storage to keep user logged in between page refreshes
-            localStorage.setItem('user', JSON.stringify(response.data));
-
             return response.data;
         })
-        .catch(function (error) {
+        /*.catch(function (error) {
             if (error.response) {
                 // The request was made and the server responded with a status code
                 // that falls out of the range of 2xx
@@ -35,8 +32,8 @@ function register(username, password, firstName, lastName, email) {
                 console.log(error.response.headers);
                 if (error.response.status === 401) {
                     // auto logout if 401 response returned from api
-                    localStorage.removeItem('user');
-                    window.location.reload(true);
+                    //localStorage.removeItem('user');
+                    //window.location.reload(true);
                 }
             } else if (error.request) {
                 // The request was made but no response was received
@@ -49,7 +46,7 @@ function register(username, password, firstName, lastName, email) {
                 console.log('Error', error.message);
             }
             console.log(error.config);
-        });
+        });*/
 }
 
 

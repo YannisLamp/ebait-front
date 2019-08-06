@@ -9,13 +9,11 @@ import { Grid, Paper } from '@material-ui/core';
 // For importing my custom styles  
 import useStyles from './styles';
 
-import SignUpQuote from './RegisterQuote';
 import SignUpForm from './RegisterForm';
 
 export default function Register(props) {
 
     const classes = useStyles();
-
     return (
         <div className={classes.root}>
             <Grid
@@ -23,30 +21,29 @@ export default function Register(props) {
                 container
             >
                 <Grid
+                    item
                     lg={4}
                     xs={1}
                 />
-                {/*<Grid
-                className={classes.quoteWrapper}
-                item
-                lg={5}
-                >
-                    <SignUpQuote/>
-                </Grid>*/}
                 <Grid
-                    className={classes.content}
-                    item
-                    lg={4}
-                    xs={10}
+                    container
                     justify="center"
                 >
-                    <Paper 
-                        className={classes.formPaper}>
-                        <SignUpForm />
-                    </Paper>
+                    <Grid
+                        className={classes.content}
+                        item
+                        lg={4}
+                        xs={10}
+                    >
+                        <Paper 
+                            className={classes.formPaper}>
+                            <SignUpForm />
+                        </Paper>
+                    </Grid>
                 </Grid>
                 <Grid
-                    lg={3}
+                    item
+                    lg={4}
                     xs={1}
                 />
             </Grid>
