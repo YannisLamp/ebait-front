@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { authOperations } from '../../store/ducks/auth';
+import { userActions } from '../../store/ducks/userStore';
 import { AppBar, Toolbar, Typography, Button, IconButton, TextField } from '@material-ui/core';
 
 // Material icons
@@ -27,7 +27,7 @@ function ButtonAppBar(props) {
 
     function toggleSidebar() {
         const { dispatch } = props;
-        dispatch(authOperations.toggleSidebar());
+        dispatch(userActions.toggleSidebar());
     }
 
     return (
@@ -65,8 +65,8 @@ function ButtonAppBar(props) {
 
 
 function mapStateToProps(state) {
-    const { auth } = state;
-    const { user, sidebarOpen } = auth;
+    const { userStore } = state;
+    const { user, sidebarOpen } = userStore;
     return {
         user
     };

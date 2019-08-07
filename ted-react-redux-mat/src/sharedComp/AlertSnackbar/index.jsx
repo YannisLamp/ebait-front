@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { alertActions } from '../../store/ducks/alert';
+import { alertActions } from '../../store/ducks/alertStore';
 
 // Material components
 import Snackbar from '@material-ui/core/Snackbar';
@@ -15,9 +15,9 @@ function AlertSnackBar(props) {
         dispatch(alertActions.clear());
     }
 
-    const { alert } = props;
+    const { alertStore } = props;
 
-    if (alert.open) {
+    if (alertStore.open) {
         return (
             <Snackbar
                 anchorOrigin={{
@@ -25,13 +25,13 @@ function AlertSnackBar(props) {
                     horizontal: 'left',
                 }}
                 onClose={handleClose}
-                open={alert.open}
+                open={alertStore.open}
                 autoHideDuration={6000}
             >
                 <SnackbarVariants
                     onClose={handleClose}
-                    variant={alert.type}
-                    message={alert.message}
+                    variant={alertStore.type}
+                    message={alertStore.message}
                 />
             </Snackbar>
         );
@@ -42,8 +42,8 @@ function AlertSnackBar(props) {
 }
 
 function mapStateToProps(state) {
-    const { alert } = state;
-    return { alert };
+    const { alertStore } = state;
+    return { alertStore };
 }
 
 export default connect(mapStateToProps)(AlertSnackBar);

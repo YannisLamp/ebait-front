@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { history } from '../../../utils';
 import { connect } from 'react-redux';
-import { authOperations } from '../../../store/ducks';
-import axios from '../../../axiosConfig';
+import { registerApi } from '../../../services';
 
 // Material
 import { IconButton, CircularProgress, TextField, Typography } from '@material-ui/core';
@@ -42,8 +41,6 @@ class RegisterForm extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
 
-        this.checkUsernameExists = this.checkUsernameExists.bind(this);
-
         this.checkPasswordMatch = this.checkPasswordMatch.bind(this);
 
         this.prevStep = this.prevStep.bind(this);
@@ -67,7 +64,7 @@ class RegisterForm extends Component {
         const { username, password, firstName, lastName, email } = this.state;
         const { dispatch } = this.props;
         if (username && password && firstName && lastName && email) {
-            dispatch(authOperations.register(username, password, firstName, 
+            dispatch(registerApi.registerThunk(username, password, firstName, 
                 lastName, email));
         }
 
@@ -75,21 +72,6 @@ class RegisterForm extends Component {
         console.log(user);
     }
 
-    checkUsernameExists() {
-        let username = this.state.username;
-        axios.post('/exists', { username })
-        .then(
-            response => {
-                console.log(response.headers);
-                let taken = response.data.exists;
-                this.setState((prevState, props) => { return { 'usernameTaken': taken } });
-            },
-            error => {
-                console.log('username exists error');
-                console.log(error);
-            }
-        );
-    }
 
     checkPasswordMatch() {
         this.setState((prevState, props) => { 
@@ -134,7 +116,7 @@ class RegisterForm extends Component {
                     < CredentialForm 
                         handleChange={comp.handleChange} 
                         checkPasswordMatch={comp.checkPasswordMatch}  
-                        checkUsernameExists={comp.checkUsernameExists}
+                        checkUsernameExists={registerApi.checkUsernameExists(username)}
 
                         username={username}
                         password={password}
@@ -230,8 +212,8 @@ class RegisterForm extends Component {
 
 
 function mapStateToProps(state) {
-    const { auth } = state;
-    const { user } = auth;
+    const { userStore } = state;
+    const { user } = userStore;
     return {
         user
     };

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { authOperations } from '../../../store/ducks';
+import { loginApi } from '../../../services';
 
 // Material
 import { Grid, Button, IconButton, CircularProgress, TextField, Typography} from '@material-ui/core';
@@ -36,7 +36,7 @@ class LoginForm extends Component {
     const { dispatch } = this.props;
     if (username && password) {
         console.log('username and pass');
-        dispatch(authOperations.login(username, password));
+        dispatch(loginApi.loginThunk(username, password));
         //login(username, password);
     }
   }
@@ -107,6 +107,19 @@ class LoginForm extends Component {
                 Register
               </Link>
             </Typography>
+
+            <Typography
+              className={classes.signUp}
+              variant="body1"
+            >
+              or{' '}
+              <Link
+                className={classes.signUpUrl}
+                to="/register"
+              >
+                Continue as guest
+              </Link>
+            </Typography>
             
             <div className={classes.guestInline}>
               <Typography
@@ -137,8 +150,8 @@ class LoginForm extends Component {
 
 
 function mapStateToProps(state) {
-  const { auth } = state;
-  const { user } = auth;
+  const { userStore } = state;
+  const { user } = userStore;
   return {
     user
   };

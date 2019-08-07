@@ -11,7 +11,7 @@ import Register from './pages/Register';
 import HomePage from './pages/HomePage';
 import NotFound from './pages/NotFound';
 
-import { PrivateRoute } from './routes';
+import { AuthAndVerRoute } from './routes';
 
 // Styles
 import { withStyles } from '@material-ui/core';
@@ -58,7 +58,7 @@ function App(props) {
                 <Route path="/notfound" component={NotFound} />
 
 
-                <PrivateRoute render={() => <Redirect to="/" />} />
+                <AuthAndVerRoute render={() => <Redirect to="/" />} />
                 <Route render={() => <Redirect to="/login" />} />
             </Switch>
             {/*</header>*/}

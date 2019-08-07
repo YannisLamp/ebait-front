@@ -3,9 +3,6 @@ import { Link, NavLink } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 
-// Material helpers
-
-// Material components
 import {
     Avatar, Divider, Drawer, List, ListItem, ListItemIcon, ListItemText,
     ListSubheader, Typography
@@ -117,8 +114,8 @@ function Sidebar(props) {
 
 
 function mapStateToProps(state) {
-    const { auth } = state;
-    const { user, sidebarOpen } = auth;
+    const { userStore } = state;
+    const { user, sidebarOpen } = userStore;
     return {
         user,
         sidebarOpen

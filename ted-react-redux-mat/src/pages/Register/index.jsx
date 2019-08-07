@@ -23,7 +23,7 @@ export default function Register(props) {
                 <Grid
                     item
                     lg={4}
-                    xs={1}
+                    xs={2}
                 />
                 <Grid
                     container
@@ -33,7 +33,7 @@ export default function Register(props) {
                         className={classes.content}
                         item
                         lg={4}
-                        xs={10}
+                        xs={8}
                     >
                         <Paper 
                             className={classes.formPaper}>
@@ -44,7 +44,7 @@ export default function Register(props) {
                 <Grid
                     item
                     lg={4}
-                    xs={1}
+                    xs={2}
                 />
             </Grid>
         </div>
