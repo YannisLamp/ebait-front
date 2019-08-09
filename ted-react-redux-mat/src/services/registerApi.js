@@ -10,7 +10,8 @@ export const registerApi = {
     checkUsernameExists
 };
 
-function registerThunk(username, password, firstName, lastName, email) {
+function registerThunk(username, password, firstName, 
+        lastName, email, phoneNumber, country, address, afm) {
     return dispatch => {
         dispatch(userActions.registerRequest({ username }));
 
@@ -20,6 +21,10 @@ function registerThunk(username, password, firstName, lastName, email) {
             firstName,
             lastName,
             email,
+            phoneNumber,
+            country,
+            address,
+            afm
         }
 
         const user = {
@@ -33,22 +38,25 @@ function registerThunk(username, password, firstName, lastName, email) {
                     console.log(response.headers);
                     dispatch(userActions.registerSuccess(user));
 
-                    // If register was a success, then log him in
-                    dispatch(loginApi.loginThunk(user));
-
-                    //history.push('/');
+                    // If register was a success, then log him in (redirection will take place after login)
+                    dispatch(loginApi.loginThunk(username, password));
                 },
                 error => {
                     console.log(' in redux fail');
                     dispatch(userActions.registerFailure(error));
-                    dispatch(alertActions.error(error.message));
 
                     if (error.response) {
                         // The request was made and the server responded with a status code
                         // that falls out of the range of 2xx
-                        console.log(error.response.data);
-                        console.log(error.response.status);
-                        console.log(error.response.headers);
+                        //console.log(error.response.data);
+                        //console.log(error.response.status);
+                        //console.log(error.response.headers);
+                        let errorMsg = '';
+                        for (let currError of error.response.data.errors) {
+                            errorMsg += currError.defaultMessage + '\n';
+                        }
+                        dispatch(alertActions.error(errorMsg));
+
                         if (error.response.status === 401) {
                             // auto logout if 401 response returned from api
                             //localStorage.removeItem('user');
@@ -66,6 +74,7 @@ function registerThunk(username, password, firstName, lastName, email) {
                     else {
                         // Something happened in setting up the request that triggered an Error
                         console.log('Error', error.message);
+                        dispatch(alertActions.error(error.message));
                     }
                     console.log(error.config);
 
@@ -76,12 +85,11 @@ function registerThunk(username, password, firstName, lastName, email) {
 
 
 function checkUsernameExists(username) {
-    axios.post('/exists', { username })
+    return axios.post('/exists', { username })
     .then(
         response => {
-            console.log(response.headers);
-            let taken = response.data.exists;
-            this.setState((prevState, props) => { return { 'usernameTaken': taken } });
+            //console.log(response.headers);
+            return response.data;
         },
         error => {
             console.log('username exists error');

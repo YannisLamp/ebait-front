@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
+import clsx from 'clsx';
 import { connect } from 'react-redux';
 
 import {
@@ -36,75 +37,85 @@ function Sidebar(props) {
 
     const classes = useStyles();
     const sidebarOpen = props.sidebarOpen;
+    const user = props.user;
 
     return (
         <div className={classes.root}>
-        <Drawer
-            anchor="left"
-            classes={{ paper: classes.drawerPaper }}
-            open={sidebarOpen}
-            className={classes.drawer}
-            variant="persistent"
-        >
-            <nav className={classes.root}>
-                <div className={classes.profile}>
-                    <Link to="/account">
-                        <Avatar
-                            alt="Roman Kutepov"
-                            className={classes.avatar}
-                            src="/images/avatars/avatar_1.png"
-                        />
-                    </Link>
-                    <Typography
-                        className={classes.nameText}
-                        variant="h6"
+            <Drawer
+                anchor="left"
+                classes={{ paper: classes.drawerPaper }}
+                open={sidebarOpen}
+                className={classes.drawer}
+                variant="persistent"
+            >
+                    <div className={classes.profile}>
+                        {/*<Link to="/account">
+                            <Avatar
+                                alt="Roman Kutepov"
+                                className={classes.avatar}
+                                src="/images/avatars/avatar_1.png"
+                            />
+                        </Link>*/}
+                        <Typography
+                            className={classes.usernameText}
+                            variant="h5"
+                        >
+                            {user.username}
+                        </Typography>
+                        <Typography
+                            className={classes.nameText}
+                            variant="h6"
+                        >
+                            {user.firstName}{' '}{user.lastName}
+                        </Typography>
+                        <Typography
+                            className={classes.bioText}
+                            variant="caption"
+                        >
+                            {user.isAdmin ? 'Administrator' : 'User'}
+                        </Typography>
+                    </div>
+                    <Divider className={classes.profileDivider} />
+
+
+                    {/*<UserList />*/}
+
+
+                    <Divider className={classes.listDivider} />
+                    <List
+                        component="div"
+                        disablePadding
+                        subheader={
+                            <ListSubheader className={classes.listSubheader}>
+                                Support
+                            </ListSubheader>
+                        }
                     >
-                        Roman Kutepov
-                    </Typography>
-                    <Typography
-                        className={classes.bioText}
-                        variant="caption"
-                    >
-                        Brain Director
-          </Typography>
-                </div>
-                <Divider className={classes.profileDivider} />
+                        <ListItem
+                            className={classes.listItem}
+                            component="a"
+                            href="https://devias.io/contact-us"
+                            target="_blank"
+                        >
+                            <ListItemIcon className={classes.listItemIcon}>
+                                <InfoIcon />
+                            </ListItemIcon>
+                            <ListItemText
+                                classes={{ primary: classes.listItemText }}
+                                primary="Customer support"
+                            />
+                        </ListItem>
+                    </List>
 
+            </Drawer>
+            
+            <div 
+                className={clsx(classes.content, {[classes.contentShift]: sidebarOpen,})}
+            >
 
-                {/*<UserList />*/}
+                {props.children}
 
-
-                <Divider className={classes.listDivider} />
-                <List
-                    component="div"
-                    disablePadding
-                    subheader={
-                        <ListSubheader className={classes.listSubheader}>
-                            Support
-            </ListSubheader>
-                    }
-                >
-                    <ListItem
-                        className={classes.listItem}
-                        component="a"
-                        href="https://devias.io/contact-us"
-                        target="_blank"
-                    >
-                        <ListItemIcon className={classes.listItemIcon}>
-                            <InfoIcon />
-                        </ListItemIcon>
-                        <ListItemText
-                            classes={{ primary: classes.listItemText }}
-                            primary="Customer support"
-                        />
-                    </ListItem>
-                </List>
-            </nav>
-
-        </Drawer>
-
-                    
-        {props.children}
+            </div>
 
         </div>
     );

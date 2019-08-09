@@ -9,5 +9,5 @@ import userStore from './userStore';
 
 export const reducers = { alertStore, userStore };
 export { alertActions } from './alertStore';
-//export { authOperations } from './auth';
+export { userActions } from './userStore';
 

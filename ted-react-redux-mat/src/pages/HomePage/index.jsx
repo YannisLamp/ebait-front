@@ -19,22 +19,23 @@ export default function HomePage(props) {
 
     return (
         <div>
-            
-          <Sidebar className={classes.sidebar} />
-            <div className={classes.root}>
-                <Grid
-                    className={classes.grid}
-                    container
-                >
+
+            <Sidebar className={classes.sidebar}>
+                <div className={classes.root}>
                     <Grid
-                        className={classes.quoteWrapper}
-                        item
-                        lg={5}
+                        className={classes.grid}
+                        container
                     >
-                        <h1>Hi, this is the HomePage</h1>
+                        <Grid
+                            className={classes.quoteWrapper}
+                            item
+                            lg={5}
+                        >
+                            <h1>Hi, this is the HomePage</h1>
+                        </Grid>
                     </Grid>
-                </Grid>
-            </div>
+                </div>
+            </Sidebar>
         </div>
     );
 }

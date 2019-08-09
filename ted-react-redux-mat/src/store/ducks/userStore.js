@@ -15,6 +15,7 @@ const userTypes = {
     TOGGLE_SIDEBAR: 'my_app/user/TOGGLE_SIDEBAR'
 }
 
+
 // Action creators
 export const userActions = {
     registerRequest,
@@ -27,7 +28,6 @@ export const userActions = {
     toggleSidebar
 }
 
-// Register
 function registerRequest(user) { 
     return { type: userTypes.REGISTER_REQUEST, user } 
 }
@@ -63,12 +63,12 @@ function toggleSidebar() {
 
 
 
-// Reducer
+// Reducer Initialization
 let user = JSON.parse(localStorage.getItem('user'));
 console.log('stored user?');
 console.log(user);
 const initialState = user ? { loggedIn: true, user, sidebarOpen: true } : { loggedIn: false, sidebarOpen: true };
-
+// Reducer
 export default function reducer(state = initialState, action) {
     switch (action.type) {
     case userTypes.REGISTER_REQUEST:

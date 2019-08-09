@@ -42,6 +42,7 @@ class RegisterForm extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
 
         this.checkPasswordMatch = this.checkPasswordMatch.bind(this);
+        this.checkUsernameExists = this.checkUsernameExists.bind(this);
 
         this.prevStep = this.prevStep.bind(this);
         this.nextStep = this.nextStep.bind(this);
@@ -61,11 +62,15 @@ class RegisterForm extends Component {
         e.preventDefault();
 
         this.setState({ submitted: true });
-        const { username, password, firstName, lastName, email } = this.state;
+        const { username, password, firstName, lastName, email, phoneNumber,
+            country, address, afm} = this.state;
         const { dispatch } = this.props;
-        if (username && password && firstName && lastName && email) {
+
+        // Check validity 
+        if (username && password && firstName && lastName && email && phoneNumber && 
+                country && address && afm) {
             dispatch(registerApi.registerThunk(username, password, firstName, 
-                lastName, email));
+                lastName, email, phoneNumber, country, address, afm));
         }
 
         const { user } = this.props;
@@ -77,6 +82,15 @@ class RegisterForm extends Component {
         this.setState((prevState, props) => { 
             return { 'passwordsMatch': prevState.password === prevState.confirmPassword } 
         });
+    }
+
+    checkUsernameExists() {
+        registerApi.checkUsernameExists(this.state.username)
+            .then(data => {
+                let taken = data.exists;
+                this.setState((prevState, props) => { return { 'usernameTaken': taken } });
+            }
+            );
     }
 
     prevStep() {
@@ -116,7 +130,7 @@ class RegisterForm extends Component {
                     < CredentialForm 
                         handleChange={comp.handleChange} 
                         checkPasswordMatch={comp.checkPasswordMatch}  
-                        checkUsernameExists={registerApi.checkUsernameExists(username)}
+                        checkUsernameExists={comp.checkUsernameExists}
 
                         username={username}
                         password={password}

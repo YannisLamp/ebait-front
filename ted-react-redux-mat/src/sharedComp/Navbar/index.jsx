@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { userActions } from '../../store/ducks/userStore';
-import { AppBar, Toolbar, Typography, Button, IconButton, TextField } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, Button, IconButton, TextField, Box } from '@material-ui/core';
 
 // Material icons
 import { Menu, NotificationsOutlined, Input } from '@material-ui/icons/';
@@ -25,6 +25,8 @@ function ElevationScroll(props) {
 function ButtonAppBar(props) {
     const classes = useStyles();
 
+    const user = props.user;
+
     function toggleSidebar() {
         const { dispatch } = props;
         dispatch(userActions.toggleSidebar());
@@ -35,15 +37,17 @@ function ButtonAppBar(props) {
             <ElevationScroll {...props}>
                 <AppBar>
                     <Toolbar>
-                        <IconButton 
-                            edge="start" 
-                            className={classes.menuButton} 
-                            color="inherit" 
-                            aria-label="Menu" 
-                            onClick={toggleSidebar}
-                        >
-                            <Menu />
-                        </IconButton>
+                        <Box visibility={user ? "visible" : "hidden"}>
+                            <IconButton 
+                                edge="start" 
+                                className={classes.menuButton} 
+                                color="inherit" 
+                                aria-label="Menu" 
+                                onClick={toggleSidebar}
+                            >
+                                <Menu />
+                            </IconButton>
+                        </Box>
                         <Typography variant="caption" className={classes.title}>
                             <NavLink
                                 className={classes.titleLink}

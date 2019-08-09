@@ -8,8 +8,8 @@ export default makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
-    paddingLeft: theme.spacing(1),
-    paddingRight: theme.spacing(1)
+    //paddingLeft: theme.spacing(1),
+    //paddingRight: theme.spacing(1)
   },
   drawer: {
     width: drawerWidth,
@@ -37,12 +37,11 @@ export default makeStyles(theme => ({
     alignItems: 'center',
     minHeight: 'fit-content'
   },
-  avatar: {
-    width: '100px',
-    height: '100px'
+  usernameText: {
+    marginTop: theme.spacing(15)
   },
   nameText: {
-    marginTop: theme.spacing(2)
+    marginTop: theme.spacing(5)
   },
   bioText: {},
   profileDivider: {
@@ -89,5 +88,27 @@ export default makeStyles(theme => ({
   listDivider: {
     marginBottom: theme.spacing(2),
     marginTop: theme.spacing(2)
-  }
+  },
+
+
+  drawerPaper: {
+    width: drawerWidth,
+  },
+  content: {
+    //flexGrow: 1,
+    //padding: theme.spacing(3),
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    //marginLeft: -drawerWidth,
+  },
+  contentShift: {
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    marginLeft: drawerWidth,
+  },
+
 }));
