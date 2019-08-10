@@ -1,30 +1,43 @@
-import config from 'config';
-import { authHeader } from '../_helpers';
+import axios from './axiosConfig';
 
+export const usersApi = {
+    getUserInfo
+};
 
-function getAll() {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
-    };
+function getUsers() {
+        axios.get('/users')
+            .then(response => {
+                    // If the login process was successful, save authorization JWT
+                    //const authorizationJwt = response.headers.authorization;
+                    //axios.defaults.headers.common['Authorization'] = authorizationJwt;
 
-    return fetch(`${config.apiUrl}/users`, requestOptions).then(handleResponse);
+                    // Then request and save logged in user information  
+                    //const userId = response.headers.userid;
+                    return response.data;
+                },
+                error => {
+
+                    if (error.response.status === 401) {
+                        // auto logout if 401 response returned from api
+                        // dispatch(logoutThunk);
+                        //window.location.reload(true);
+                    }
+                }
+            );
 }
 
-function handleResponse(response) {
-    return response.text().then(text => {
-        const data = text && JSON.parse(text);
-        if (!response.ok) {
-            if (response.status === 401) {
-                // auto logout if 401 response returned from api
-                logout();
-                location.reload(true);
-            }
 
-            const error = (data && data.message) || response.statusText;
-            return Promise.reject(error);
+function getUserInfo(userId) {
+    return axios.get('/users/' + userId, {data:{}})
+        .then(response => {
+            console.log('response');
+            console.log(response);
+            return response.data;
         }
-
-        return data;
-    });
+        //error => {
+        //    console.log('response error');
+        //    console.log(error);
+        //}
+        );
 }
+

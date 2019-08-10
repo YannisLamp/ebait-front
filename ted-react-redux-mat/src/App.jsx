@@ -10,6 +10,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import HomePage from './pages/HomePage';
 import NotFound from './pages/NotFound';
+import AdminPage from './pages/AdminPage';
 
 import { AuthAndVerRoute } from './routes';
 
@@ -56,6 +57,8 @@ function App(props) {
                 <Route path="/register" component={Register} />
 
                 <Route path="/notfound" component={NotFound} />
+
+                <Route path="/admin" component={AdminPage} />
 
 
                 <AuthAndVerRoute render={() => <Redirect to="/" />} />

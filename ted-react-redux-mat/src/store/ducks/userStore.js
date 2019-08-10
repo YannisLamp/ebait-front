@@ -1,7 +1,7 @@
 import { alertActions } from './alertStore';
 
 // Action types
-const userTypes = { 
+const userTypes = {
     REGISTER_REQUEST: 'my_app/user/REGISTER_REQUEST',
     REGISTER_SUCCESS: 'my_app/user/REGISTER_SUCCESS',
     REGISTER_FAILURE: 'my_app/user/REGISTER_FAILURE',
@@ -12,7 +12,7 @@ const userTypes = {
 
     LOGOUT: 'my_app/user/LOGOUT',
 
-    TOGGLE_SIDEBAR: 'my_app/user/TOGGLE_SIDEBAR'
+    TOGGLE_SIDEBAR: 'my_app/user/TOGGLE_SIDEBAR',
 }
 
 
@@ -28,7 +28,7 @@ export const userActions = {
     toggleSidebar
 }
 
-function registerRequest(user) { 
+function registerRequest(user) {
     return { type: userTypes.REGISTER_REQUEST, user } 
 }
 
@@ -53,7 +53,7 @@ function loginFailure(error) {
     return { type: userTypes.LOGIN_FAILURE, error } 
 }
 
-function logoutAction() { 
+function logoutAction() {
     return { type: userTypes.LOGOUT } 
 }
 
@@ -74,11 +74,11 @@ export default function reducer(state = initialState, action) {
     case userTypes.REGISTER_REQUEST:
         return {
             registering: true,
-            user: action.user
+            username: action.user
         };
     case userTypes.REGISTER_SUCCESS:
         return {
-            loggedIn: true,
+            registered: true,
             user: action.user
         };
     case userTypes.REGISTER_FAILURE:
@@ -86,7 +86,7 @@ export default function reducer(state = initialState, action) {
     case userTypes.LOGIN_REQUEST:
         return {
             loggingIn: true,
-            user: action.user
+            username: action.user
         };
     case userTypes.LOGIN_SUCCESS:
         return {

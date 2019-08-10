@@ -2,7 +2,6 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles(theme => ({
   root: {
-    flexGrow: 0.7,
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -15,5 +14,14 @@ export default makeStyles(theme => ({
   titleLink: {
     textDecoration: 'none',
     color: theme.palette.text.secondary,
+  },
+  //grow: {
+  //  flexGrow: 1,
+  //},
+  sectionDesktop: {
+    display: 'none',
+    [theme.breakpoints.up('md')]: {
+      display: 'flex',
+    },
   },
 }));

@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 import {
     Avatar, Divider, Drawer, List, ListItem, ListItemIcon, ListItemText,
-    ListSubheader, Typography
+    ListSubheader, Typography, IconButton
 } from '@material-ui/core';
 
 // Material icons
@@ -19,7 +19,8 @@ import {
     ImageOutlined as ImageIcon,
     InfoOutlined as InfoIcon,
     AccountBoxOutlined as AccountBoxIcon,
-    SettingsOutlined as SettingsIcon
+    SettingsOutlined as SettingsIcon,
+    AccountCircle
 } from '@material-ui/icons';
 
 
@@ -49,19 +50,23 @@ function Sidebar(props) {
                 variant="persistent"
             >
                     <div className={classes.profile}>
-                        {/*<Link to="/account">
-                            <Avatar
-                                alt="Roman Kutepov"
-                                className={classes.avatar}
-                                src="/images/avatars/avatar_1.png"
-                            />
-                        </Link>*/}
+                        <NavLink to="/account" className={classes.notDecorated}>
+                            <Avatar className={classes.userLogo}>
+                                {user.firstName && user.lastName ? 
+                                    user.firstName.charAt(0) + user.lastName.charAt(0) 
+                                :   
+                                    'G'
+                                }
+                            </Avatar>
+                        </NavLink>
+
                         <Typography
                             className={classes.usernameText}
                             variant="h5"
                         >
                             {user.username}
                         </Typography>
+
                         <Typography
                             className={classes.nameText}
                             variant="h6"
@@ -91,7 +96,7 @@ function Sidebar(props) {
                             </ListSubheader>
                         }
                     >
-                        <ListItem
+                        {/* <ListItem
                             className={classes.listItem}
                             component="a"
                             href="https://devias.io/contact-us"
@@ -104,7 +109,7 @@ function Sidebar(props) {
                                 classes={{ primary: classes.listItemText }}
                                 primary="Customer support"
                             />
-                        </ListItem>
+                        </ListItem> */}
                     </List>
 
             </Drawer>

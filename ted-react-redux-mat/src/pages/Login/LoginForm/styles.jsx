@@ -17,7 +17,7 @@ export default theme => ({
   form: {
     paddingLeft: '100px',
     paddingRight: '100px',
-    paddingBottom: '100px',
+    paddingBottom: theme.spacing(20),
     flexBasis: '700px',
     [theme.breakpoints.down('sm')]: {
       paddingLeft: theme.spacing(2),

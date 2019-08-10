@@ -37,11 +37,20 @@ export default makeStyles(theme => ({
     alignItems: 'center',
     minHeight: 'fit-content'
   },
+  userLogo: {
+    marginTop: theme.spacing(12),
+    margin: 5,
+    width: 80,
+    height: 80,
+  },
+  notDecorated: {
+    textDecoration: 'none',
+  },
   usernameText: {
-    marginTop: theme.spacing(15)
+    marginTop: theme.spacing(2)
   },
   nameText: {
-    marginTop: theme.spacing(5)
+    marginTop: theme.spacing(1)
   },
   bioText: {},
   profileDivider: {

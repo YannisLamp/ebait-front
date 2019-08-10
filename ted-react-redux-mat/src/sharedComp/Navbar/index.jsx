@@ -2,10 +2,10 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { userActions } from '../../store/ducks/userStore';
-import { AppBar, Toolbar, Typography, Button, IconButton, TextField, Box } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, Button, IconButton, TextField, Box, Badge, Menu } from '@material-ui/core';
 
 // Material icons
-import { Menu, NotificationsOutlined, Input } from '@material-ui/icons/';
+import { Menu as MenuIcon, Input as InputIcon, Mail as MailIcon, Notifications as NotificationsIcon, AccountCircle } from '@material-ui/icons/';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 
 import useStyles from './styles';
@@ -33,37 +33,66 @@ function ButtonAppBar(props) {
     }
 
     return (
-        <div className={classes.root}>
-            <ElevationScroll {...props}>
-                <AppBar>
-                    <Toolbar>
-                        <Box visibility={user ? "visible" : "hidden"}>
-                            <IconButton 
-                                edge="start" 
-                                className={classes.menuButton} 
-                                color="inherit" 
-                                aria-label="Menu" 
-                                onClick={toggleSidebar}
-                            >
-                                <Menu />
-                            </IconButton>
-                        </Box>
-                        <Typography variant="caption" className={classes.title}>
-                            <NavLink
-                                className={classes.titleLink}
-                                to="/"
-                            >
-                                EMERLD
-                            </NavLink>
-                        </Typography>
-
-                        <IconButton color="inherit">
-                            <Input />
+        <ElevationScroll {...props}>
+            <AppBar>
+                <Toolbar>
+                    <Box visibility={user ? "visible" : "hidden"}>
+                        <IconButton
+                            edge="start"
+                            className={classes.menuButton}
+                            color="secondary"
+                            aria-label="Menu"
+                            onClick={toggleSidebar}
+                        >
+                            <MenuIcon />
                         </IconButton>
-                    </Toolbar>
-                </AppBar>
-            </ElevationScroll>
-        </div>
+                    </Box>
+                    <Typography variant="caption" className={classes.title}>
+                        <NavLink
+                            className={classes.titleLink}
+                            to="/"
+                        >
+                            EMERLD
+                        </NavLink>
+                    </Typography>
+
+                    {/* <div className={classes.grow} /> */}
+                    {user ? (
+                        <div className={classes.sectionDesktop}>
+                            <IconButton aria-label="show 4 new mails" color="inherit">
+                                <Badge badgeContent={4} color="primary">
+                                    <MailIcon />
+                                </Badge>
+                            </IconButton>
+                            {/* <IconButton aria-label="show 17 new notifications" color="inherit">
+                                    <Badge badgeContent={17} color="secondary">
+                                        <NotificationsIcon />
+                                    </Badge>
+                                </IconButton> */}
+                            <IconButton
+                                edge="end"
+                                aria-label="account of current user"
+                                // aria-controls={menuId}
+                                aria-haspopup="true"
+                                // onClick={handleProfileMenuOpen}
+                                color="inherit"
+                            >
+                                <AccountCircle />
+                            </IconButton>
+                        </div>
+                    ) : (
+                        <NavLink
+                            className={classes.titleLink}
+                            to="/login"
+                        >
+                            <IconButton color="inherit">
+                                <InputIcon />
+                            </IconButton>
+                        </NavLink>
+                    )}
+                </Toolbar>
+            </AppBar>
+        </ElevationScroll>
     );
 }
 

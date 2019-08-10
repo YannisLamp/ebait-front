@@ -13,7 +13,10 @@ import styles from './styles';
 class LoginForm extends Component {
 
     constructor(props) {
+
         super(props);
+        // Logout 
+        this.props.dispatch(loginApi.logoutThunk());
         this.state = { username: '', password: '', };
 
         this.handleChange = this.handleChange.bind(this);
@@ -122,7 +125,7 @@ class LoginForm extends Component {
                             </Link>
                         </Typography>
 
-                        <div className={classes.guestInline}>
+                        {/* <div className={classes.guestInline}>
                             <Typography
                                 className={classes.guestTitle}
                                 variant="h2"
@@ -132,7 +135,7 @@ class LoginForm extends Component {
                             <Button variant="outlined" color="primary" className={classes.guestBtn}>
                                 Continue as guest
                             </Button>
-                        </div>
+                        </div> */}
 
                         <Typography
                             className={classes.guestComment}

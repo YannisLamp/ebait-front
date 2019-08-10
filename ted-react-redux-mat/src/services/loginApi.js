@@ -4,6 +4,8 @@ import axios from './axiosConfig';
 import { userActions } from '../store/ducks/userStore';
 import { alertActions } from '../store/ducks/alertStore';
 
+import { usersApi } from './usersApi';
+
 // response.headers
 
 export const loginApi = {
@@ -29,7 +31,7 @@ function loginThunk(username, password) {
 
                     // Then request and save logged in user information  
                     const userId = response.headers.userid;
-                    getUserInfo(userId)
+                    usersApi.getUserInfo(userId)
                         .then(data => {
                             let user = data;
                             //user.authorizationJwt = authorizationJwt;
@@ -59,20 +61,6 @@ function loginThunk(username, password) {
                 }
             );
     }
-}
-
-function getUserInfo(userId) {
-    return axios.get('/users/' + userId, {data:{}})
-        .then(response => {
-            console.log('response');
-            console.log(response);
-            return response.data;
-        }
-        //error => {
-        //    console.log('response error');
-        //    console.log(error);
-        //}
-        );
 }
 
 
