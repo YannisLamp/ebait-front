@@ -87,7 +87,7 @@ export function UserTable() {
                         aria-labelledby="tableTitle"
                         size='medium'
                     >
-                        <EnhancedTableHead
+                        <UserTableHead
                             classes={classes}
                             numSelected={selected.length}
                             order={order}
