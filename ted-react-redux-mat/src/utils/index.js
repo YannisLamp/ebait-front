@@ -1,2 +1,1 @@
-export * from './fakeBackend';
-export * from './history';
+export { history } from './history';

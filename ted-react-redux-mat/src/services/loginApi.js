@@ -27,7 +27,7 @@ function loginThunk(username, password) {
                 response => {
                     // If the login process was successful, save authorization JWT
                     const authorizationJwt = response.headers.authorization;
-                    axios.defaults.headers.common['Authorization'] = authorizationJwt;
+                    localStorage.setItem('jwt', authorizationJwt);
 
                     // Then request and save logged in user information  
                     const userId = response.headers.userid;
@@ -66,7 +66,8 @@ function loginThunk(username, password) {
 
 function logoutThunk() {
     localStorage.removeItem('user');
-    delete axios.defaults.headers.common["Authorization"];
+    //delete axios.defaults.headers.common["Authorization"];
+    localStorage.removeItem('jwt');
     return dispatch => dispatch(userActions.logoutAction());
 }
 

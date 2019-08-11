@@ -1,11 +1,12 @@
 import axios from './axiosConfig';
 
 export const usersApi = {
+    getUsers,
     getUserInfo
 };
 
-function getUsers() {
-        axios.get('/users')
+function getUsers() {    
+        return axios.get('/users')
             .then(response => {
                     // If the login process was successful, save authorization JWT
                     //const authorizationJwt = response.headers.authorization;

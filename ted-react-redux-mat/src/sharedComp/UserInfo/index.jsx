@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { loginApi } from '../../../services';
+import { usersApi } from '../../../services';
 
 // Material
 import { Grid, Button, IconButton, CircularProgress, TextField, Typography } from '@material-ui/core';
@@ -10,21 +9,18 @@ import { Grid, Button, IconButton, CircularProgress, TextField, Typography } fro
 import { withStyles } from '@material-ui/core';
 import styles from './styles';
 
-class LoginForm extends Component {
+class UserInfo extends Component {
 
     constructor(props) {
-
         super(props);
-        // Logout 
-        this.props.dispatch(loginApi.logoutThunk());
-        this.state = { username: '', password: '', };
+        this.state = { 
+            username: '', password: '', 
+        };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-
     }
 
-    // https://serverless-stack.com/chapters/create-a-login-page.html
 
     handleChange(e) {
         const { name, value } = e.target;
@@ -154,20 +150,5 @@ class LoginForm extends Component {
 
 
 
-function mapStateToProps(state) {
-    const { userStore } = state;
-    return {
-        userStore
-    };
-}
-
-/*function mapDispatchToProps(dispatch) {
-  return {
-    login: (username, password) => dispatch(authOperations.login(username, password))
-  };
-}*/
-
-
-const styledLoginForm = withStyles(styles)(LoginForm);
-const connectedLoginForm = connect(mapStateToProps)(styledLoginForm);
-export default connectedLoginForm;
+const styledUserInfo = withStyles(styles)(UserInfo);
+export default connectedUserInfo;

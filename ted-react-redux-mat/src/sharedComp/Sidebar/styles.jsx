@@ -4,7 +4,7 @@ const drawerWidth = 240;
 
 export default makeStyles(theme => ({
   root: {
-    backgroundColor: theme.palette.common.white,
+    backgroundColor: theme.palette.background.default,
     display: 'flex',
     flexDirection: 'column',
     height: '100%',

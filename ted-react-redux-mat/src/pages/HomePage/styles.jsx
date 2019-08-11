@@ -9,18 +9,4 @@ export default makeStyles(theme => ({
     grid: {
         height: '100%'
     },
-    quoteWrapper: {
-        marginTop: theme.spacing(10),
-        [theme.breakpoints.down('md')]: {
-            display: 'none'
-        }
-    },
-    content: {
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column'
-    },
-    formPaper: {
-        minHeight: '75vh',
-    }
 }));

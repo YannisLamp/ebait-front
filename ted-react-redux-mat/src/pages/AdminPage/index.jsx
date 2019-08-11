@@ -9,8 +9,7 @@ import { Grid, Paper, Button } from '@material-ui/core';
 import useStyles from './styles';
 
 import Sidebar from '../../sharedComp/Sidebar';
-//import { UserTable } from './UserTable';
-import UserTableHead from './UserTable/UserTableHead';
+import UserTable from './UserTable';
 
 export default function AdminPage(props) {
 
@@ -21,8 +20,7 @@ export default function AdminPage(props) {
     const classes = useStyles();
 
     return (
-
-            <Sidebar className={classes.sidebar}>
+            <Sidebar>
                 <div className={classes.root}>
                     <Grid
                         className={classes.grid}
@@ -36,7 +34,7 @@ export default function AdminPage(props) {
                             lg={10}
                         >
                             <Paper>
-                                <UserTableHead />
+                                <UserTable />
                             </Paper>
                         </Grid>
                     </Grid>

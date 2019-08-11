@@ -7,16 +7,10 @@ import { TableHead, TableRow, TableCell, TableSortLabel, Table } from '@material
 // For importing my custom styles  
 import useStyles from './styles';
 
-const headRows = [
-    { id: 'name', numeric: false, disablePadding: true, label: 'Dessert (100g serving)' },
-    { id: 'calories', numeric: true, disablePadding: false, label: 'Calories' },
-    { id: 'fat', numeric: true, disablePadding: false, label: 'Fat (g)' },
-    { id: 'carbs', numeric: true, disablePadding: false, label: 'Carbs (g)' },
-    { id: 'protein', numeric: true, disablePadding: false, label: 'Protein (g)' },
-  ];
+
 
 export default function UserTableHead(props) {
-    const { onSelectAllClick, order, orderBy, rowCount, onRequestSort } = props;
+    const { headRows, order, orderBy, onRequestSort } = props;
     const createSortHandler = property => event => {
       onRequestSort(event, property);
     };
@@ -24,11 +18,6 @@ export default function UserTableHead(props) {
     const classes = useStyles();
 
     return (
-        <Table
-                        className={classes.test}
-                        aria-labelledby="tableTitle"
-                        size='medium'
-                    >
       <TableHead>
         <TableRow>
           {/* <TableCell padding="checkbox">
@@ -41,9 +30,9 @@ export default function UserTableHead(props) {
           </TableCell> */}
           {headRows.map(row => (
             <TableCell
-                className={classes.blackColor}
+                //className={classes.blackColor}
               key={row.id}
-              align={row.numeric ? 'right' : 'left'}
+              align={row.right ? 'right' : 'left'}
               padding={row.disablePadding ? 'none' : 'default'}
               sortDirection={orderBy === row.id ? order : false} 
             >
@@ -53,7 +42,7 @@ export default function UserTableHead(props) {
                 direction={order}
                 onClick={createSortHandler(row.id)}
               >
-                {row.label}aaa
+                {row.label}
                 {orderBy === row.id ? (
                   <span className={classes.visuallyHidden}>
                     {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
@@ -64,6 +53,5 @@ export default function UserTableHead(props) {
           ))}
         </TableRow>
       </TableHead>
-      </Table>
     );
   }

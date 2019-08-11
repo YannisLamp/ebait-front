@@ -8,46 +8,55 @@ import { Grid, Paper, Button } from '@material-ui/core';
 // For importing my custom styles  
 import useStyles from './styles';
 
-import Sidebar from '../../sharedComp/Sidebar'
+import Sidebar from '../../sharedComp/Sidebar';
+
+import ActionCard from './ActionCard';
 
 export default function HomePage(props) {
-    //componentDidMount() {
-    //    this.props.dispatch(userActions.getAll());
-    //}
-
     const classes = useStyles();
 
     return (
-        <div>
-
-            <Sidebar className={classes.sidebar}>
-                <div className={classes.root}>
+        <Sidebar>
+            <div className={classes.root}>
+                <Grid
+                    className={classes.grid}
+                    container
+                    justify="center"
+                >
                     <Grid
-                        className={classes.grid}
-                        container
+                        className={classes.quoteWrapper}
+                        item
+                        lg={8}
                     >
                         <Grid
-                            className={classes.quoteWrapper}
-                            item
-                            lg={5}
+                            className={classes.grid}
+                            container
+                            direction="column"
+                            justify="center"
                         >
-                            <h1>Hi, this is the HomePage</h1>
+
+
+                            <Grid container spacing={3}>
+                                <Grid item xs={6}>
+                                    <ActionCard/>
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <ActionCard/>
+
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <ActionCard/>
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <ActionCard/>
+                                </Grid>
+                            </Grid>
+
+
                         </Grid>
                     </Grid>
-                </div>
-            </Sidebar>
-        </div>
+                </Grid>
+            </div>
+        </Sidebar>
     );
 }
-
-
-/*function mapStateToProps(state) {
-    const { auth } = state;
-    const { user } = auth;
-    return {
-        user
-    };
-}*/
-
-//const connectedHomePage = connect(mapStateToProps)(HomePage);
-//export default connectedHomePage;
