@@ -35,8 +35,7 @@ export default function Register(props) {
                         lg={4}
                         xs={8}
                     >
-                        <Paper 
-                            className={classes.formPaper}>
+                        <Paper className={classes.formPaper}>
                             <SignUpForm />
                         </Paper>
                     </Grid>

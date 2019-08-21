@@ -50,7 +50,7 @@ function Sidebar(props) {
                 variant="persistent"
             >
                     <div className={classes.profile}>
-                        <NavLink to="/account" className={classes.notDecorated}>
+                        <NavLink to="/profile" className={classes.notDecorated}>
                             <Avatar className={classes.userLogo}>
                                 {user.firstName && user.lastName ? 
                                     user.firstName.charAt(0) + user.lastName.charAt(0) 

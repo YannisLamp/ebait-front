@@ -6,7 +6,8 @@ export const AdminRoute = ({ component: Component, ...rest }) => (
         
         // EDW NA ELEGXW AN TO USERTYPE EINAI ADMIN 
         localStorage.getItem('user')
-            ? <Component {...props} />
+        // ME SIDEBAR
+            ? <Sidebar> <Component {...props} /> </Sidebar>
             : <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
     )} />
 )

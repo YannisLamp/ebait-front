@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { usersApi } from '../../../services';
+import { usersApi } from '../../services';
 
 // Material
-import { Grid, Button, IconButton, CircularProgress, TextField, Typography } from '@material-ui/core';
+import { Grid, Button, IconButton, CircularProgress, TextField, Typography, Avatar } from '@material-ui/core';
 
 // For importing my custom styles  
 import { withStyles } from '@material-ui/core';
@@ -13,14 +13,23 @@ class UserInfo extends Component {
 
     constructor(props) {
         super(props);
+
+        // Get user info and copy it to state
+        const { user } = this.props;
         this.state = { 
-            username: '', password: '', 
+            username: user.username,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+            country: user.country,
+            address: user.address,
+            afm: user.afm
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-
 
     handleChange(e) {
         const { name, value } = e.target;
@@ -31,47 +40,128 @@ class UserInfo extends Component {
         e.preventDefault();
 
         this.setState({ loading: true });
-        const { username, password } = this.state;
+        const { username, firstName, lastName, email, phoneNumber,
+                country, afm } = this.state;
         //const { login } = this.props;
-        const { dispatch } = this.props;
-        if (username && password) {
+        //const { dispatch } = this.props;
+
+        // na elegxw gia adeia
+        if (username) {
             console.log('username and pass');
-            dispatch(loginApi.loginThunk(username, password));
+            //dispatch(loginApi.loginThunk(username, password));
         }
     }
 
     render() {
-        const { username, password, loading } = this.state;
+        const { user } = this.props;
+
+        const { username, firstName, lastName, email, phoneNumber,
+            country, address, afm } = this.state;
+        
+        
+        const { loading } = this.state;
         const submitted = false;
 
-        const { classes, userStore } = this.props;
-        const { loggingIn } = userStore;
+        const { classes } = this.props;
 
+        const { edit } = this.props;
+
+        
         return (
-            <div className={classes.content}>
-                <div className={classes.contentBody}>
-                    <form className={classes.form}>
-                        <Typography
-                            className={classes.title}
-                            variant="h2"
-                        >
-                            Log in
-                        </Typography>
-                        <Typography
-                            className={classes.sugestion}
-                            variant="body1"
-                        >
-                            with your username
-                        </Typography>
-                        <div className={classes.fields}>
+
+            <>
+            {/* <Avatar className={classes.userLogo}>
+                                {user.firstName && user.lastName ? 
+                                    user.firstName.charAt(0) + user.lastName.charAt(0) 
+                                :   
+                                    'G'
+                                }
+                            </Avatar> */}
+
+
+            <form className={classes.form}>
+                <Typography
+                    className={classes.title}
+                    variant="h3"
+                >
+                    User Profile
+                </Typography>
+                        
+                    <Grid 
+                        container
+                        justify="center"
+                        className={classes.container}
+                    >
+
+                        <Grid item xs={4}>
+                        <TextField
+                className={classes.textField}
+                label="First Name"
+                name="firstName"
+                value={firstName}
+                type="text"
+                variant="outlined"
+                onChange={this.handleChange}
+                InputProps={{
+                    readOnly: !edit,
+                }}
+            />
+            <TextField
+                className={classes.textField}
+                label="Last Name"
+                name="lastName"
+                value={lastName}
+                type="text"
+                variant="outlined"
+                onChange={this.handleChange}
+                InputProps={{
+                    readOnly: !edit,
+                }}
+            />
+            <TextField
+                className={classes.textField}
+                label="Email"
+                name="email"
+                value={email}
+                type="text"
+                variant="outlined"
+                onChange={this.handleChange}
+                InputProps={{
+                    readOnly: !edit,
+                }}
+            />
+            <TextField
+                className={classes.textField}
+                label="Phone number"
+                name="phoneNumber"
+                value={phoneNumber}
+                type="number"
+                variant="outlined"
+                onChange={this.handleChange}
+                InputProps={{
+                    readOnly: !edit,
+                }}
+            />
+
+
+                        </Grid>
+
+
+                        <Grid item xs={4}>
                             <TextField
                                 className={classes.textField}
-                                label="Username"
-                                name="username"
-                                type="text"
-                                variant="outlined"
-                                onChange={this.handleChange}
-                            />
+                                    label="Username"
+                                    value={username}
+                                    name="username"
+                                    type="text"
+                                    variant="outlined"
+                                    onChange={this.handleChange}
+                                    InputProps={{
+                                        readOnly: !edit,
+                                    }}
+                                />
+
+                             {/* <Grid item xs={4}>
                             <TextField
                                 className={classes.textField}
                                 label="Password"
@@ -79,76 +169,70 @@ class UserInfo extends Component {
                                 type="password"
                                 variant="outlined"
                                 onChange={this.handleChange}
+                                InputProps={{
+                                    readOnly: !edit,
+                                }}
                             />
-                        </div>
-                        {loggingIn ? 
-                        (
-                            <CircularProgress className={classes.progress} />
-                        ) : (
-                            <Button
-                                className={classes.signInButton}
-                                color="primary"
-                                type="submit"
-                                onClick={this.handleSubmit}
-                                size="large"
-                                variant="contained"
-                            >
-                                Log in
-                            </Button>
-                        )}
-                        <Typography
-                            className={classes.signUp}
-                            variant="body1"
-                        >
-                            Don't have an account?{' '}
-                            <Link
-                                className={classes.signUpUrl}
-                                to="/register"
-                            >
-                                Register
-                            </Link>
-                        </Typography>
+                            </Grid> */}
 
-                        <Typography
-                            className={classes.signUp}
-                            variant="body1"
-                        >
-                            or{' '}
-                            <Link
-                                className={classes.signUpUrl}
-                                to="/register"
-                            >
-                                Continue as guest
-                            </Link>
-                        </Typography>
+                        </Grid>
 
-                        {/* <div className={classes.guestInline}>
-                            <Typography
-                                className={classes.guestTitle}
-                                variant="h2"
-                            >
-                                or
-                            </Typography>
-                            <Button variant="outlined" color="primary" className={classes.guestBtn}>
-                                Continue as guest
-                            </Button>
-                        </div> */}
 
-                        <Typography
-                            className={classes.guestComment}
-                            variant="body1"
-                        >
-                        </Typography>
+                        <Grid item xs={4}>
+                        <TextField
+                className={classes.textField}
+                label="Country"
+                name="country"
+                value={country}
+                type="text"
+                variant="outlined"
+                onChange={this.handleChange}
+                InputProps={{
+                    readOnly: !edit,
+                }}
+            />
+            <TextField
+                className={classes.textField}
+                label="Address"
+                name="address"
+                value={address}
+                type="text"
+                variant="outlined"
+                onChange={this.handleChange}
+                InputProps={{
+                    readOnly: !edit,
+                }}
+            />
+            <TextField
+                className={classes.textField}
+                label="Tax Identification Number"
+                name="afm"
+                value={afm}
+                type="text"
+                variant="outlined"
+                onChange={this.handleChange}
+                InputProps={{
+                    readOnly: !edit,
+                }}
+            />
 
-                    </form>
-                </div>
-            </div>
+
+                        </Grid>
+                            
+                           
+
+                            
+                        
+</Grid>
+
+            </form>
+            </>
         );
-
+        
     }
 }
 
 
 
 const styledUserInfo = withStyles(styles)(UserInfo);
-export default connectedUserInfo;
+export default styledUserInfo;

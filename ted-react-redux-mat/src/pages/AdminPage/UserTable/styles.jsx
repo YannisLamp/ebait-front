@@ -1,7 +1,6 @@
 export default theme => ({
     root: {
         width: '100%',
-        marginTop: theme.spacing(4),
     },
     paper: {
         width: '100%',

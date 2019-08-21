@@ -42,3 +42,38 @@ function getUserInfo(userId) {
         );
 }
 
+
+
+
+
+// GIA USERS META
+function editUserInfo(userId) {
+    return axios.put('/users/' + userId, {data:{}})
+        .then(response => {
+            console.log('response');
+            console.log(response);
+            return response.data;
+        }
+        //error => {
+        //    console.log('response error');
+        //    console.log(error);
+        //}
+        );
+}
+
+
+function verifyUser(userId) {
+    return axios.post('/users/' + userId, {data:{}})
+        .then(response => {
+            console.log('response');
+            console.log(response);
+            return response.data;
+        }
+        //error => {
+        //    console.log('response error');
+        //    console.log(error);
+        //}
+        );
+}
+
+

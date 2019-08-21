@@ -17,9 +17,6 @@ export default theme => ({
         flexGrow: 1,
         display: 'flex',
         alignItems: 'flex-start',
-        [theme.breakpoints.down('md')]: {
-            justifyContent: 'center'
-        }
     },
     form: {
         width: '100%',

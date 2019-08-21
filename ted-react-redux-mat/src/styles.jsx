@@ -1,4 +1,6 @@
-export default theme => ({
+import { makeStyles } from '@material-ui/core/styles';
+
+export default makeStyles(theme => ({
   header: {
     backgroundColor: '#ecf0f1',
     minHeight: '100vh',
@@ -8,5 +10,10 @@ export default theme => ({
     //justifyContent: 'center',
     //fontSize: calc(10px + 2vmin),
     //color: white,
+  },
+  layout: {
+        backgroundColor: theme.palette.background.default,
+        height: '100vh',
+        flexGrow: 1,
   }
-})
+}));

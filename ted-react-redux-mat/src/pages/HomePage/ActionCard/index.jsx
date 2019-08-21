@@ -10,32 +10,35 @@ import useStyles from './styles';
 export default function ActionCard(props) {
     const classes = useStyles();
 
+    const { backgroundColor, title, bodyText } = props;
+
     return (
         <Card className={classes.card}>
-            <CardActionArea>
-                <CardContent>
-                    <Typography className={classes.title} color="textPrimary" gutterBottom>
+            <CardActionArea component={Link} to={props.to} className={classes.notDecorated}>
+                <CardContent style={{ backgroundColor }}>
+                    {/* <Typography className={classes.title} color="textPrimary" gutterBottom>
                         Word of the Day
+                    </Typography> */}
+                    <Typography variant="h5" component="h2" className={classes.text}>
+                        {title}
                     </Typography>
-                    <Typography variant="h5" component="h2">
-                        be
-                        nev
-                        lent
-                    </Typography>
-                    <Typography className={classes.pos} color="textSecondary">
-                        adjective
-                    </Typography>
-                    <Typography variant="body2" component="p">
-                        well meaning and kindly.
-                                 <br />
-                        {'"a benevolent smile"'}
+                    <br />
+                    <br />
+                    <br />
+                    <Typography variant="body1" component="p" className={classes.text}>
+                        {bodyText}
+                        
                     </Typography>
                 </CardContent>
-            </CardActionArea>
-            {/*
-                Footer? 
-                <CardActions /> 
-            */}
+
+                
+                {/* Footer?  */}
+                <CardActions style={{ color: backgroundColor }}>
+                    More ->
+                </CardActions>
+                
+            </CardActionArea> 
+           
         </Card>
     );
 }

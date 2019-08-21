@@ -7,7 +7,7 @@ export default makeStyles(theme => ({
     backgroundColor: theme.palette.background.default,
     display: 'flex',
     flexDirection: 'column',
-    height: '100%',
+    //height: '100vh',
     //paddingLeft: theme.spacing(1),
     //paddingRight: theme.spacing(1)
   },
@@ -15,22 +15,7 @@ export default makeStyles(theme => ({
     width: drawerWidth,
     flexShrink: 0,
   },
-  /*logoWrapper: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '63px',
-    flexShrink: 0
-  },
-  logoLink: {
-    fontSize: 0
-  },
-  logoImage: {
-    cursor: 'pointer'
-  },
-  logoDivider: {
-    marginBottom: theme.spacing(2)
-  },*/
+  
   profile: {
     display: 'flex',
     flexDirection: 'column',
@@ -104,7 +89,7 @@ export default makeStyles(theme => ({
     width: drawerWidth,
   },
   content: {
-    //flexGrow: 1,
+    flexGrow: 1,
     //padding: theme.spacing(3),
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,

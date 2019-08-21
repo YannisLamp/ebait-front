@@ -9,15 +9,12 @@ import { Grid, Paper, Button } from '@material-ui/core';
 import useStyles from './styles';
 
 import Sidebar from '../../sharedComp/Sidebar';
-import UserTable from './UserTable';
+import UserInfo from '../../sharedComp/UserInfo';
 
 export default function AdminPage(props) {
 
-    //componentDidMount() {
-    //    this.props.dispatch(userActions.getAll());
-    //}
-
     const classes = useStyles();
+    const user = props;
 
     return (
             <Sidebar>
@@ -25,7 +22,6 @@ export default function AdminPage(props) {
                     <Grid
                         className={classes.grid}
                         container
-                        //alignItems="center"
                         justify="center"
                     >
                         <Grid
@@ -34,7 +30,7 @@ export default function AdminPage(props) {
                             lg={10}
                         >
                             <Paper>
-                                <UserTable />
+                                <UserInfo user={user} edit={false} />
                             </Paper>
                         </Grid>
                     </Grid>
@@ -44,16 +40,16 @@ export default function AdminPage(props) {
 }
 
 
-/*function mapStateToProps(state) {
+function mapStateToProps(state) {
     const { auth } = state;
     const { user } = auth;
     return {
         user
     };
-}*/
+}
 
-//const connectedHomePage = connect(mapStateToProps)(HomePage);
-//export default connectedHomePage;
+const connectedUserVerification = connect(mapStateToProps)(UserVerification);
+export default connectedUserVerification;
 
 
 

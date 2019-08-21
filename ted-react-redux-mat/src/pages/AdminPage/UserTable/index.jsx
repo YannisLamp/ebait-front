@@ -95,9 +95,10 @@ class UserTable extends Component {
 
 
     render() {
-        //const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+        const rowsPerPage = 10;
+        //const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.users.length - page * rowsPerPage);
+        const emptyRows = rowsPerPage - this.state.users.length;
         const { classes } = this.props;
-        console.log(this.state);
 
         return (
             <div className={classes.root}>
@@ -120,8 +121,6 @@ class UserTable extends Component {
                                 {//stableSort(rows, getSorting(order, orderBy))
                                     //.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     this.state.users.map((row, index) => {
-                                        const labelId = `enhanced-table-checkbox-${index}`;
-                                        console.log(this.state);
                                         return (
                                             <TableRow
                                                 hover
@@ -140,11 +139,11 @@ class UserTable extends Component {
                                             </TableRow>
                                         );
                                     })}
-                                {/* {emptyRows > 0 && (
+                                {emptyRows > 0 && (
                                     <TableRow style={{ height: 49 * emptyRows }}>
-                                        <TableCell colSpan={6} />
+                                        <TableCell colSpan={5} />
                                     </TableRow>
-                                )} */}
+                                )}
                             </TableBody>
                         </Table>
                     </div>

@@ -16,15 +16,14 @@ export default function HomePage(props) {
     const classes = useStyles();
 
     return (
+        <div className={classes.root}>
         <Sidebar>
-            <div className={classes.root}>
+            
                 <Grid
-                    className={classes.grid}
                     container
                     justify="center"
                 >
                     <Grid
-                        className={classes.quoteWrapper}
                         item
                         lg={8}
                     >
@@ -36,19 +35,27 @@ export default function HomePage(props) {
                         >
 
 
-                            <Grid container spacing={3}>
+                            <Grid container spacing={3} style={{marginTop: '55px'}}>
                                 <Grid item xs={6}>
-                                    <ActionCard/>
+                                    <ActionCard title="Browse Auctions" bodyText="explanation paopap" to="/lalaal" backgroundColor="#29aa9f" />
                                 </Grid>
+
                                 <Grid item xs={6}>
-                                    <ActionCard/>
+                                    <ActionCard title="Messages" bodyText="explanation paopap" backgroundColor="#863a81" />
+                                </Grid>
+
+                                <Grid item xs={6}>
+                                    <ActionCard title="Create Auction" bodyText="explanation paopap" backgroundColor="#5fba43" />
 
                                 </Grid>
+                                {/* <Grid item xs={6}>
+                                    <ActionCard title="Messages" bodyText="explanation paopap" backgroundColor="#ea7e3e" />
+                                </Grid> */}
+
+                                
+                                
                                 <Grid item xs={6}>
-                                    <ActionCard/>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <ActionCard/>
+                                    <ActionCard title="Profile" bodyText="explanation paopap" backgroundColor="#e9a127" />
                                 </Grid>
                             </Grid>
 
@@ -56,7 +63,7 @@ export default function HomePage(props) {
                         </Grid>
                     </Grid>
                 </Grid>
-            </div>
         </Sidebar>
+        </div>
     );
 }
