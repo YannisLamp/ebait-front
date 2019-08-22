@@ -6,7 +6,7 @@ export const usersApi = {
 };
 
 function getUsers() {    
-        return axios.get('/users')
+        return axios.get('/admin/allUsers')
             .then(response => {
                     // If the login process was successful, save authorization JWT
                     //const authorizationJwt = response.headers.authorization;
@@ -48,6 +48,20 @@ function getUserInfo(userId) {
 
 // GIA USERS META
 function editUserInfo(userId) {
+    return axios.put('/users/' + userId, {data:{}})
+        .then(response => {
+            console.log('response');
+            console.log(response);
+            return response.data;
+        }
+        //error => {
+        //    console.log('response error');
+        //    console.log(error);
+        //}
+        );
+}
+
+function changeUserPassword(userId) {
     return axios.put('/users/' + userId, {data:{}})
         .then(response => {
             console.log('response');

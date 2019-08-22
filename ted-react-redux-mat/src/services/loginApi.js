@@ -10,7 +10,8 @@ import { usersApi } from './usersApi';
 
 export const loginApi = {
     loginThunk,
-    logoutThunk
+    logoutThunk,
+    //loginAsGuest,
 };
 
 function loginThunk(username, password) {
@@ -38,8 +39,14 @@ function loginThunk(username, password) {
                             dispatch(userActions.loginSuccess(user))
                             // Also store retrieved information locally so that they persist
                             localStorage.setItem('user', JSON.stringify(user));
+                            
                             // And redirect
-                            history.push('/');
+                            if (user.userRole === 'ADMIN') {
+                                history.push('/admin');
+                            }
+                            else {
+                                history.push('/');
+                            }
                         }
 
                         );
@@ -65,8 +72,8 @@ function loginThunk(username, password) {
 
 
 function logoutThunk() {
+    // Clean up local storage
     localStorage.removeItem('user');
-    //delete axios.defaults.headers.common["Authorization"];
     localStorage.removeItem('jwt');
     return dispatch => dispatch(userActions.logoutAction());
 }

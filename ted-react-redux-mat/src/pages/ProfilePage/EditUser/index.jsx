@@ -1,15 +1,32 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { usersApi } from '../../services';
+import { usersApi } from '../../../services';
+
+import { connect } from 'react-redux';
+
 
 // Material
 import { Grid, Button, IconButton, CircularProgress, TextField, Typography, Avatar } from '@material-ui/core';
 
 // For importing my custom styles  
 import { withStyles } from '@material-ui/core';
-import styles from './styles';
 
-class UserInfo extends Component {
+
+const styles = theme => ({
+    container: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        marginTop: theme.spacing(4),
+    },
+    textField: {
+        marginLeft: theme.spacing(1),
+        marginRight: theme.spacing(1),
+        marginBottom: theme.spacing(2),
+    },
+});
+
+
+class EditUser extends Component {
 
     constructor(props) {
         super(props);
@@ -102,9 +119,6 @@ class UserInfo extends Component {
                 type="text"
                 variant="outlined"
                 onChange={this.handleChange}
-                InputProps={{
-                    readOnly: !edit,
-                }}
             />
             <TextField
                 className={classes.textField}
@@ -114,9 +128,6 @@ class UserInfo extends Component {
                 type="text"
                 variant="outlined"
                 onChange={this.handleChange}
-                InputProps={{
-                    readOnly: !edit,
-                }}
             />
             <TextField
                 className={classes.textField}
@@ -126,9 +137,6 @@ class UserInfo extends Component {
                 type="text"
                 variant="outlined"
                 onChange={this.handleChange}
-                InputProps={{
-                    readOnly: !edit,
-                }}
             />
             <TextField
                 className={classes.textField}
@@ -138,44 +146,12 @@ class UserInfo extends Component {
                 type="number"
                 variant="outlined"
                 onChange={this.handleChange}
-                InputProps={{
-                    readOnly: !edit,
-                }}
             />
 
-
                         </Grid>
 
 
-                        <Grid item xs={4}>
-                            <TextField
-                                className={classes.textField}
-                                    label="Username"
-                                    value={username}
-                                    name="username"
-                                    type="text"
-                                    variant="outlined"
-                                    onChange={this.handleChange}
-                                    InputProps={{
-                                        readOnly: !edit,
-                                    }}
-                                />
 
-                             {/* <Grid item xs={4}>
-                            <TextField
-                                className={classes.textField}
-                                label="Password"
-                                name="password"
-                                type="password"
-                                variant="outlined"
-                                onChange={this.handleChange}
-                                InputProps={{
-                                    readOnly: !edit,
-                                }}
-                            />
-                            </Grid> */}
-
-                        </Grid>
 
 
                         <Grid item xs={4}>
@@ -187,9 +163,6 @@ class UserInfo extends Component {
                 type="text"
                 variant="outlined"
                 onChange={this.handleChange}
-                InputProps={{
-                    readOnly: !edit,
-                }}
             />
             <TextField
                 className={classes.textField}
@@ -199,9 +172,6 @@ class UserInfo extends Component {
                 type="text"
                 variant="outlined"
                 onChange={this.handleChange}
-                InputProps={{
-                    readOnly: !edit,
-                }}
             />
             <TextField
                 className={classes.textField}
@@ -211,9 +181,6 @@ class UserInfo extends Component {
                 type="text"
                 variant="outlined"
                 onChange={this.handleChange}
-                InputProps={{
-                    readOnly: !edit,
-                }}
             />
 
 
@@ -233,6 +200,14 @@ class UserInfo extends Component {
 }
 
 
+function mapStateToProps(state) {
+    const { userStore } = state;
+    const { user } = userStore;
+    return {
+        user
+    };
+}
 
-const styledUserInfo = withStyles(styles)(UserInfo);
-export default styledUserInfo;
+const connectedEditUser = connect(mapStateToProps)(EditUser);
+const styledEditUser = withStyles(styles)(connectedEditUser);
+export default styledEditUser;

@@ -2,15 +2,54 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 // Material
-import { Grid, Paper, Button, Typography, 
-    Table, TableBody, TableRow, TableCell, Checkbox, TablePagination } from '@material-ui/core';
+import {
+    Grid, Paper, Button, Typography,
+    Table, TableBody, TableRow, TableCell, Checkbox, TablePagination, Switch
+} from '@material-ui/core';
+
+import { CheckBox as CheckBoxIcon, CheckBoxOutlineBlank as CheckBoxBlankIcon } from '@material-ui/icons';
 
 import UserTableHead from './UserTableHead';
 
 import { withStyles } from '@material-ui/core';
-import styles from './styles';
 
 import { usersApi } from '../../../services'
+
+
+const styles = theme => ({
+    root: {
+        width: '100%',
+    },
+    paper: {
+        width: '100%',
+        paddingTop: theme.spacing(3),
+        paddingLeft: theme.spacing(3),
+        paddingRight: theme.spacing(3),
+        marginBottom: theme.spacing(2),
+        minHeight: '75vh',
+    },
+    table: {
+        minWidth: 750,
+    },
+    tableWrapper: {
+        marginTop: theme.spacing(4),
+        overflowX: 'auto',
+    },
+    notDecorated: {
+        textDecoration: 'none',
+    },
+    visuallyHidden: {
+        border: 0,
+        clip: 'rect(0 0 0 0)',
+        height: 1,
+        margin: -1,
+        overflow: 'hidden',
+        padding: 0,
+        position: 'absolute',
+        top: 20,
+        width: 1,
+    },
+});
 
 
 class UserTable extends Component {
@@ -33,11 +72,11 @@ class UserTable extends Component {
     componentDidMount() {
         usersApi.getUsers()
             .then(data => {
-                this.setState((prevState, props) => { 
-                    return { 
+                this.setState((prevState, props) => {
+                    return {
                         users: data,
-                        isLoading: false 
-                    } 
+                        isLoading: false
+                    }
                 })
             });
     }
@@ -56,11 +95,11 @@ class UserTable extends Component {
     handleRequestSort(event, property) {
         const { order, orderBy } = this.state;
         const isDesc = orderBy === property && order === 'desc';
-        this.setState((prevState, props) => { 
-            return { 
+        this.setState((prevState, props) => {
+            return {
                 order: isDesc ? 'asc' : 'desc',
                 orderBy: property
-            } 
+            }
         });
     }
 
@@ -95,7 +134,7 @@ class UserTable extends Component {
 
 
     render() {
-        const rowsPerPage = 10;
+        const rowsPerPage = 20;
         //const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.users.length - page * rowsPerPage);
         const emptyRows = rowsPerPage - this.state.users.length;
         const { classes } = this.props;
@@ -115,7 +154,7 @@ class UserTable extends Component {
                                 headRows={this.headRows}
                                 order={this.state.order}
                                 orderBy={this.state.orderBy}
-                                //onRequestSort={handleRequestSort}
+                            //onRequestSort={handleRequestSort}
                             />
                             <TableBody>
                                 {//stableSort(rows, getSorting(order, orderBy))
@@ -130,12 +169,12 @@ class UserTable extends Component {
                                                 component={Link} to={"/admin/" + row.username}
                                                 className={classes.notDecorated}
                                             >
-                                                
-                                                <TableCell align="left" padding="none">{row.username}</TableCell>
+
+                                                <TableCell align="left">{row.username}</TableCell>
                                                 <TableCell align="right">{row.firstName}</TableCell>
                                                 <TableCell align="right">{row.lastName}</TableCell>
                                                 <TableCell align="right">{row.email}</TableCell>
-                                                <TableCell align="right">{row.email}</TableCell>
+                                                <TableCell align="right">{row.verified ? <CheckBoxIcon /> : <CheckBoxBlankIcon />}</TableCell>
                                             </TableRow>
                                         );
                                     })}
@@ -159,9 +198,26 @@ class UserTable extends Component {
                         nextIconButtonProps={{
                             'aria-label': 'next page',
                         }}
-                        //onChangePage={this.handleChangePage}
-                        // onChangeRowsPerPage={handleChangeRowsPerPage}
+                    //onChangePage={this.handleChangePage}
+                    // onChangeRowsPerPage={handleChangeRowsPerPage}
+
+                    
                     />
+
+                    <Typography component="div">
+                        <Grid component="label" container alignItems="center" spacing={1}>
+                            <Grid item>Only non verified</Grid>
+                            <Grid item>
+                                <Switch
+                                    //checked={state.checkedC}
+                                    //onChange={handleChange('checkedC')}
+                                    value="checkedC"
+                                />
+                            </Grid>
+                            <Grid item>All Users</Grid>
+                        </Grid>
+                    </Typography>
+
                 </Paper>
             </div>
         );

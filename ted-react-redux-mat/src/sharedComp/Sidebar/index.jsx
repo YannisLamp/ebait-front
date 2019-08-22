@@ -9,22 +9,9 @@ import {
     ListSubheader, Typography, IconButton
 } from '@material-ui/core';
 
-// Material icons
-import {
-    DashboardOutlined as DashboardIcon,
-    PeopleOutlined as PeopleIcon,
-    ShoppingBasketOutlined as ShoppingBasketIcon,
-    LockOpenOutlined as LockOpenIcon,
-    TextFields as TextFieldsIcon,
-    ImageOutlined as ImageIcon,
-    InfoOutlined as InfoIcon,
-    AccountBoxOutlined as AccountBoxIcon,
-    SettingsOutlined as SettingsIcon,
-    AccountCircle
-} from '@material-ui/icons';
-
 
 import UserList from './UserList';
+import AdminList from './AdminList';
 
 // Component styles
 import useStyles from './styles';
@@ -82,35 +69,12 @@ function Sidebar(props) {
                     </div>
                     <Divider className={classes.profileDivider} />
 
-
-                    {/*<UserList />*/}
+                        { user.userRole === 'USER' ? <UserList /> : <AdminList /> }
+                    
 
 
                     <Divider className={classes.listDivider} />
-                    <List
-                        component="div"
-                        disablePadding
-                        subheader={
-                            <ListSubheader className={classes.listSubheader}>
-                                Support
-                            </ListSubheader>
-                        }
-                    >
-                        {/* <ListItem
-                            className={classes.listItem}
-                            component="a"
-                            href="https://devias.io/contact-us"
-                            target="_blank"
-                        >
-                            <ListItemIcon className={classes.listItemIcon}>
-                                <InfoIcon />
-                            </ListItemIcon>
-                            <ListItemText
-                                classes={{ primary: classes.listItemText }}
-                                primary="Customer support"
-                            />
-                        </ListItem> */}
-                    </List>
+                    
 
             </Drawer>
             

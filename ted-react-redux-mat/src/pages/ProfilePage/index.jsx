@@ -1,20 +1,33 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
 
 // Material
 import { Grid, Paper, Button } from '@material-ui/core';
 
 // For importing my custom styles  
-import useStyles from './styles';
+import { makeStyles } from '@material-ui/core/styles';
+import { pageStyles } from '../pageStyles';
 
 import Sidebar from '../../sharedComp/Sidebar';
-import UserInfo from '../../sharedComp/UserInfo';
+import EditUser from './EditUser';
+import ChangePassword from './ChangePassword';
 
-function ProfilePage(props) {
+
+const useStyles = makeStyles(theme => ({
+    ...pageStyles(theme),
+    paper: {
+        width: '100%',
+        paddingTop: theme.spacing(3),
+        paddingLeft: theme.spacing(3),
+        paddingRight: theme.spacing(3),
+        paddingBottom: theme.spacing(2),
+        marginBottom: theme.spacing(2),
+    },
+}));
+
+export default function ProfilePage(props) {
 
     const classes = useStyles();
-    const { user } = props;
 
     return (
             <Sidebar>
@@ -24,32 +37,40 @@ function ProfilePage(props) {
                         container
                         justify="center"
                     >
-                        <Grid
-                            className={classes.pageWrapper}
-                            item
-                            lg={10}
-                        >
-                            <Paper className={classes.paper}>
-                                <UserInfo user={user} edit={false} />
-                            </Paper>
-                        </Grid>
+
+
+                            <Grid
+                                className={classes.pageWrapper}
+                                item
+                                lg={7}
+                            >
+                                <Paper className={classes.paper}>
+                                    <EditUser />
+                                </Paper>
+                            </Grid>
+
+                            <Grid
+                                className={classes.pageWrapper}
+                                item
+                                lg={1}
+                            />
+
+                            <Grid
+                                className={classes.pageWrapper}
+                                item
+                                lg={2}
+                            >
+                                <Paper className={classes.paper}>
+                                    <ChangePassword />
+                                </Paper>
+                            </Grid>
+
+
                     </Grid>
                 </div>
             </Sidebar>
     );
 }
-
-
-function mapStateToProps(state) {
-    const { userStore } = state;
-    const { user } = userStore;
-    return {
-        user
-    };
-}
-
-const connectedProfilePage = connect(mapStateToProps)(ProfilePage);
-export default connectedProfilePage;
 
 
 

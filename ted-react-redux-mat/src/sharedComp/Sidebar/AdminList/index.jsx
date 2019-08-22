@@ -100,6 +100,23 @@ export default function UserList(props) {
                 activeClassName={classes.activeListItem}
                 className={classes.listItem}
                 component={NavLink}
+                to="/admin"
+            >
+                <ListItemIcon className={classes.listItemIcon}>
+                    <PeopleIcon />
+                </ListItemIcon>
+                <ListItemText
+                    classes={{ primary: classes.listItemText }}
+                    primary="Verify Users"
+                />
+            </ListItem>
+
+            <Divider className={classes.listDivider} />
+
+            <ListItem
+                activeClassName={classes.activeListItem}
+                className={classes.listItem}
+                component={NavLink}
                 to="/profile"
             >
                 <ListItemIcon className={classes.listItemIcon}>
@@ -110,7 +127,6 @@ export default function UserList(props) {
                     primary="Profile"
                 />
             </ListItem>
-
 
             <ListItem
                 activeClassName={classes.activeListItem}
@@ -128,8 +144,6 @@ export default function UserList(props) {
             </ListItem>
             
             
-            
-
             
             
         </List>
