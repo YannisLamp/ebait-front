@@ -19,24 +19,23 @@ const styles = theme => ({
         textAlign: 'center'
     },
     contentBody: {
-        paddingTop: theme.spacing(14),
+        paddingTop: theme.spacing(4),
         flexGrow: 1,
         display: 'flex',
         alignItems: 'center',
-        [theme.breakpoints.down('md')]: {
-            justifyContent: 'center'
-        },
-    },
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justify: 'center',
-        marginTop: theme.spacing(4),
     },
     textField: {
+        marginTop: theme.spacing(2),
         marginLeft: theme.spacing(1),
         marginRight: theme.spacing(1),
-        marginBottom: theme.spacing(2),
+        width: '80%'
+
+    },
+    progress: {
+        display: 'block',
+        marginTop: theme.spacing(2),
+        marginLeft: 'auto',
+        marginRight: 'auto'
     },
 });
 
@@ -47,10 +46,11 @@ class ChangePassword extends Component {
         super(props);
 
         // Get user info and copy it to state
-        this.state = { 
+        this.state = {
             oldPassword: '',
             password: '',
-            confirmPassword: ''
+            confirmPassword: '',
+            isLoading: false,
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -67,7 +67,7 @@ class ChangePassword extends Component {
 
         this.setState({ loading: true });
         const { username, firstName, lastName, email, phoneNumber,
-                country, afm } = this.state;
+            country, afm } = this.state;
         //const { login } = this.props;
         //const { dispatch } = this.props;
 
@@ -80,16 +80,15 @@ class ChangePassword extends Component {
 
     render() {
         const { oldPassword, password, confirmPassword } = this.state;
-        
-        
-        const { loading } = this.state;
+
+
+        const { isLoading } = this.state;
         const submitted = false;
 
         const { classes } = this.props;
 
-        
-        return (
 
+        return (
             <>
                 <Typography
                     className={classes.title}
@@ -97,41 +96,63 @@ class ChangePassword extends Component {
                 >
                     Change Password
                 </Typography>
-            <form className={classes.container}>
-                
-                        
-                        <TextField
-                className={classes.textField}
-                label="Old Password"
-                name="oldPassword"
-                value={oldPassword}
-                type="password"
-                variant="outlined"
-                onChange={this.handleChange}
-            />
-            <TextField
-                className={classes.textField}
-                label="Password"
-                name="password"
-                value={password}
-                type="password"
-                variant="outlined"
-                onChange={this.handleChange}
-            />
-            <TextField
-                className={classes.textField}
-                label="Confirm Password"
-                name="confirmPassword"
-                value={confirmPassword}
-                type="password"
-                variant="outlined"
-                onChange={this.handleChange}
-            />
+                <div className={classes.content}>
+                    <div className={classes.contentBody}>
+                        <div className={classes.form}>
+                            {/* <form className={classes.container}> */}
 
-            </form>
+
+                            <TextField
+                                className={classes.textField}
+                                label="Old Password"
+                                name="oldPassword"
+                                value={oldPassword}
+                                type="password"
+                                variant="outlined"
+                                onChange={this.handleChange}
+                            />
+                            <TextField
+                                className={classes.textField}
+                                label="Password"
+                                name="password"
+                                value={password}
+                                type="password"
+                                variant="outlined"
+                                onChange={this.handleChange}
+                            />
+                            <TextField
+                                className={classes.textField}
+                                label="Confirm Password"
+                                name="confirmPassword"
+                                value={confirmPassword}
+                                type="password"
+                                variant="outlined"
+                                onChange={this.handleChange}
+                            />
+                            {isLoading ?
+                                (
+                                    <CircularProgress className={classes.progress} />
+                                ) : (
+                                    <Button
+                                        className={classes.textField}
+                                        color="primary"
+                                        type="submit"
+                                        onClick={this.handleSubmit}
+                                        size="large"
+                                        variant="contained"
+                                    >
+                                        Change Password
+                                    </Button>
+                                )
+                            }
+
+                        </div>
+
+                    </div>
+                </div>
             </>
         );
-        
+
     }
 }
 

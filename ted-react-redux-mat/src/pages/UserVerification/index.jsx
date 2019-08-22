@@ -6,10 +6,17 @@ import { connect } from 'react-redux';
 import { Grid, Paper, Button } from '@material-ui/core';
 
 // For importing my custom styles  
-import useStyles from './styles';
+import { makeStyles } from '@material-ui/core/styles';
+import { pageStyles } from '../pageStyles';
+
 
 import Sidebar from '../../sharedComp/Sidebar';
 import UserInfo from '../../sharedComp/UserInfo';
+
+
+const useStyles = makeStyles(theme => ({
+    ...pageStyles(theme),
+}));
 
 export default function AdminPage(props) {
 

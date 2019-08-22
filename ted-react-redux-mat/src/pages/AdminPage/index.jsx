@@ -16,6 +16,14 @@ import UserTable from './UserTable';
 
 const useStyles = makeStyles(theme => ({
     ...pageStyles(theme),
+    paper: {
+        width: '100%',
+        paddingTop: theme.spacing(3),
+        paddingLeft: theme.spacing(3),
+        paddingRight: theme.spacing(3),
+        marginBottom: theme.spacing(2),
+        minHeight: '75vh',
+    },
 }));
 
 
@@ -41,7 +49,7 @@ export default function AdminPage(props) {
                             item
                             lg={10}
                         >
-                            <Paper>
+                            <Paper className={classes.paper}>
                                 <UserTable />
                             </Paper>
                         </Grid>

@@ -141,7 +141,6 @@ class UserTable extends Component {
 
         return (
             <div className={classes.root}>
-                <Paper className={classes.paper}>
                     <Typography variant="h3">
                         Registered Users
                     </Typography>
@@ -217,8 +216,6 @@ class UserTable extends Component {
                             <Grid item>All Users</Grid>
                         </Grid>
                     </Typography>
-
-                </Paper>
             </div>
         );
     }

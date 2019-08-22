@@ -68,7 +68,7 @@ export default function UserList(props) {
                 activeClassName={classes.activeListItem}
                 className={classes.listItem}
                 component={NavLink}
-                to="/create_auctions"
+                to="/create-auction"
             >
                 <ListItemIcon className={classes.listItemIcon}>
                     <LibraryAddOutlinedIcon />

@@ -68,7 +68,7 @@ export default function UserList(props) {
                 activeClassName={classes.activeListItem}
                 className={classes.listItem}
                 component={NavLink}
-                to="/create_auctions"
+                to="/create-auction"
             >
                 <ListItemIcon className={classes.listItemIcon}>
                     <LibraryAddOutlinedIcon />
@@ -135,53 +135,3 @@ export default function UserList(props) {
         </List>
     );
 }
-
-
-
-            /* <ListItem
-                activeClassName={classes.activeListItem}
-                className={classes.listItem}
-                component={NavLink}
-                to="/icons"
-            >
-                <ListItemIcon className={classes.listItemIcon}>
-                    <ImageIcon />
-                </ListItemIcon>
-                <ListItemText
-                    classes={{ primary: classes.listItemText }}
-                    primary="Icons and Images"
-                />
-            </ListItem> */
-
-
-
-
-            /* <ListItem
-                activeClassName={classes.activeListItem}
-                className={classes.listItem}
-                component={NavLink}
-                to="/settings"
-            >
-                <ListItemIcon className={classes.listItemIcon}>
-                    <SettingsIcon />
-                </ListItemIcon>
-                <ListItemText
-                    classes={{ primary: classes.listItemText }}
-                    primary="Settings"
-                />
-            </ListItem> */
-
-            // <ListItem
-            //     activeClassName={classes.activeListItem}
-            //     className={classes.listItem}
-            //     component={NavLink}
-            //     to="/typography"
-            // >
-            //     <ListItemIcon className={classes.listItemIcon}>
-            //         <TextFieldsIcon />
-            //     </ListItemIcon>
-            //     <ListItemText
-            //         classes={{ primary: classes.listItemText }}
-            //         primary="Typography"
-            //     />
-            // </ListItem>

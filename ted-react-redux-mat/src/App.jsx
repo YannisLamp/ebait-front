@@ -12,6 +12,7 @@ import HomePage from './pages/HomePage';
 import NotFound from './pages/NotFound';
 import AdminPage from './pages/AdminPage';
 import ProfilePage from './pages/ProfilePage';
+import CreateAuction from './pages/CreateAuction';
 // import NotYetAccepted from './pages/NotYetAccepted';
 
 import { AuthAndVerRoute } from './routes';
@@ -63,6 +64,8 @@ export default function App(props) {
                 <Route path="/register" component={Register} />
 
                 <Route path="/notfound" component={NotFound} />
+
+                <Route path="/create-auction" component={CreateAuction} />
 
                 {/* <Route path="/notyetaccepted" component={NotYetAccepted} /> */}
 
