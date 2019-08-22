@@ -20,14 +20,6 @@ const styles = theme => ({
     root: {
         width: '100%',
     },
-    paper: {
-        width: '100%',
-        paddingTop: theme.spacing(3),
-        paddingLeft: theme.spacing(3),
-        paddingRight: theme.spacing(3),
-        marginBottom: theme.spacing(2),
-        minHeight: '75vh',
-    },
     table: {
         minWidth: 750,
     },
