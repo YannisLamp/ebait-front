@@ -51,7 +51,7 @@ export default function ProgressButtons(props) {
         if (step === 3) {
             if (isLoading) {
                 return (
-                    <CircularProgress className={classes.progress} />
+                    <CircularProgress />
                 );
             }
             else {

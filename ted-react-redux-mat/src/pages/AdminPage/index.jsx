@@ -1,18 +1,19 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 // Material
 import { Grid, Paper } from '@material-ui/core';
 
 // For importing my custom styles  
-import { makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core';
 import { pageStyles } from '../pageStyles';
 
 
 import Sidebar from '../../sharedComp/Sidebar';
 import UserTable from './UserTable';
+import UserVerification from './UserVerification';
 
 
-const useStyles = makeStyles(theme => ({
+const styles = theme => ({
     ...pageStyles(theme),
     paper: {
         width: '100%',
@@ -22,14 +23,34 @@ const useStyles = makeStyles(theme => ({
         marginBottom: theme.spacing(2),
         minHeight: '75vh',
     },
-}));
+});
 
 
-export default function AdminPage(props) {
+class AdminPage extends Component {
 
-    const classes = useStyles();
+    constructor(props) {
+        super(props);
+        this.state = {
+            userToVerify: null
+        };
 
-    return (
+        this.changeUser = this.changeUser.bind(this);
+    }
+
+
+
+    changeUser(user) {
+        console.log('changing user');
+        console.log(user);
+        this.setState((prevState, props) => { return { userToVerify: user } });
+    }
+
+
+    render() {
+        const { userToVerify } = this.state;
+        const { classes } = this.props;
+
+        return (
             <Sidebar>
                 <div className={classes.root}>
                     <Grid
@@ -41,14 +62,38 @@ export default function AdminPage(props) {
                         <Grid
                             className={classes.pageWrapper}
                             item
-                            lg={10}
+                            lg={8}
                         >
                             <Paper className={classes.paper}>
-                                <UserTable />
+                                <UserTable changeUser={this.changeUser} />
                             </Paper>
                         </Grid>
+
+                        <Grid
+                            className={classes.pageWrapper}
+                            item
+                            lg={1}
+                        >
+                        </Grid>
+
+                        <Grid
+                            className={classes.pageWrapper}
+                            item
+                            lg={2}
+                        >
+                            <Paper className={classes.paper}>
+                                <UserVerification user={userToVerify} />
+                            </Paper>
+                        </Grid>
+
                     </Grid>
                 </div>
             </Sidebar>
-    );
+        );
+    }
+
+
 }
+
+const styledAdminPage = withStyles(styles)(AdminPage);
+export default styledAdminPage;

@@ -64,7 +64,7 @@ function Sidebar(props) {
                             className={classes.bioText}
                             variant="caption"
                         >
-                            {user.isAdmin ? 'Administrator' : 'User'}
+                            {user.userRole === 'USER' ? 'User' : 'Administrator'}
                         </Typography>
                     </div>
                     <Divider className={classes.profileDivider} />

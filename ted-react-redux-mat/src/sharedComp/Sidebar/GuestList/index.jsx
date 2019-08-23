@@ -24,6 +24,12 @@ import {
 import useStyles from '../styles';
 
 
+// Fix for NavLink forward Ref bug as seen below
+// https://github.com/mui-org/material-ui/issues/15903 
+const ForwardNavLink = React.forwardRef((props, ref) => (
+    <NavLink {...props} innerRef={ref} />
+));
+
 export default function UserList(props) {
     const classes = useStyles();
 
@@ -35,7 +41,7 @@ export default function UserList(props) {
             <ListItem
                 activeClassName={classes.activeListItem}
                 className={classes.listItem}
-                component={NavLink}
+                component={ForwardNavLink}
                 exact
                 to="/"
             >
@@ -51,7 +57,7 @@ export default function UserList(props) {
             <ListItem
                 activeClassName={classes.activeListItem}
                 className={classes.listItem}
-                component={NavLink}
+                component={ForwardNavLink}
                 to="/auctions"
             >
                 <ListItemIcon className={classes.listItemIcon}>
@@ -68,7 +74,7 @@ export default function UserList(props) {
             <ListItem
                 activeClassName={classes.activeListItem}
                 className={classes.listItem}
-                component={NavLink}
+                component={ForwardNavLink}
                 to="/login"
             >
                 <ListItemIcon className={classes.listItemIcon}>

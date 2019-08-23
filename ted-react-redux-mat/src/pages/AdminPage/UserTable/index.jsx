@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 // Material
 import {
-    Grid, Paper, Button, Typography,
+    Grid, Paper, Button, Typography, CircularProgress,
     Table, TableBody, TableRow, TableCell, Checkbox, TablePagination, Switch
 } from '@material-ui/core';
 
@@ -51,7 +51,7 @@ class UserTable extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLoading: null,
+            isLoading: true,
             order: 'asc',
             orderBy: 'username',
             pageSize: 10,
@@ -98,7 +98,7 @@ class UserTable extends Component {
         { id: 'firstName', right: true, disablePadding: false, label: 'First Name' },
         { id: 'lastName', right: true, disablePadding: false, label: 'Last Name' },
         { id: 'country', right: true, disablePadding: false, label: 'Country' },
-        { id: 'address', right: true, disablePadding: false, label: 'Address' },
+        // { id: 'address', right: true, disablePadding: false, label: 'Address' },
         { id: 'email', right: true, disablePadding: false, label: 'Email' },
         { id: 'verified', right: true, disablePadding: false, label: 'Verified' },
     ];
@@ -120,26 +120,6 @@ class UserTable extends Component {
             }
         });
     }
-
-    // handleClick(event, name) {
-    //     const selectedIndex = selected.indexOf(name);
-    //     let newSelected = [];
-
-    //     if (selectedIndex === -1) {
-    //         newSelected = newSelected.concat(selected, name);
-    //     } else if (selectedIndex === 0) {
-    //         newSelected = newSelected.concat(selected.slice(1));
-    //     } else if (selectedIndex === selected.length - 1) {
-    //         newSelected = newSelected.concat(selected.slice(0, -1));
-    //     } else if (selectedIndex > 0) {
-    //         newSelected = newSelected.concat(
-    //             selected.slice(0, selectedIndex),
-    //             selected.slice(selectedIndex + 1),
-    //         );
-    //     }
-
-    //     setSelected(newSelected);
-    // }
 
     handleChangePage(event, newPage) {
         this.setState((prevState, props) => {
@@ -168,7 +148,7 @@ class UserTable extends Component {
 
 
     render() {
-        const { pageSize } = this.state;
+        const { pageSize, isLoading, currPage, totalUsers } = this.state;
         //const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.users.length - page * rowsPerPage);
         let emptyRows = pageSize;
         if (this.state.users) {
@@ -179,84 +159,91 @@ class UserTable extends Component {
 
         return (
             <div className={classes.root}>
-                    <Typography variant="h3">
-                        Registered Users
-                    </Typography>
-                    <div className={classes.tableWrapper}>
-                        <Table
-                            className={classes.table}
-                            aria-labelledby="Users"
-                        >
-                            <UserTableHead
-                                headRows={this.headRows}
-                                order={this.state.order}
-                                orderBy={this.state.orderBy}
-                                onRequestSort={this.handleRequestSort}
-                            />
-                            <TableBody>
-                                {//stableSort(rows, getSorting(order, orderBy))
-                                    //.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                    this.state.users.map((row, index) => {
-                                        return (
-                                            <TableRow
-                                                hover
-                                                //onClick={event => handleClick(event, row.name)}
-                                                tabIndex={-1}
-                                                key={row.username}
-                                                component={Link} to={"/admin/" + row.username}
-                                                className={classes.notDecorated}
-                                            >
-
-                                                <TableCell align="left">{row.username}</TableCell>
-                                                <TableCell align="right">{row.firstName}</TableCell>
-                                                <TableCell align="right">{row.lastName}</TableCell>
-                                                <TableCell align="right">{row.country}</TableCell>
-                                                <TableCell align="right">{row.address}</TableCell>
-                                                <TableCell align="right">{row.email}</TableCell>
-                                                <TableCell align="right">{row.verified ? <CheckBoxIcon /> : <CheckBoxBlankIcon />}</TableCell>
-                                            </TableRow>
-                                        );
-                                    })}
-                                {emptyRows > 0 && (
-                                    <TableRow style={{ height: 49 * emptyRows }}>
-                                        <TableCell colSpan={5} />
-                                    </TableRow>
-                                )}
-                            </TableBody>
-                        </Table>
-                    </div>
-                    <TablePagination
-                        className={classes.pagination}
-                        rowsPerPageOptions={[5,10,15]}
-                        component="div"
-                        count={this.state.totalUsers}
-                        rowsPerPage={this.state.pageSize}
-                        page={this.state.currPage}
-                        backIconButtonProps={{
-                            'aria-label': 'previous page',
-                        }}
-                        nextIconButtonProps={{
-                            'aria-label': 'next page',
-                        }}
-                        onChangePage={this.handleChangePage}
-                        onChangeRowsPerPage={this.handleChangeRowsPerPage}
-
-                    
-                    />
-
-                    <Typography component="div">
-                        <Grid component="label" container alignItems="center" spacing={1}>
-                            <Grid item>Only non verified</Grid>
-                            <Grid item>
-                                <Switch
-                                    //checked={state.checkedC}
-                                    //onChange={handleChange('checkedC')}
-                                    value="checkedC"
+                <Typography variant="h3">
+                    Registered Users
+                </Typography>
+                <div className={classes.tableWrapper}>
+                    {isLoading ? (
+                        // <CircularProgress className={classes.progress} />
+                        ''
+                    ) : (
+                        <>
+                            <Table
+                                className={classes.table}
+                                aria-labelledby="Users"
+                            >
+                                <UserTableHead
+                                    headRows={this.headRows}
+                                    order={this.state.order}
+                                    orderBy={this.state.orderBy}
+                                    onRequestSort={this.handleRequestSort}
                                 />
-                            </Grid>
-                            <Grid item>All Users</Grid>
+                                <TableBody>
+                                    {
+                                        this.state.users.map((row, index) => {
+                                            return (
+                                                <TableRow
+                                                    hover
+                                                    onClick={e => this.props.changeUser(row)}
+                                                    tabIndex={-1}
+                                                    key={row.username}
+                                                    //component={Button} to={"/admin/" + row.username}
+                                                    className={classes.notDecorated}
+                                                >
+
+                                                    <TableCell align="left">{row.username}</TableCell>
+                                                    <TableCell align="right">{row.firstName}</TableCell>
+                                                    <TableCell align="right">{row.lastName}</TableCell>
+                                                    {/* <TableCell align="right">{row.country}</TableCell> */}
+                                                    <TableCell align="right">{row.address}</TableCell>
+                                                    <TableCell align="right">{row.email}</TableCell>
+                                                    <TableCell align="right">{row.verified ? <CheckBoxIcon /> : <CheckBoxBlankIcon />}</TableCell>
+                                                </TableRow>
+                                            );
+                                        })}
+                                    {emptyRows > 0 && (
+                                        <TableRow style={{ height: 49 * emptyRows }}>
+                                            <TableCell colSpan={5} />
+                                        </TableRow>
+                                    )}
+                                </TableBody>
+                            </Table>
+
+                            <TablePagination
+                                className={classes.pagination}
+                                rowsPerPageOptions={[5, 10, 15]}
+                                component="div"
+                                count={totalUsers}
+                                rowsPerPage={pageSize}
+                                page={currPage}
+                                backIconButtonProps={{
+                                    'aria-label': 'previous page',
+                                }}
+                                nextIconButtonProps={{
+                                    'aria-label': 'next page',
+                                }}
+                                onChangePage={this.handleChangePage}
+                                onChangeRowsPerPage={this.handleChangeRowsPerPage}
+
+                            />
+                            </>
+                    )
+                    }
+                </div>
+
+                {/* <Typography component="div">
+                    <Grid component="label" container alignItems="center" spacing={1}>
+                        <Grid item>Only non verified</Grid>
+                        <Grid item>
+                            <Switch
+                                //checked={state.checkedC}
+                                //onChange={handleChange('checkedC')}
+                                value="checkedC"
+                            />
                         </Grid>
-                    </Typography>
+                        <Grid item>All Users</Grid>
+                    </Grid>
+                </Typography> */}
             </div>
         );
     }

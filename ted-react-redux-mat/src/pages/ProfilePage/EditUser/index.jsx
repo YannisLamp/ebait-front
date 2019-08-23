@@ -29,7 +29,7 @@ const styles = theme => ({
         marginTop: theme.spacing(2),
         marginLeft: theme.spacing(2),
         marginRight: theme.spacing(2),
-        //width: '80%'
+        width: '20%'
 
     },
     progress: {
@@ -37,6 +37,11 @@ const styles = theme => ({
         marginTop: theme.spacing(2),
         marginLeft: 'auto',
         marginRight: 'auto'
+    },
+    sugestion: {
+        color: theme.palette.text.primary,
+        marginTop: theme.spacing(2),
+        textAlign: 'left'
     },
 });
 
@@ -114,6 +119,12 @@ class EditUser extends Component {
                     variant="h3"
                 >
                     User Profile
+                </Typography>
+                <Typography
+                    className={classes.sugestion}
+                    variant="body1"
+                >
+                    with your username
                 </Typography>
                 {/* <form className={classes.form}> */}
                 <div className={classes.content}>
