@@ -49,8 +49,7 @@ export default function ProgressButtons(props) {
 
     function returnNextButton(step, isLoading) {
         if (step === 3) {
-            // if (isLoading) {
-                if(true) {
+            if (isLoading) {
                 return (
                     <CircularProgress className={classes.progress} />
                 );

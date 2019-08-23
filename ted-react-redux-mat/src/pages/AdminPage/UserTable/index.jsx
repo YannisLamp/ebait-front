@@ -41,6 +41,9 @@ const styles = theme => ({
         top: 20,
         width: 1,
     },
+    pagination: {
+        color: theme.palette.text.primary,
+    }
 });
 
 
@@ -51,37 +54,39 @@ class UserTable extends Component {
             isLoading: null,
             order: 'asc',
             orderBy: 'username',
-            itemsPerPage: 10,
-            page: 0,
+            pageSize: 10,
+            currPage: 0,
 
             users: [],
             totalPages: null,
+            totalUsers: null,
         };
 
         this.handleChangePage = this.handleChangePage.bind(this);
         this.handleRequestSort = this.handleRequestSort.bind(this);
+        this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
         this.queryTableData = this.queryTableData.bind(this);
-        //this.handleSubmit = this.handleSubmit.bind(this);
-
     }
 
 
     componentDidMount() {
-        const { orderBy, order, itemsPerPage, page } = this.state;
-        this.queryTableData(orderBy, order, itemsPerPage, page);
+        const { orderBy, order, pageSize, currPage } = this.state;
+        this.queryTableData(orderBy, order, pageSize, currPage);
     }
 
-    queryTableData(orderBy, order, itemsPerPage, page) {
+    queryTableData(orderBy, order, pageSize, currPage) {
         // Start Loading
         this.setState((prevState, props) => {
             return { isLoading: true }
         })
 
-        usersApi.getUsers(orderBy, order, itemsPerPage, page)
+        usersApi.getUsers(orderBy, order, pageSize, currPage)
             .then(data => {
                 this.setState((prevState, props) => {
                     return {
-                        users: data,
+                        users: data.users,
+                        totalPages: data.totalPages,
+                        totalUsers: data.totalUsers,
                         isLoading: false
                     }
                 })
@@ -92,20 +97,26 @@ class UserTable extends Component {
         { id: 'username', right: false, disablePadding: true, label: 'Username' },
         { id: 'firstName', right: true, disablePadding: false, label: 'First Name' },
         { id: 'lastName', right: true, disablePadding: false, label: 'Last Name' },
+        { id: 'country', right: true, disablePadding: false, label: 'Country' },
+        { id: 'address', right: true, disablePadding: false, label: 'Address' },
         { id: 'email', right: true, disablePadding: false, label: 'Email' },
         { id: 'verified', right: true, disablePadding: false, label: 'Verified' },
     ];
 
 
 
-
     handleRequestSort(event, property) {
-        const { order, orderBy } = this.state;
-        const isDesc = orderBy === property && order === 'desc';
         this.setState((prevState, props) => {
+            const { order, orderBy, currPage, pageSize } = prevState;
+            const isDesc = orderBy === property && order === 'desc';
+            const newOrder = isDesc ? 'asc' : 'desc';
+
+            // Also alters State and needs to know the new state
+            this.queryTableData(property, newOrder, pageSize, 0);
             return {
-                order: isDesc ? 'asc' : 'desc',
-                orderBy: property
+                order: newOrder,
+                orderBy: property,
+                currPage: 0,
             }
         });
     }
@@ -132,22 +143,38 @@ class UserTable extends Component {
 
     handleChangePage(event, newPage) {
         this.setState((prevState, props) => {
+            const { order, orderBy, pageSize } = prevState;
+
+            this.queryTableData(orderBy, order, pageSize, newPage);
             return {
-                page: newPage
+                currPage: newPage
             }
         });
     }
 
-    // handleChangeRowsPerPage(event) {
-    //     setRowsPerPage(+event.target.value);
-    //     setPage(0);
-    // }
+    handleChangeRowsPerPage(event) {
+        this.setState((prevState, props) => {
+            const { order, orderBy } = prevState;
+            const newPageSize = +event.target.value;
+
+            this.queryTableData(orderBy, order, newPageSize, 0);
+            return {
+                currPage: 0,
+                pageSize: newPageSize,
+            }
+        });
+
+    }
 
 
     render() {
-        const rowsPerPage = 10;
+        const { pageSize } = this.state;
         //const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.users.length - page * rowsPerPage);
-        const emptyRows = rowsPerPage - this.state.users.length;
+        let emptyRows = pageSize;
+        if (this.state.users) {
+            emptyRows = emptyRows - this.state.users.length;
+        }
+
         const { classes } = this.props;
 
         return (
@@ -183,6 +210,8 @@ class UserTable extends Component {
                                                 <TableCell align="left">{row.username}</TableCell>
                                                 <TableCell align="right">{row.firstName}</TableCell>
                                                 <TableCell align="right">{row.lastName}</TableCell>
+                                                <TableCell align="right">{row.country}</TableCell>
+                                                <TableCell align="right">{row.address}</TableCell>
                                                 <TableCell align="right">{row.email}</TableCell>
                                                 <TableCell align="right">{row.verified ? <CheckBoxIcon /> : <CheckBoxBlankIcon />}</TableCell>
                                             </TableRow>
@@ -197,19 +226,20 @@ class UserTable extends Component {
                         </Table>
                     </div>
                     <TablePagination
-                        rowsPerPageOptions={[]}
+                        className={classes.pagination}
+                        rowsPerPageOptions={[5,10,15]}
                         component="div"
-                        count={this.state.users.length}
-                        //rowsPerPage={rowsPerPage}
-                        page={this.state.page}
+                        count={this.state.totalUsers}
+                        rowsPerPage={this.state.pageSize}
+                        page={this.state.currPage}
                         backIconButtonProps={{
                             'aria-label': 'previous page',
                         }}
                         nextIconButtonProps={{
                             'aria-label': 'next page',
                         }}
-                    //onChangePage={this.handleChangePage}
-                    // onChangeRowsPerPage={handleChangeRowsPerPage}
+                        onChangePage={this.handleChangePage}
+                        onChangeRowsPerPage={this.handleChangeRowsPerPage}
 
                     
                     />

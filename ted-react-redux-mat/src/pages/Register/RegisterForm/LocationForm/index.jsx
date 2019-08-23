@@ -4,8 +4,20 @@ import React from 'react';
 import { TextField } from '@material-ui/core';
 
 // For importing my custom styles  
-import useStyles from './styles';
+import { makeStyles } from '@material-ui/core/styles';
 
+
+const useStyles = makeStyles(theme => ({
+    fields: {
+        marginTop: theme.spacing(2)
+    },
+    textField: {
+        width: '100%',
+        '& + & ': {
+            marginTop: theme.spacing(2)
+        }
+    },
+}));
 
 export default function CredentialForm(props) {
     const classes = useStyles();

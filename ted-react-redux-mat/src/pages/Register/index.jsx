@@ -15,11 +15,6 @@ import SignUpForm from './RegisterForm';
 
 const useStyles = makeStyles(theme => ({
     ...pageStyles(theme),
-    contentOld: {
-        // height: '100%',
-        // display: 'flex',
-        // flexDirection: 'column'
-    },
     formPaper: {
         minHeight: '70vh',
     }

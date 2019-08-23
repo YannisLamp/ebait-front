@@ -164,7 +164,6 @@ class RegisterForm extends Component {
             }
         }
 
-        let currentForm = formForStep(currentStep, this);
         return (
             <div className={classes.content}>
                 <div className={classes.contentHeader} />
@@ -183,27 +182,12 @@ class RegisterForm extends Component {
                             Step {currentStep}:
                         </Typography>
 
-                        {currentForm}
+                        {formForStep(currentStep, this)}
 
                     </form>
                         
                 </div>
-                    
 
-                        {/*isLoading ? (
-                    <CircularProgress className={classes.progress} />
-                  ) : (
-                    <Button
-                      className={classes.signInButton}
-                      color="primary"
-                      disabled={!isValid}
-                      onClick={this.handleSignIn}
-                      size="large"
-                      variant="contained"
-                    >
-                      Sign in now
-                    </Button>
-                  )*/}
                 <div className={classes.buttonBody}> 
                     <ProgressButtons 
                         handleSubmit={this.handleSubmit}

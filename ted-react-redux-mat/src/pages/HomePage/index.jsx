@@ -80,6 +80,7 @@ export default function HomePage(props) {
                                         bodyText="explanation paopap"
                                         to="/profile" 
                                         backgroundColor="#e9a127" 
+                                        disabled
                                     />
                                 </Grid>
                             </Grid>

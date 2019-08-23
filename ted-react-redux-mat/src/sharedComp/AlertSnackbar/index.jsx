@@ -26,7 +26,7 @@ function AlertSnackBar(props) {
                 }}
                 onClose={handleClose}
                 open={alertStore.open}
-                autoHideDuration={6000}
+                autoHideDuration={4000}
             >
                 <SnackbarVariants
                     onClose={handleClose}
