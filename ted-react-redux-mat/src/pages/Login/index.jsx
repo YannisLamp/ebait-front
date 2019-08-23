@@ -7,10 +7,24 @@ import { Link } from 'react-router-dom';
 import { Grid, Paper, Button } from '@material-ui/core';
 
 // For importing my custom styles  
-import useStyles from './styles';
+import { makeStyles } from '@material-ui/core/styles';
+import { pageStyles } from '../pageStyles';
 
 import LoginQuote from './LoginQuote';
 import LoginForm from './LoginForm';
+
+
+const useStyles = makeStyles(theme => ({
+    ...pageStyles(theme),
+    quoteWrapper: {
+      [theme.breakpoints.down('md')]: {
+        display: 'none'
+      }
+    },
+    loginAsGuest: {
+      marginTop: theme.spacing(8),
+    },
+  }));
 
 export default function Login(props) {
 

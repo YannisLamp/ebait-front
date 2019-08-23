@@ -5,7 +5,7 @@ export const usersApi = {
     getUserInfo
 };
 
-function getUsers() {    
+function getUsers(orderBy, order, itemsPerPage, page) {    
         return axios.get('/admin/allUsers')
             .then(response => {
                     // If the login process was successful, save authorization JWT

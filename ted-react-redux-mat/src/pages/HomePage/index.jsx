@@ -6,11 +6,17 @@ import { connect } from 'react-redux';
 import { Grid, Paper, Button } from '@material-ui/core';
 
 // For importing my custom styles  
-import useStyles from './styles';
+import { makeStyles } from '@material-ui/core/styles';
+import { pageStyles } from '../pageStyles';
 
 import Sidebar from '../../sharedComp/Sidebar';
 
 import ActionCard from './ActionCard';
+
+
+const useStyles = makeStyles(theme => ({
+    ...pageStyles(theme),
+}));
 
 export default function HomePage(props) {
     const classes = useStyles();
@@ -37,15 +43,29 @@ export default function HomePage(props) {
 
                             <Grid container spacing={3} style={{marginTop: '55px'}}>
                                 <Grid item xs={6}>
-                                    <ActionCard title="Browse Auctions" bodyText="explanation paopap" to="/lalaal" backgroundColor="#29aa9f" />
+                                    <ActionCard 
+                                        title="Browse Auctions" 
+                                        bodyText="explanation paopap" 
+                                        //to="/lalaal" 
+                                        backgroundColor="#29aa9f"
+                                    />
                                 </Grid>
 
                                 <Grid item xs={6}>
-                                    <ActionCard title="Messages" bodyText="explanation paopap" backgroundColor="#863a81" />
+                                    <ActionCard 
+                                        title="Messages" 
+                                        bodyText="explanation paopap" 
+                                        backgroundColor="#863a81" 
+                                    />
                                 </Grid>
 
                                 <Grid item xs={6}>
-                                    <ActionCard title="Create Auction" bodyText="explanation paopap" backgroundColor="#5fba43" />
+                                    <ActionCard 
+                                        title="Create Auction" 
+                                        bodyText="explanation paopap"
+                                        to="/create-auction" 
+                                        backgroundColor="#5fba43" 
+                                    />
 
                                 </Grid>
                                 {/* <Grid item xs={6}>
@@ -55,7 +75,12 @@ export default function HomePage(props) {
                                 
                                 
                                 <Grid item xs={6}>
-                                    <ActionCard title="Profile" bodyText="explanation paopap" backgroundColor="#e9a127" />
+                                    <ActionCard 
+                                        title="Profile" 
+                                        bodyText="explanation paopap"
+                                        to="/profile" 
+                                        backgroundColor="#e9a127" 
+                                    />
                                 </Grid>
                             </Grid>
 

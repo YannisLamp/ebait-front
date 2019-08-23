@@ -4,7 +4,39 @@ import React from 'react';
 import { Grid, Typography } from '@material-ui/core';
 
 // For importing my custom styles  
-import useStyles from './styles';
+import { makeStyles } from '@material-ui/core/styles';
+import { pageStyles } from '../pageStyles';
+
+
+const useStyles = makeStyles(theme => ({
+    //...pageStyles(theme),
+    formPaper: {
+        minHeight: '75vh',
+    },
+    quote: {
+        height: '100%',
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundPosition: 'center'
+      },
+      quoteInner: {
+        textAlign: 'center',
+        flexBasis: '600px'
+      },
+      welcomeText: {
+        fontSize: '50px',
+        color: theme.palette.primary.main,
+        fontWeight: 400,
+        marginBottom: theme.spacing(10),
+      },
+      quoteText: {
+        color: theme.palette.primary.main,
+        fontWeight: 300
+      },
+
+}));
 
 export default function NotFound(props) {
 

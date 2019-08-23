@@ -48,21 +48,36 @@ class UserTable extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLoading: true,
+            isLoading: null,
             order: 'asc',
             orderBy: 'username',
+            itemsPerPage: 10,
             page: 0,
+
             users: [],
+            totalPages: null,
         };
 
-        //this.handleChangePage = this.handleChangePage.bind(this);
+        this.handleChangePage = this.handleChangePage.bind(this);
+        this.handleRequestSort = this.handleRequestSort.bind(this);
+        this.queryTableData = this.queryTableData.bind(this);
         //this.handleSubmit = this.handleSubmit.bind(this);
 
     }
 
 
     componentDidMount() {
-        usersApi.getUsers()
+        const { orderBy, order, itemsPerPage, page } = this.state;
+        this.queryTableData(orderBy, order, itemsPerPage, page);
+    }
+
+    queryTableData(orderBy, order, itemsPerPage, page) {
+        // Start Loading
+        this.setState((prevState, props) => {
+            return { isLoading: true }
+        })
+
+        usersApi.getUsers(orderBy, order, itemsPerPage, page)
             .then(data => {
                 this.setState((prevState, props) => {
                     return {
@@ -115,9 +130,13 @@ class UserTable extends Component {
     //     setSelected(newSelected);
     // }
 
-    // handleChangePage(event, newPage) {
-    //     setPage(newPage);
-    // }
+    handleChangePage(event, newPage) {
+        this.setState((prevState, props) => {
+            return {
+                page: newPage
+            }
+        });
+    }
 
     // handleChangeRowsPerPage(event) {
     //     setRowsPerPage(+event.target.value);
@@ -126,7 +145,7 @@ class UserTable extends Component {
 
 
     render() {
-        const rowsPerPage = 20;
+        const rowsPerPage = 10;
         //const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.users.length - page * rowsPerPage);
         const emptyRows = rowsPerPage - this.state.users.length;
         const { classes } = this.props;
@@ -145,7 +164,7 @@ class UserTable extends Component {
                                 headRows={this.headRows}
                                 order={this.state.order}
                                 orderBy={this.state.orderBy}
-                            //onRequestSort={handleRequestSort}
+                                onRequestSort={this.handleRequestSort}
                             />
                             <TableBody>
                                 {//stableSort(rows, getSorting(order, orderBy))

@@ -73,8 +73,6 @@ class RegisterForm extends Component {
                 lastName, email, phoneNumber, country, address, afm));
         }
 
-        const { user } = this.props;
-        console.log(user);
     }
 
 
@@ -111,17 +109,16 @@ class RegisterForm extends Component {
 
     render() {
 
-        let userStuff = '';
-        if (this.props.user) {
-            const { user } = this.props;
-            userStuff = user.username + ',' + user.userId + ',' + user.firstName;
-        }
-
         
         const { passwordsMatch, currentStep, usernameTaken } = this.state;
         const submitted = false;
 
         const { classes } = this.props;
+
+        let isLoading = false;
+        if (this.props.userStore.registering || this.props.userStore.loggingIn)
+            isLoading = true;
+
 
         function formForStep(step, comp) {
             if (step === 1) {
@@ -216,6 +213,8 @@ class RegisterForm extends Component {
 
                         currentStep={this.state.currentStep}
                         passwordsMatch={this.state.passwordsMatch}
+
+                        isLoading={isLoading}
                     />
                 </div>
             </div>
@@ -227,9 +226,8 @@ class RegisterForm extends Component {
 
 function mapStateToProps(state) {
     const { userStore } = state;
-    const { user } = userStore;
     return {
-        user
+        userStore
     };
 }
 

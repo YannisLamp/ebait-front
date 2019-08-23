@@ -1,34 +1,30 @@
 import React from 'react';
 
 // Material
-import { Button } from '@material-ui/core';
+import { Button, CircularProgress } from '@material-ui/core';
 
 // For importing my custom styles  
-import useStyles from './styles';
+import { makeStyles } from '@material-ui/core/styles';
 
+
+const useStyles = makeStyles(theme => ({
+    progressButtons: {
+        width: '100%',
+        display: 'inline-flex',
+        marginTop: theme.spacing(8),
+        justifyContent: 'space-between',
+    },
+}));
 
 export default function ProgressButtons(props) {
     const classes = useStyles();
     const { redirectToLogin, prevStep, nextStep, handleSubmit } = props;
-    const { currentStep, passwordsMatch } = props;
-
-    /*if (currentStep === 1) {
-        return (
-            <Button
-                    onClick={redirectToLogin}
-                    size="large"
-                    variant="contained"
-                >
-                    Back
-                </Button>
-        )
+    const { currentStep, passwordsMatch, isLoading } = props;
 
 
-    }*/
-
-    return (
-        <div className={classes.progressButtons}>
-            {(currentStep === 1) ? (
+    function returnBackButton(step) {
+        if (step === 1) {
+            return (
                 <Button
                     onClick={redirectToLogin}
                     size="large"
@@ -36,7 +32,10 @@ export default function ProgressButtons(props) {
                 >
                     Back
                 </Button>
-            ) : (
+            )
+        }
+        else {
+            return (
                 <Button
                     onClick={prevStep}
                     size="large"
@@ -44,17 +43,34 @@ export default function ProgressButtons(props) {
                 >
                     Back
                 </Button>
-            )}
-            {(currentStep === 3) ? (
-                <Button
-                    color="primary"
-                    onClick={handleSubmit}
-                    size="large"
-                    variant="contained"
-                >
-                    Register
-                </Button>
-            ) : (
+            )
+        }
+    }
+
+    function returnNextButton(step, isLoading) {
+        if (step === 3) {
+            // if (isLoading) {
+                if(true) {
+                return (
+                    <CircularProgress className={classes.progress} />
+                );
+            }
+            else {
+                return (
+                    <Button
+                        color="primary"
+                        onClick={handleSubmit}
+                        size="large"
+                        variant="contained"
+                    >
+                        Register
+                    </Button>
+                );
+            }
+            
+        }
+        else {
+            return (
                 <Button
                     onClick={nextStep}
                     size="large"
@@ -63,7 +79,14 @@ export default function ProgressButtons(props) {
                 >
                     Next
                 </Button>
-            )}
+            );
+        }
+    }
+
+    return (
+        <div className={classes.progressButtons}>
+            {returnBackButton(currentStep)}
+            {returnNextButton(currentStep, isLoading)}
         </div>
     );
 }

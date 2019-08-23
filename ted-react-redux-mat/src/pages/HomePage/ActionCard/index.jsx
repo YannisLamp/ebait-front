@@ -5,7 +5,23 @@ import { Link } from 'react-router-dom';
 import { Card, CardContent, CardActions, CardActionArea, Typography } from '@material-ui/core';
 
 // For importing my custom styles  
-import useStyles from './styles';
+import { makeStyles } from '@material-ui/core/styles';
+
+
+const useStyles = makeStyles(theme => ({
+    root: {
+        color: "white",
+    },
+    notDecorated: {
+        textDecoration: 'none',
+    },
+    card: {
+        color: "white",
+    },
+    text: {
+        color: "white",
+    }
+}));
 
 export default function ActionCard(props) {
     const classes = useStyles();
