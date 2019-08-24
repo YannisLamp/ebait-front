@@ -14,12 +14,16 @@ import { withStyles } from '@material-ui/core';
 
 const styles = theme => ({
     root: {
-        height: 'inherit',
+        height: '75vh',
         width: '100%',
 
     },
+    grid: {
+        height: '100%',
+    },
     description: {
         paddingTop: theme.spacing(4),
+        paddingBottom: theme.spacing(1),
     },
     divider: {
         marginTop: theme.spacing(1),
@@ -99,196 +103,159 @@ class EditUser extends Component {
 
         const { classes } = this.props;
         return (
-            <div className={classes.root}>
-                <PaperTitle
-                    title='User Profile'
-                    suggestion='edit your profile info'
-                />
-
-
-
+            <>
                 <Grid
-                    container
-                    direction="column"
-                    justify="space-between"
+                    item
                 >
 
+                    <PaperTitle
+                        title='User Profile'
+                        suggestion='edit your profile info'
+                    />
+
+
+
                     <Grid
-                        item
+                        container
+                        justify="flex-start"
+                        className={classes.container}
+                    >
+                        <Typography
+                            className={classes.description}
+                            variant="body1"
+                        >
+                            basic user information
+                        </Typography>
+
+
+
+                        <Grid item xs={12} className={classes.accountBasic}>
+                            <TextField
+                                className={classes.textField}
+                                label="First Name"
+                                name="firstName"
+                                value={firstName}
+                                type="text"
+                                variant="outlined"
+                                onChange={this.handleChange}
+                            />
+                            <TextField
+                                className={classes.textField}
+                                label="Last Name"
+                                name="lastName"
+                                value={lastName}
+                                type="text"
+                                variant="outlined"
+                                onChange={this.handleChange}
+                            />
+
+                            <TextField
+                                className={classes.textField}
+                                label="Tax Identification Number"
+                                name="afm"
+                                value={afm}
+                                type="text"
+                                variant="outlined"
+                                onChange={this.handleChange}
+                            />
+
+                        </Grid>
+
+
+
+
+                    </Grid>
+
+                    {/* <Divider className={classes.divider} /> */}
+
+                    <Grid
+                        container
+                        justify="flex-start"
+                        className={classes.container}
+                    >
+                        <Typography
+                            className={classes.description}
+                            variant="body1"
+                        >
+                            user contact information
+                        </Typography>
+
+
+
+                        <Grid item xs={12} className={classes.accountBasic}>
+                            <TextField
+                                className={classes.textField}
+                                label="Email"
+                                name="email"
+                                value={email}
+                                type="text"
+                                variant="outlined"
+                                onChange={this.handleChange}
+                            />
+                            <TextField
+                                className={classes.textField}
+                                label="Phone number"
+                                name="phoneNumber"
+                                value={phoneNumber}
+                                type="text"
+                                variant="outlined"
+                                onChange={this.handleChange}
+                            />
+
+                        </Grid>
+
+                    </Grid>
+
+
+                    <Grid
+                        container
+                        justify="left"
+                        className={classes.container}
                     >
 
-
-
-
-                        <Grid
-                            container
-                            justify="flex-start"
-                            className={classes.container}
+                        <Typography
+                            className={classes.description}
+                            variant="body1"
                         >
-                            <Typography
-                                //className={classes.description}
-                                variant="body1"
-                            >
-                                basic user information
+                            user location information
                     </Typography>
 
-
-
-                            <Grid item xs={12} className={classes.accountBasic}>
-                                <TextField
-                                    className={classes.textField}
-                                    label="First Name"
-                                    name="firstName"
-                                    value={firstName}
-                                    type="text"
-                                    variant="outlined"
-                                    onChange={this.handleChange}
-                                />
-                                <TextField
-                                    className={classes.textField}
-                                    label="Last Name"
-                                    name="lastName"
-                                    value={lastName}
-                                    type="text"
-                                    variant="outlined"
-                                    onChange={this.handleChange}
-                                />
-                                <TextField
-                                    className={classes.textField}
-                                    label="Email"
-                                    name="email"
-                                    value={email}
-                                    type="text"
-                                    variant="outlined"
-                                    onChange={this.handleChange}
-                                />
-                                <TextField
-                                    className={classes.textField}
-                                    label="Phone number"
-                                    name="phoneNumber"
-                                    value={phoneNumber}
-                                    type="text"
-                                    variant="outlined"
-                                    onChange={this.handleChange}
-                                />
-
-                            </Grid>
-
-                        </Grid>
-
-                        {/* <Divider className={classes.divider} /> */}
+                        <Grid item xs={12}>
 
 
 
-
-                        <Grid
-                            container
-                            justify="left"
-                            className={classes.container}
-                        >
-
-                            <Typography
-                                className={classes.description}
-                                variant="body1"
-                            >
-                                user location information
-                    </Typography>
-
-                            <Grid item xs={12}>
-
-
-
-                                <TextField
-                                    className={classes.textField}
-                                    label="Country"
-                                    name="country"
-                                    value={country}
-                                    type="text"
-                                    variant="outlined"
-                                    onChange={this.handleChange}
-                                />
-                                <TextField
-                                    className={classes.textField}
-                                    label="Address"
-                                    name="address"
-                                    value={address}
-                                    type="text"
-                                    variant="outlined"
-                                    onChange={this.handleChange}
-                                />
-                                <TextField
-                                    className={classes.textField}
-                                    label="Tax Identification Number"
-                                    name="afm"
-                                    value={afm}
-                                    type="text"
-                                    variant="outlined"
-                                    onChange={this.handleChange}
-                                />
-
-                            </Grid>
+                            <TextField
+                                className={classes.textField}
+                                label="Country"
+                                name="country"
+                                value={country}
+                                type="text"
+                                variant="outlined"
+                                onChange={this.handleChange}
+                            />
+                            <TextField
+                                className={classes.textField}
+                                label="Address"
+                                name="address"
+                                value={address}
+                                type="text"
+                                variant="outlined"
+                                onChange={this.handleChange}
+                            />
 
 
-                        </Grid>
-
-
-                        <Grid
-                            container
-                            justify="flex-end"
-                            className={classes.container}
-                        >
-                            {infoLoading ?
-                                (
-                                    <CircularProgress className={classes.progress} />
-                                ) : (
-                                    <Button
-                                        className={classes.textField}
-                                        color="primary"
-                                        type="submit"
-                                        onClick={this.handleSubmit}
-                                        size="large"
-                                        variant="contained"
-                                    >
-                                        Save Changes
-                                    </Button>
-                                )
-                            }
                         </Grid>
 
 
                     </Grid>
 
 
-                    <Grid item>
-
-                        <TextField
-                            className={classes.textField}
-                            label="Old Password"
-                            name="oldPassword"
-                            value={oldPassword}
-                            type="password"
-                            variant="outlined"
-                            onChange={this.handleChange}
-                        />
-                        <TextField
-                            className={classes.textField}
-                            label="Password"
-                            name="password"
-                            value={password}
-                            type="password"
-                            variant="outlined"
-                            onChange={this.handleChange}
-                        />
-                        <TextField
-                            className={classes.textField}
-                            label="Confirm Password"
-                            name="confirmPassword"
-                            value={confirmPassword}
-                            type="password"
-                            variant="outlined"
-                            onChange={this.handleChange}
-                        />
-                        {passLoading ?
+                    <Grid
+                        container
+                        justify="flex-end"
+                        className={classes.container}
+                    >
+                        {infoLoading ?
                             (
                                 <CircularProgress className={classes.progress} />
                             ) : (
@@ -300,27 +267,81 @@ class EditUser extends Component {
                                     size="large"
                                     variant="contained"
                                 >
-                                    Change Password
-                        </Button>
+                                    Save Changes
+                                    </Button>
                             )
                         }
-
-
-
-
-
-
-
                     </Grid>
-
 
 
                 </Grid>
 
 
+                <Grid item>
 
-            </div>
+                    <Typography
+                        className={classes.description}
+                        variant="body1"
+                    >
+                        change user password
+                    </Typography>
 
+                    <TextField
+                        className={classes.textField}
+                        label="Old Password"
+                        name="oldPassword"
+                        value={oldPassword}
+                        type="password"
+                        variant="outlined"
+                        onChange={this.handleChange}
+                    />
+                    <TextField
+                        className={classes.textField}
+                        label="Password"
+                        name="password"
+                        value={password}
+                        type="password"
+                        variant="outlined"
+                        onChange={this.handleChange}
+                    />
+                    <TextField
+                        className={classes.textField}
+                        label="Confirm Password"
+                        name="confirmPassword"
+                        value={confirmPassword}
+                        type="password"
+                        variant="outlined"
+                        onChange={this.handleChange}
+                    />
+
+
+                </Grid>
+
+                <Grid
+                    container
+                    justify="flex-end"
+                    className={classes.container}
+                >
+
+                    {passLoading ?
+                        (
+                            <CircularProgress className={classes.progress} />
+                        ) : (
+                            <Button
+                                className={classes.textField}
+                                color="primary"
+                                type="submit"
+                                onClick={this.handleSubmit}
+                                size="large"
+                                variant="contained"
+                            >
+                                Change Password
+                            </Button>
+                        )
+                    }
+
+                </Grid>
+            </>
         );
 
     }
