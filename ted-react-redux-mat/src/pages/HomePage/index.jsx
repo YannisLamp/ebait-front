@@ -42,6 +42,7 @@ export default function HomePage(props) {
 
 
                             <Grid container spacing={3} style={{marginTop: '55px'}}>
+                                
                                 <Grid item xs={6}>
                                     <ActionCard 
                                         title="Browse Auctions" 
@@ -83,6 +84,17 @@ export default function HomePage(props) {
                                         disabled
                                     />
                                 </Grid>
+
+                                
+                                <Grid item xs={12}>
+                                    <ActionCard 
+                                        title="Verify Users" 
+                                        bodyText="explanation paopap"
+                                        to="/admin" 
+                                        backgroundColor="#ea7e3e"
+                                    />
+                                </Grid>
+
                             </Grid>
 
 

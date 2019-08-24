@@ -4,6 +4,7 @@ export const usersApi = {
     getUsers,
     getNotVerifiedUsers,
     getUserInfo,
+    verifyUser,
 };
 
 function getUsers(orderBy, order, pageSize, currPage) {    

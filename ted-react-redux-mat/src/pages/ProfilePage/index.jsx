@@ -10,7 +10,6 @@ import { pageStyles } from '../pageStyles';
 
 import Sidebar from '../../sharedComp/Sidebar';
 import EditUser from './EditUser';
-import ChangePassword from './ChangePassword';
 
 
 const useStyles = makeStyles(theme => ({
@@ -22,53 +21,35 @@ const useStyles = makeStyles(theme => ({
         paddingRight: theme.spacing(3),
         paddingBottom: theme.spacing(2),
         marginBottom: theme.spacing(2),
+        minHeight: '75vh',
     },
 }));
 
 export default function ProfilePage(props) {
 
     const classes = useStyles();
-
     return (
-            <Sidebar>
-                <div className={classes.root}>
+        <Sidebar>
+            <div className={classes.root}>
+
+                <Grid
+                    className={classes.grid}
+                    container
+                    justify="center"
+                >
                     <Grid
-                        className={classes.grid}
-                        container
-                        justify="center"
+                        className={classes.pageWrapper}
+                        item
+                        lg={10}
                     >
-
-
-                            <Grid
-                                className={classes.pageWrapper}
-                                item
-                                lg={7}
-                            >
-                                <Paper className={classes.paper}>
-                                    <EditUser />
-                                </Paper>
-                            </Grid>
-
-                            <Grid
-                                className={classes.pageWrapper}
-                                item
-                                lg={1}
-                            />
-
-                            <Grid
-                                className={classes.pageWrapper}
-                                item
-                                lg={2}
-                            >
-                                <Paper className={classes.paper}>
-                                    <ChangePassword />
-                                </Paper>
-                            </Grid>
-
-
+                        <Paper className={classes.paper}>
+                            <EditUser />
+                        </Paper>
                     </Grid>
-                </div>
-            </Sidebar>
+                </Grid>
+
+            </div>
+        </Sidebar>
     );
 }
 

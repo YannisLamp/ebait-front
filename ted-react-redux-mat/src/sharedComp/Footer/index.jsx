@@ -4,7 +4,19 @@ import React from 'react';
 import { Divider, Typography } from '@material-ui/core';
 
 // Component styles
-import useStyles from './styles';
+import { makeStyles } from '@material-ui/core/styles';
+
+
+const useStyles = makeStyles(theme => ({
+    root: {
+        padding: theme.spacing(4),
+        textAlign: 'center'
+    },
+    company: {
+        marginTop: theme.spacing(2),
+        marginBottom: theme.spacing(0.5)
+    }
+}));
 
 export default function Footer(props) {
     const classes = useStyles();

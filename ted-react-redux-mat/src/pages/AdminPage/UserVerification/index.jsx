@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 // Material
-import { Avatar, Divider, Typography, Grid, Button } from '@material-ui/core';
+import { Avatar, Divider, Typography, Grid, Button, CircularProgress } from '@material-ui/core';
 
 // For importing my custom styles  
 import { makeStyles } from '@material-ui/core/styles';
@@ -11,37 +11,16 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-end',
+        minHeight: 'inherit',
+    },
 
-    },
-    // profile: {
-    //     display: 'flex',
-    //     flexDirection: 'column',
-    //     alignItems: 'center',
-    //     //minHeight: 'fit-content'
-    // },
-    // details: {
-    //     height: '100%',
-    //     display: 'flex',
-    //     flexDirection: 'column',
-    //     //minHeight: 'fit-content',
-    //     //alignItems: 'end',
-    //     justifyContent: 'flex-end',
-    // },
-    button: {
-        display: 'flex',
-        flexDirection: 'column',
-        justify: 'flexEnd',
-    },
     userLogo: {
         marginTop: theme.spacing(8),
         margin: 5,
         width: 80,
         height: 80,
     },
-    notDecorated: { 
+    notDecorated: {
         textDecoration: 'none',
     },
     usernameText: {
@@ -50,12 +29,16 @@ const useStyles = makeStyles(theme => ({
     nameText: {
         marginTop: theme.spacing(1)
     },
-    bioText: {marginTop: theme.spacing(1)},
+    bioText: { 
+        marginTop: theme.spacing(1) 
+    },
     profileDivider: {
         marginBottom: theme.spacing(2),
         marginTop: theme.spacing(2)
     },
-
+    verify: {
+        marginBottom: theme.spacing(2),
+    }
 }));
 
 export default function UserVerification(props) {
@@ -63,54 +46,71 @@ export default function UserVerification(props) {
 
     let { user } = props;
     if (!user) {
-        user = {username: 'lalala', firstName: 'aaaa', lastName:'ooooo', };
+        user = { username: 'lalala', firstName: 'aaaa', lastName: 'ooooo', };
     }
 
     const role = user.userRole === 'USER' ? 'User' : 'Administrator';
     const verified = user.verified === true && user.userRole === 'USER' ? 'Verified' : ' ';
 
+    const { isLoading } = props;
+
     return (
-        <div className={classes.root}>
-        <div className={classes.profile}>
-            <Typography variant="h3">
-                User Details
-            </Typography>
-            {/* <NavLink to="/profile" className={classes.notDecorated}> */}
-                <Avatar className={classes.userLogo}>
-                    {user.firstName && user.lastName ?
-                        user.firstName.charAt(0) + user.lastName.charAt(0)
-                        :
-                        'G'
-                    }
-                </Avatar>
-            {/* </NavLink> */}
+        <Grid
+            className={classes.root}
+            container
+            direction="column"
+            justify="space-between"
+        >
 
-            <Typography
-                className={classes.usernameText}
-                variant="h5"
+            <Grid
+                item
             >
-                {user.username}
+
+                <Typography variant="h3">
+                    User Details
             </Typography>
 
-            <Typography
-                className={classes.nameText}
-                variant="h6"
-            >
-                {user.firstName}{' '}{user.lastName}
-            </Typography>
-            <Typography
-                className={classes.bioText}
-                variant="h6"
-            >
-                {verified + ' ' + role}
-            </Typography>
-        </div>
-        <Divider className={classes.profileDivider} />
+                <Grid
+                    container
+                    direction="column"
+                    alignItems="center"
+                >
 
-        
-        <div className={classes.details}>
 
-            <Typography
+
+                    <Avatar className={classes.userLogo}>
+                        {user.firstName.charAt(0) + user.lastName.charAt(0)}
+                    </Avatar>
+
+                    <Typography
+                        className={classes.usernameText}
+                        variant="h5"
+                    >
+                        {user.username}
+                    </Typography>
+
+                    <Typography
+                        className={classes.nameText}
+                        variant="h6"
+                    >
+                        {user.firstName}{' '}{user.lastName}
+                    </Typography>
+                    <Typography
+                        className={classes.bioText}
+                        variant="h6"
+                    >
+                        {verified + ' ' + role}
+                    </Typography>
+
+                    {/* </div> */}
+                </Grid>
+
+                <Divider className={classes.profileDivider} />
+
+
+
+
+                <Typography
                     className={classes.nameText}
                     variant="h6"
                 >
@@ -131,12 +131,51 @@ export default function UserVerification(props) {
                     {user.country + ', ' + user.address}
                 </Typography>
 
-            <Divider className={classes.profileDivider} />
+                <Typography
+                    className={classes.nameText}
+                    variant="h6"
+                >
+                    {user.afm}
+                </Typography>
 
-            </div>
+
+                <Divider className={classes.profileDivider} />
 
 
-    </div>
+            </Grid>
+
+            <Grid
+                item
+            >
+                <Grid
+                    container
+                    direction="column"
+                    alignItems="center"
+                >
+
+
+                    {isLoading ?
+                        (
+                            <CircularProgress className={classes.verify} />
+                        ) : (
+                            <Button
+                                className={classes.verify}
+                                color="primary"
+                                type="submit"
+                                onClick={props.verifyUser}
+                                size="large"
+                                variant="contained"
+                            >
+                                Verify User
+                        </Button>
+                        )
+                    }
+                </Grid>
+
+            </Grid>
+
+
+        </Grid>
 
 
     );
