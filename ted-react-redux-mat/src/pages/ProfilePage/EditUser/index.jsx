@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { usersApi } from '../../../services';
+import { loginApi } from '../../../services';
 
 import { connect } from 'react-redux';
 
@@ -33,8 +34,13 @@ const styles = theme => ({
         marginTop: theme.spacing(2),
         marginLeft: theme.spacing(2),
         marginRight: theme.spacing(2),
-        width: '20%'
-
+        width: theme.spacing(30)
+    },
+    button: {
+        marginTop: theme.spacing(2),
+        marginLeft: theme.spacing(2),
+        marginRight: theme.spacing(2),
+        width: theme.spacing(25)
     },
     progress: {
         display: 'block',
@@ -54,6 +60,7 @@ class EditUser extends Component {
         // Get user info and copy it to state
         const { user } = this.props;
         this.state = {
+            userId: user.userId,
             username: user.username,
             firstName: user.firstName,
             lastName: user.lastName,
@@ -71,7 +78,8 @@ class EditUser extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleEditUser = this.handleEditUser.bind(this);
+        this.handleChangePassword = this.handleChangePassword.bind(this);
     }
 
     handleChange(e) {
@@ -79,20 +87,32 @@ class EditUser extends Component {
         this.setState((prevState, props) => { return { [name]: value } });
     }
 
-    handleSubmit(e) {
-        e.preventDefault();
-
-        this.setState({ loading: true });
-        const { username, firstName, lastName, email, phoneNumber,
-            country, afm } = this.state;
-        //const { login } = this.props;
-        //const { dispatch } = this.props;
-
+    handleEditUser() {
+        this.setState((prevState, props) => { return { infoLoading: true } });
+        const { userId, firstName, lastName, email, phoneNumber, country, address, afm } = this.state;
+        const { dispatch } = this.props;
         // na elegxw gia adeia
-        if (username) {
-            console.log('username and pass');
-            //dispatch(loginApi.loginThunk(username, password));
-        }
+        //if (username) {
+             usersApi.editUserInfo(userId, firstName, lastName, email, phoneNumber, country, address, afm)
+                .then(response => {
+                    this.setState((prevState, props) => { return { infoLoading: false } });
+                    dispatch(loginApi.refreshUserThunk(userId));
+                })
+        //}
+    }
+
+    handleChangePassword() {
+        this.setState((prevState, props) => { return { passLoading: true } });
+        const { userId, oldPassword, password, confirmPassword } = this.state;
+        const { dispatch } = this.props;
+        // na elegxw gia adeia
+        // kai an tairiazoun
+        //if (username) {
+             usersApi.changeUserPassword(userId, oldPassword, password)
+                .then(response => {
+                    this.setState((prevState, props) => { return { passLoading: false } });
+                })
+        //}
     }
 
     render() {
@@ -103,17 +123,11 @@ class EditUser extends Component {
 
         const { classes } = this.props;
         return (
-            <>
-                <Grid
-                    item
-                >
-
+                <>
                     <PaperTitle
                         title='User Profile'
                         suggestion='edit your profile info'
                     />
-
-
 
                     <Grid
                         container
@@ -129,7 +143,7 @@ class EditUser extends Component {
 
 
 
-                        <Grid item xs={12} className={classes.accountBasic}>
+                        <Grid item xs={12}>
                             <TextField
                                 className={classes.textField}
                                 label="First Name"
@@ -260,10 +274,10 @@ class EditUser extends Component {
                                 <CircularProgress className={classes.progress} />
                             ) : (
                                 <Button
-                                    className={classes.textField}
+                                    className={classes.button}
                                     color="primary"
                                     type="submit"
-                                    onClick={this.handleSubmit}
+                                    onClick={this.handleEditUser}
                                     size="large"
                                     variant="contained"
                                 >
@@ -274,10 +288,6 @@ class EditUser extends Component {
                     </Grid>
 
 
-                </Grid>
-
-
-                <Grid item>
 
                     <Typography
                         className={classes.description}
@@ -315,7 +325,6 @@ class EditUser extends Component {
                     />
 
 
-                </Grid>
 
                 <Grid
                     container
@@ -328,10 +337,10 @@ class EditUser extends Component {
                             <CircularProgress className={classes.progress} />
                         ) : (
                             <Button
-                                className={classes.textField}
+                                className={classes.button}
                                 color="primary"
                                 type="submit"
-                                onClick={this.handleSubmit}
+                                onClick={this.handleChangePassword}
                                 size="large"
                                 variant="contained"
                             >

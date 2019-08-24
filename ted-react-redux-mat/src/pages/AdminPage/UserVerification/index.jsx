@@ -153,7 +153,6 @@ export default function UserVerification(props) {
                     alignItems="center"
                 >
 
-
                     {isLoading ?
                         (
                             <CircularProgress className={classes.verify} />
@@ -165,8 +164,9 @@ export default function UserVerification(props) {
                                 onClick={props.verifyUser}
                                 size="large"
                                 variant="contained"
+                                disabled={user.verified}
                             >
-                                Verify User
+                                {user.verified ? 'Verified' : 'Verify User' }
                         </Button>
                         )
                     }

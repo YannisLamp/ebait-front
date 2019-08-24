@@ -22,8 +22,12 @@ const styles = theme => ({
         paddingLeft: theme.spacing(3),
         paddingRight: theme.spacing(3),
         marginBottom: theme.spacing(2),
-        minHeight: '75vh',
+        minHeight: '80vh',
         //height: '75vh',
+    },
+    tableWrapper: {
+        marginTop: theme.spacing(14),
+        marginRight: theme.spacing(10),
     },
 });
 
@@ -153,9 +157,9 @@ class AdminPage extends Component {
                         justify="center"
                     >
                         <Grid
-                            className={classes.pageWrapper}
+                            className={classes.tableWrapper}
                             item
-                            lg={7}
+                            lg={8}
                         >
                             <Paper className={classes.paper}>
                                 <UserTable
@@ -175,13 +179,6 @@ class AdminPage extends Component {
                                     handleChangeRowsPerPage={this.handleChangeRowsPerPage}
                                 />
                             </Paper>
-                        </Grid>
-
-                        <Grid
-                            className={classes.pageWrapper}
-                            item
-                            lg={1}
-                        >
                         </Grid>
 
                         <Grid

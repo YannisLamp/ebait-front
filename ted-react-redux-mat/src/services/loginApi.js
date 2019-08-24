@@ -11,6 +11,7 @@ import { usersApi } from './usersApi';
 export const loginApi = {
     loginThunk,
     logoutThunk,
+    refreshUserThunk
     //loginAsGuest,
 };
 
@@ -39,7 +40,7 @@ function loginThunk(username, password) {
                             dispatch(userActions.loginSuccess(user))
                             // Also store retrieved information locally so that they persist
                             localStorage.setItem('user', JSON.stringify(user));
-                            
+
                             // And redirect
                             if (user.userRole === 'ADMIN') {
                                 history.push('/admin');
@@ -70,6 +71,19 @@ function loginThunk(username, password) {
     }
 }
 
+function refreshUserThunk(userId) {
+    return dispatch => {
+        usersApi.getUserInfo(userId)
+            .then(data => {
+                // Overwrite old user data with new data
+                let user = data;
+                dispatch(userActions.refreshUser(user))
+                // Also overwrite retrieved information locally so that they persist
+                localStorage.setItem('user', JSON.stringify(user));
+            }
+            );
+    }
+}
 
 function logoutThunk() {
     // Clean up local storage

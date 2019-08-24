@@ -5,6 +5,8 @@ export const usersApi = {
     getNotVerifiedUsers,
     getUserInfo,
     verifyUser,
+    editUserInfo,
+    changeUserPassword,
 };
 
 function getUsers(orderBy, order, pageSize, currPage) {    
@@ -90,8 +92,12 @@ function getUserInfo(userId) {
 
 
 // GIA USERS META
-function editUserInfo(userId) {
-    return axios.put('/users/' + userId, {data:{}})
+function editUserInfo(userId, firstName, lastName, email, 
+        phoneNumber, country, address, afm) {
+    const editUserData = { firstName, lastName, email, 
+        phoneNumber, country, address, afm };
+
+    return axios.put('/users/' + userId, editUserData)
         .then(response => {
             console.log('response');
             console.log(response);
@@ -104,8 +110,11 @@ function editUserInfo(userId) {
         );
 }
 
-function changeUserPassword(userId) {
-    return axios.put('/users/change_password' + userId, {data:{}})
+function changeUserPassword(userId, oldPassword, password) {
+    const changePasswordData = { oldPassword, password };
+
+    //+ userId
+    return axios.put('/users/change_password/', changePasswordData)
         .then(response => {
             console.log('response');
             console.log(response);
@@ -146,5 +155,6 @@ function verifyAll(userId) {
         //}
         );
 }
+
 
 

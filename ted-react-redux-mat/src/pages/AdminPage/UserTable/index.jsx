@@ -29,6 +29,7 @@ const styles = theme => ({
     },
     notDecorated: {
         textDecoration: 'none',
+        cursor: 'pointer',
     },
     visuallyHidden: {
         border: 0,

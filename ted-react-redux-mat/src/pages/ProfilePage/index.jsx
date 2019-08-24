@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
         paddingRight: theme.spacing(3),
         paddingBottom: theme.spacing(2),
         marginBottom: theme.spacing(2),
-        minHeight: '75vh',
+        minHeight: '80vh',
     },
 }));
 
@@ -40,7 +40,7 @@ export default function ProfilePage(props) {
                     <Grid
                         className={classes.pageWrapper}
                         item
-                        lg={10}
+                        lg={8}
                     >
                         <Paper className={classes.paper}>
                             <EditUser />

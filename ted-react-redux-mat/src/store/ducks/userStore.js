@@ -12,8 +12,12 @@ const userTypes = {
 
     LOGOUT: 'my_app/user/LOGOUT',
 
+    REFRESH_USER: 'my_app/user/REFRESH_USER',
+
     TOGGLE_SIDEBAR: 'my_app/user/TOGGLE_SIDEBAR',
 }
+
+
 
 
 // Action creators
@@ -25,6 +29,7 @@ export const userActions = {
     loginSuccess,
     loginFailure,
     logoutAction,
+    refreshUser,
     toggleSidebar
 }
 
@@ -40,7 +45,6 @@ function registerFailure(error) {
     return { type: userTypes.REGISTER_FAILURE, error } 
 }
 
-// Login
 function loginRequest(user) { 
     return { type: userTypes.LOGIN_REQUEST, user } 
 }
@@ -57,6 +61,10 @@ function logoutAction() {
     return { type: userTypes.LOGOUT } 
 }
 
+function refreshUser(user) {
+    return { type: userTypes.REFRESH_USER, user } 
+}
+
 function toggleSidebar() { 
     return { type: userTypes.TOGGLE_SIDEBAR } 
 }
@@ -70,6 +78,8 @@ console.log(user);
 const initialState = user ? { loggedIn: true, user, sidebarOpen: true } : { loggedIn: false, sidebarOpen: true };
 // Reducer
 export default function reducer(state = initialState, action) {
+    const { loggedIn, user, sidebarOpen } = state;
+
     switch (action.type) {
     case userTypes.REGISTER_REQUEST:
         return {
@@ -91,14 +101,20 @@ export default function reducer(state = initialState, action) {
     case userTypes.LOGIN_SUCCESS:
         return {
             loggedIn: true,
-            user: action.user
+            user: action.user,
+            sidebarOpen: true,
         };
     case userTypes.LOGIN_FAILURE:
         return {};
     case userTypes.LOGOUT:
         return {};
+    case userTypes.REFRESH_USER:
+        return {
+            loggedIn: true,
+            user: action.user,
+            sidebarOpen: sidebarOpen,
+        };
     case userTypes.TOGGLE_SIDEBAR:
-        const { loggedIn, user, sidebarOpen } = state;
         return {
             loggedIn,
             user,

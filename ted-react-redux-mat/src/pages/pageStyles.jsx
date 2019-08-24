@@ -8,7 +8,7 @@ export const pageStyles = (theme) => ({
         minHeight: '100vh'
     },
     pageWrapper: {
-        marginTop: theme.spacing(15),
+        marginTop: theme.spacing(14),
     },
     content: {
         height: '100%',
