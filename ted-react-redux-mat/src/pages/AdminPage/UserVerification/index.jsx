@@ -7,6 +7,8 @@ import { Avatar, Divider, Typography, Grid, Button, CircularProgress } from '@ma
 // For importing my custom styles  
 import { makeStyles } from '@material-ui/core/styles';
 
+import PaperTitle from '../../../sharedComp/PaperTitle';
+
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -66,9 +68,14 @@ export default function UserVerification(props) {
                 item
             >
 
-                <Typography variant="h3">
+                {/* <Typography variant="h3">
                     User Details
-            </Typography>
+                </Typography> */}
+
+                <PaperTitle
+                    title='User Details'
+                    suggestion={''}
+                />
 
                 <Grid
                     container

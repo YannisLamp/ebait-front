@@ -9,7 +9,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { pageStyles } from '../pageStyles';
 
 import Sidebar from '../../sharedComp/Sidebar';
-import EditUser from './EditUser';
+import AuctionForm from './AuctionForm';
 
 
 const useStyles = makeStyles(theme => ({
@@ -24,29 +24,31 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function ProfilePage(props) {
+export default function MyAuctions(props) {
 
     const classes = useStyles();
+
     return (
         <Sidebar>
             <div className={classes.root}>
-
                 <Grid
                     className={classes.grid}
                     container
                     justify="center"
                 >
+
+
                     <Grid
                         className={classes.pageWrapper}
                         item
-                        lg={8}
+                        lg={10}
                     >
                         <Paper className={classes.paper}>
-                            <EditUser />
+                            {/* <AuctionForm /> */}
                         </Paper>
                     </Grid>
-                </Grid>
 
+                </Grid>
             </div>
         </Sidebar>
     );

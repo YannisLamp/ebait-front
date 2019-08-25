@@ -62,9 +62,9 @@ export default function HomePage(props) {
 
                                 <Grid item xs={6}>
                                     <ActionCard 
-                                        title="Create Auction" 
+                                        title="My Auctions" 
                                         bodyText="explanation paopap"
-                                        to="/create-auction" 
+                                        to="/my-auction" 
                                         backgroundColor="#5fba43" 
                                     />
 

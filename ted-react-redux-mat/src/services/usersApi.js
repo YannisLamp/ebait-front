@@ -17,16 +17,10 @@ function getUsers(orderBy, order, pageSize, currPage) {
 
                 pageSize: pageSize,
                 order: order,
-
             }
             })
             .then(response => {
-                    // If the login process was successful, save authorization JWT
-                    //const authorizationJwt = response.headers.authorization;
-                    //axios.defaults.headers.common['Authorization'] = authorizationJwt;
 
-                    // Then request and save logged in user information  
-                    //const userId = response.headers.userid;
                     return response.data;
                 },
                 error => {
@@ -53,12 +47,6 @@ function getNotVerifiedUsers(orderBy, order, pageSize, currPage) {
         }
         })
         .then(response => {
-                // If the login process was successful, save authorization JWT
-                //const authorizationJwt = response.headers.authorization;
-                //axios.defaults.headers.common['Authorization'] = authorizationJwt;
-
-                // Then request and save logged in user information  
-                //const userId = response.headers.userid;
                 return response.data;
             },
             error => {
@@ -89,9 +77,6 @@ function getUserInfo(userId) {
 
 
 
-
-
-// GIA USERS META
 function editUserInfo(userId, firstName, lastName, email, 
         phoneNumber, country, address, afm) {
     const editUserData = { firstName, lastName, email, 
@@ -110,10 +95,10 @@ function editUserInfo(userId, firstName, lastName, email,
         );
 }
 
-function changeUserPassword(userId, oldPassword, password) {
-    const changePasswordData = { oldPassword, password };
 
-    //+ userId
+function changeUserPassword(currPassword, newPassword) {
+    const changePasswordData = { currPassword, newPassword };
+
     return axios.put('/users/change_password/', changePasswordData)
         .then(response => {
             console.log('response');

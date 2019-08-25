@@ -15,7 +15,7 @@ import { withStyles } from '@material-ui/core';
 
 const styles = theme => ({
     root: {
-        height: '75vh',
+        height: '80vh',
         width: '100%',
 
     },
@@ -40,13 +40,12 @@ const styles = theme => ({
         marginTop: theme.spacing(2),
         marginLeft: theme.spacing(2),
         marginRight: theme.spacing(2),
-        width: theme.spacing(25)
+        width: theme.spacing(26)
     },
     progress: {
-        display: 'block',
+        //display: 'block',
         marginTop: theme.spacing(2),
-        marginLeft: 'auto',
-        marginRight: 'auto'
+        marginRight: theme.spacing(12),
     },
 
 });
@@ -79,6 +78,8 @@ class EditUser extends Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.handleEditUser = this.handleEditUser.bind(this);
+
+        this.checkPasswordMatch = this.checkPasswordMatch.bind(this);
         this.handleChangePassword = this.handleChangePassword.bind(this);
     }
 
@@ -101,14 +102,20 @@ class EditUser extends Component {
         //}
     }
 
+    checkPasswordMatch() {
+        this.setState((prevState, props) => {
+            return { 'passwordsMatch': prevState.password === prevState.confirmPassword }
+        });
+    }
+
     handleChangePassword() {
         this.setState((prevState, props) => { return { passLoading: true } });
         const { userId, oldPassword, password, confirmPassword } = this.state;
         const { dispatch } = this.props;
         // na elegxw gia adeia
-        // kai an tairiazoun
+
         //if (username) {
-             usersApi.changeUserPassword(userId, oldPassword, password)
+             usersApi.changeUserPassword(oldPassword, password)
                 .then(response => {
                     this.setState((prevState, props) => { return { passLoading: false } });
                 })
@@ -282,7 +289,7 @@ class EditUser extends Component {
                                     variant="contained"
                                 >
                                     Save Changes
-                                    </Button>
+                                </Button>
                             )
                         }
                     </Grid>

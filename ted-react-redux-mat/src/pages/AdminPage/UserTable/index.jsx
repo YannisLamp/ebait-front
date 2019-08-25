@@ -9,7 +9,9 @@ import {
 
 import { CheckBox as CheckBoxIcon, CheckBoxOutlineBlank as CheckBoxBlankIcon } from '@material-ui/icons';
 
+import PaperTitle from '../../../sharedComp/PaperTitle';
 import UserTableHead from './UserTableHead';
+
 
 import { withStyles } from '@material-ui/core';
 
@@ -19,6 +21,7 @@ import { usersApi } from '../../../services'
 const styles = theme => ({
     root: {
         width: '100%',
+        height: 'inherit',
     },
     table: {
         minWidth: 750,
@@ -88,9 +91,16 @@ class UserTable extends Component {
 
         return (
             <div className={classes.root}>
-                <Typography variant="h3">
+                {/* <Typography variant="h3">
                     Registered Users
-                </Typography>
+                </Typography> */}
+
+                <PaperTitle
+                    title=' Registered Users'
+                    suggestion={''}
+                />
+
+
                 <div className={classes.tableWrapper}>
                     {isLoading ? (
                         // <CircularProgress className={classes.progress} />

@@ -65,7 +65,7 @@ export default function App(props) {
 
                 <Route path="/notfound" component={NotFound} />
 
-                <Route path="/create-auction" component={CreateAuction} />
+                <Route path="/create-auction" component={CreateAuction} /> 
 
                 {/* <Route path="/notyetaccepted" component={NotYetAccepted} /> */}
 
