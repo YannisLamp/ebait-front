@@ -170,7 +170,6 @@ class CreateAuction extends Component {
     }
 
     handleMapClick(e) {
-        console.log(e);
         this.setState((prevState, props) => { return { 
             selectedLat: e.latlng.lat,
             selectedLng: e.latlng.lng,
@@ -199,6 +198,7 @@ class CreateAuction extends Component {
 
         const { name, description, endingDate, firstBid, buyout, selectedCategories,
             country, locationDescription, selectedLat, selectedLng } = this.state;
+
 
         auctionsApi.createAuction(name, description, endingDate, 
                 firstBid, buyout, selectedCategories, country, locationDescription,
