@@ -27,7 +27,7 @@ export default function CreateAuctionMap(props) {
 
     const { locationQuery, startingLat, startingLng, selectedLat, selectedLng, hasLocation } = props;
     const { handleChange, handleMapClick, updateMap } = props;
-    const style = { height: '400px' }; 
+    const style = { height: '450px' }; 
 
     const classes = useStyles();
 
@@ -42,7 +42,7 @@ export default function CreateAuctionMap(props) {
     }
 
     return (
-        <div style={{ height: '80vh' }}>
+        <div>
 
             <PaperTitle
                 title='Choose your Location'

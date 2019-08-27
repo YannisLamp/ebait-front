@@ -11,7 +11,10 @@ import { pageStyles } from '../pageStyles';
 
 import Sidebar from '../../sharedComp/Sidebar';
 import AuctionLocationForm from './AuctionLocationForm';
+import AuctionDetailsForm from './AuctionDetailsForm';
 import CreateAuctionMap from './CreateAuctionMap';
+import AuctionPhotoUpload from './AuctionPhotoUpload';
+import CreateAuctionProgress from './CreateAuctionProgress';
 
 import { nominatimApi } from '../../services';
 import { auctionsApi } from '../../services';
@@ -25,7 +28,7 @@ const styles = theme => ({
         paddingLeft: theme.spacing(3),
         paddingRight: theme.spacing(3),
         paddingBottom: theme.spacing(1),
-        height: '70vh'
+        minHeight: '70vh'
     },
     buttonWrapper: {
         marginTop: theme.spacing(1),
@@ -43,10 +46,14 @@ const styles = theme => ({
         paddingRight: theme.spacing(8),
         marginBottom: theme.spacing(4),
     },
-    locationDetailsWrapper: {
+    locationWrapper: {
         marginTop: theme.spacing(14),
         marginRight: theme.spacing(10),
     },
+    detailsWrapper: {
+        marginTop: theme.spacing(14),
+        marginRight: theme.spacing(10),
+    }
 });
 
 class CreateAuction extends Component {
@@ -54,10 +61,23 @@ class CreateAuction extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            name: '',
+            description: '',
+            endingDate: null,
+            firstBid: '',
+            buyout: '',
+            allCategories: [],
+            selectedCategories: [],
+
+            file1: '',
+            imagePreviewUrl1: '',
+            file2: '',
+            imagePreviewUrl2: '',
 
             country: this.props.user.country,
             address: this.props.user.address, 
             locationDescription: '',
+
             locationQuery: this.props.user.address + ', ' + this.props.user.country,
             startingLat: null,
             startingLng: null,
@@ -67,6 +87,8 @@ class CreateAuction extends Component {
 
             currentStep: 1,
         };
+
+        this.handleDateChange = this.handleDateChange.bind(this);
 
         this.handleCountryChange = this.handleCountryChange.bind(this);
         this.handleAddressChange = this.handleAddressChange.bind(this);
@@ -83,10 +105,12 @@ class CreateAuction extends Component {
 
 
     componentDidMount() {
-        // auctionsApi.getCategories()
-        //     .then(res => {
-        //         console.log(res);
-        //     })
+        auctionsApi.getCategories()
+            .then(data => {
+                this.setState((prevState, props) => { return { 
+                    allCategories: data
+                }});
+            })
 
         nominatimApi.getGeoLocation(this.state.locationQuery)
             .then(data => {
@@ -105,6 +129,10 @@ class CreateAuction extends Component {
         this.setState((prevState, props) => { return { [name]: value } });
     }
 
+    handleDateChange(date) {
+        this.setState((prevState, props) => { return { endingDate: date } });
+    }
+
     handleCountryChange(e) {
         const { value } = e.target;
         this.setState((prevState, props) => {
@@ -115,31 +143,6 @@ class CreateAuction extends Component {
             }
         });
     }
-
-
-    // const query = prevState.address + ', ' + value;
-    //         nominatimApi.getGeoLocation(query)
-    //             .then(data => {
-    //                 const coords = data.features[0].geometry.coordinates;
-    //                 // Coordinates are given in reverse order from API
-    //                 this.setState((prevState, props) => { return { 
-    //                     startingLat: coords[1],
-    //                     startingLng: coords[0]  
-    //                 }});
-    //             })
-
-
-    // const query = value + ', ' + prevState.country;
-    //         nominatimApi.getGeoLocation(query)
-    //             .then(data => {
-    //                 const coords = data.features[0].geometry.coordinates;
-    //                 // Coordinates are given in reverse order from API
-    //                 this.setState((prevState, props) => { return { 
-    //                     startingLat: coords[1],
-    //                     startingLng: coords[0]  
-    //                 }});
-    //             })
-
 
     updateMap() {
         const query = this.state.locationQuery;
@@ -167,6 +170,7 @@ class CreateAuction extends Component {
     }
 
     handleMapClick(e) {
+        console.log(e);
         this.setState((prevState, props) => { return { 
             selectedLat: e.latlng.lat,
             selectedLng: e.latlng.lng,
@@ -178,20 +182,36 @@ class CreateAuction extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        this.setState({ submitted: true });
-        const { username, password, firstName, lastName, email, phoneNumber,
-            country, address, afm } = this.state;
-        const { dispatch } = this.props;
+        // this.setState({ submitted: true });
+        // const { username, password, firstName, lastName, email, phoneNumber,
+        //     country, address, afm } = this.state;
+        // const { dispatch } = this.props;
 
-        // Check validity 
-        if (username && password && firstName && lastName && email && phoneNumber &&
-            country && address && afm) {
-            // dispatch(registerApi.registerThunk(username, password, firstName,
-            //     lastName, email, phoneNumber, country, address, afm));
-        }
+        // // Check validity 
+        // if (username && password && firstName && lastName && email && phoneNumber &&
+        //     country && address && afm) {
+        //     // dispatch(registerApi.registerThunk(username, password, firstName,
+        //     //     lastName, email, phoneNumber, country, address, afm));
+        // }
 
-        const { user } = this.props;
-        console.log(user);
+        // const { user } = this.props;
+        // console.log(user);
+
+        const { name, description, endingDate, firstBid, buyout, selectedCategories,
+            country, locationDescription, selectedLat, selectedLng } = this.state;
+
+        auctionsApi.createAuction(name, description, endingDate, 
+                firstBid, buyout, selectedCategories, country, locationDescription,
+                selectedLat, selectedLng)
+            .then(data => {
+                
+            })
+
+        auctionsApi.getUserAuctions()
+            .then(data => {
+                console.log('TA AUCTIONS MANMU');
+                console.log(data);
+            })
     }
 
     
@@ -209,8 +229,6 @@ class CreateAuction extends Component {
 
     render() {
 
-
-        
     // function formForStep(step, comp) {
     //     if (step === 1) {
     //         const { username, password, confirmPassword } = comp.state;
@@ -256,11 +274,14 @@ class CreateAuction extends Component {
     // }
 
     // let currentForm = formForStep(currentStep, this);
-        const { country, address, locationDescription, locationQuery, 
+        const { name, description, endingDate, firstBid, buyout, allCategories, selectedCategories } = this.state;
+    
+        const { currentStep, country, address, locationDescription, locationQuery, 
             startingLat, startingLng, selectedLat, selectedLng, hasLocation } = this.state;
-        const { classes } = this.props;
 
-       
+        
+
+        const { classes } = this.props;
         return (
             <Sidebar>
                 <div className={classes.root}>
@@ -270,8 +291,11 @@ class CreateAuction extends Component {
                         justify="center"
                     >
 
+
+                    {currentStep===2 ? (
+                        <>
                         <Grid
-                            className={classes.locationDetailsWrapper}
+                            className={classes.locationWrapper}
                             item
                             lg={3}
                         >
@@ -309,6 +333,58 @@ class CreateAuction extends Component {
                                 />
                             </Paper>
                         </Grid>
+                        </>
+                    ) : (
+
+                        <>
+
+                        <Grid
+                            className={classes.detailsWrapper}
+                            item
+                            lg={6}
+                        >
+                            <Paper className={classes.paper}>
+                                <AuctionDetailsForm
+                                    name={name}
+                                    description={description}
+                                    endingDate={endingDate}
+                                    firstBid={firstBid}
+                                    buyout={buyout}
+
+                                    allCategories={allCategories}
+                                    selectedCategories={selectedCategories}
+
+                                    handleChange={this.handleChange}
+                                    handleDateChange={this.handleDateChange}
+                                />
+
+                            </Paper>
+                        </Grid>
+
+                        <Grid
+                            className={classes.pageWrapper}
+                            item
+                            lg={4}
+                        >
+                            <Paper className={classes.paper}>
+                                <AuctionPhotoUpload
+                                    locationQuery={locationQuery}
+                                    startingLat={startingLat}
+                                    startingLng={startingLng}
+                                    selectedLat={selectedLat}
+                                    selectedLng={selectedLng}
+                                    hasLocation={hasLocation}
+
+                                    handleChange={this.handleChange}
+                                    handleMapClick={this.handleMapClick}
+                                    updateMap={this.updateMap}
+                                />
+                            </Paper>
+                        </Grid>
+
+                        </>
+
+                    )}         
 
                         <Grid
                             className={classes.buttonWrapper}
@@ -316,14 +392,14 @@ class CreateAuction extends Component {
                             lg={10}
                         >
                             <Paper className={classes.buttonPaper}>
-                                            <Button
-                                            className={classes.button}
-                                        color="primary"
-                                        size="large"
-                                        variant="contained"
-                                    >
-                                        Register
-                                    </Button>
+                                    <CreateAuctionProgress 
+                                        currentStep={currentStep}
+                                        //canSubmit={canSubmit}
+
+                                        prevStep={this.prevStep}
+                                        nextStep={this.nextStep}
+                                        handleSubmit={this.handleSubmit}
+                                    />
                             </Paper>
                         </Grid>
 

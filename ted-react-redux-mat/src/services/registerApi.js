@@ -35,7 +35,7 @@ function registerThunk(username, password, firstName,
         axios.post('/register', jsonRequest)
             .then(
                 response => {
-                    console.log(response.headers);
+                    // console.log(response.headers);
                     dispatch(userActions.registerSuccess(user));
 
                     // If register was a success, then log him in (redirection will take place after login)

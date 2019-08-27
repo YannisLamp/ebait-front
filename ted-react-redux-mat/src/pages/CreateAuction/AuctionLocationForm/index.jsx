@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { history } from '../../../utils';
 
-import { registerApi } from '../../../services';
-
 import PaperTitle from '../../../sharedComp/PaperTitle';
 
 // Material
