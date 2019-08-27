@@ -24,7 +24,6 @@ function getUsers(orderBy, order, pageSize, currPage) {
                     return response.data;
                 },
                 error => {
-
                     if (error.response.status === 401) {
                         // auto logout if 401 response returned from api
                         // dispatch(logoutThunk);
