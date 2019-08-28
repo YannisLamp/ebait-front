@@ -75,11 +75,20 @@ class AdminPage extends Component {
         usersApi.getUsers(orderBy, order, pageSize, currPage)
             .then(data => {
                 this.setState((prevState, props) => {
+                    
+                    // At first select the first user of the table
+                    // for information display
+                    let firstUser = null;
+                    if (data.users.length > 0) {
+                        firstUser = data.users[0];
+                    }
+
                     return {
                         users: data.users,
                         totalPages: data.totalPages,
                         totalUsers: data.totalUsers,
-                        isLoading: false
+                        isLoading: false,
+                        userToVerify: firstUser
                     }
                 })
             });
@@ -182,12 +191,13 @@ class AdminPage extends Component {
                         </Grid>
 
                         <Grid
-                            className={classes.pageWrapper}
+                            className={classes.rightWrapper}
                             item
                             lg={2}
                         >
                             <Paper className={classes.paper}>
                                 <UserVerification 
+                                    style={{height: '100%'}}
                                     user={userToVerify} 
                                     isLoading={isVerifying} 
                                     verifyUser={this.verifyUser} 

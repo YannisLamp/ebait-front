@@ -15,9 +15,11 @@ import RegisterForm from './RegisterForm';
 
 const useStyles = makeStyles(theme => ({
     ...pageStyles(theme),
-    formPaper: {
+    registerPaper: {
         minHeight: '70vh',
-    }
+        marginTop: theme.spacing(9),
+        marginBottom: theme.spacing(1),
+    },
 }));
 
 export default function Register(props) {
@@ -44,7 +46,7 @@ export default function Register(props) {
                         lg={4}
                         xs={8}
                     >
-                        <Paper className={classes.formPaper}>
+                        <Paper className={classes.registerPaper}>
                             <RegisterForm />
                         </Paper>
                     </Grid>

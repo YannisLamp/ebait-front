@@ -32,7 +32,7 @@ const styles = theme => ({
     },
     buttonWrapper: {
         marginTop: theme.spacing(1),
-        marginRight: theme.spacing(10),
+        marginRight: theme.spacing(14),
     },
     button: {
         marginTop: theme.spacing(1),
@@ -53,7 +53,7 @@ const styles = theme => ({
     detailsWrapper: {
         marginTop: theme.spacing(14),
         marginRight: theme.spacing(10),
-    }
+    },
 });
 
 class CreateAuction extends Component {
@@ -314,7 +314,7 @@ class CreateAuction extends Component {
                         </Grid>
 
                         <Grid
-                            className={classes.pageWrapper}
+                            className={classes.rightWrapper}
                             item
                             lg={7}
                         >
@@ -362,7 +362,7 @@ class CreateAuction extends Component {
                         </Grid>
 
                         <Grid
-                            className={classes.pageWrapper}
+                            className={classes.rightWrapper}
                             item
                             lg={4}
                         >

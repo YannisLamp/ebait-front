@@ -10,7 +10,7 @@ import {
 import { CheckBox as CheckBoxIcon, CheckBoxOutlineBlank as CheckBoxBlankIcon } from '@material-ui/icons';
 
 import PaperTitle from '../../../sharedComp/PaperTitle';
-import UserTableHead from './UserTableHead';
+import AuctionTableHead from './AuctionTableHead';
 
 
 import { withStyles } from '@material-ui/core';
@@ -56,11 +56,7 @@ class UserTable extends Component {
         super(props);
 
         
-    }
-
-
-    
-    
+    }    
 
     headRows = [
         { id: 'username', right: false, disablePadding: true, label: 'Username' },
@@ -72,13 +68,8 @@ class UserTable extends Component {
         { id: 'verified', right: true, disablePadding: false, label: 'Verified' },
     ];
 
-
-
-    
-
-
     render() {
-        const { users, order, orderBy, pageSize, isLoading, currPage, totalUsers } = this.props;
+        const { auctions, order, orderBy, pageSize, isLoading, currPage, totalUsers } = this.props;
         const { changeUser, handleRequestSort, handleChangePage, handleChangeRowsPerPage} = this.props;
 
         //const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.users.length - page * rowsPerPage);
@@ -112,7 +103,7 @@ class UserTable extends Component {
                                 className={classes.table}
                                 aria-labelledby="Users"
                             >
-                                <UserTableHead
+                                <AuctionTableHead
                                     headRows={this.headRows}
                                     order={order}
                                     orderBy={orderBy}

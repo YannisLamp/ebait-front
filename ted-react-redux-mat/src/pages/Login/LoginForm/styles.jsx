@@ -10,6 +10,9 @@ export default theme => ({
     flexGrow: 1,
     display: 'flex',
     alignItems: 'center',
+    [theme.breakpoints.down('lg')]: {
+      paddingTop: theme.spacing(8),
+    },
     [theme.breakpoints.down('md')]: {
       justifyContent: 'center'
     }
@@ -19,9 +22,15 @@ export default theme => ({
     paddingRight: '100px',
     paddingBottom: theme.spacing(20),
     flexBasis: '700px',
+    [theme.breakpoints.down('lg')]: {
+      paddingLeft: '80px',
+      paddingRight: '80px',
+      paddingBottom: theme.spacing(8),
+    },
     [theme.breakpoints.down('sm')]: {
       paddingLeft: theme.spacing(2),
-      paddingRight: theme.spacing(2)
+      paddingRight: theme.spacing(2),
+      paddingBottom: theme.spacing(4),
     }
   },
   title: {
@@ -77,9 +86,6 @@ export default theme => ({
     marginBottom: theme.spacing(1),
     marginTop: theme.spacing(2)
   },
-
-
-
 
 
   guestInline: {

@@ -11,20 +11,33 @@ export default theme => ({
         paddingTop: theme.spacing(5),
         paddingBottom: theme.spacing(2),
         paddingLeft: theme.spacing(2),
-        paddingRight: theme.spacing(2)
+        paddingRight: theme.spacing(2),
+        [theme.breakpoints.down('lg')]: {
+            paddingTop: theme.spacing(1),
+            paddingBottom: theme.spacing(1),
+        },
     },
     contentBody: {
         flexGrow: 1,
         display: 'flex',
         alignItems: 'flex-start',
+        [theme.breakpoints.down('lg')]: {
+            paddingTop: theme.spacing(2),
+        },
     },
     form: {
         width: '100%',
         paddingLeft: theme.spacing(15),
         paddingRight: theme.spacing(15),
+        [theme.breakpoints.down('lg')]: {
+            paddingLeft: '80px',
+            paddingRight: '80px',
+            paddingBottom: theme.spacing(2),
+        },
         [theme.breakpoints.down('sm')]: {
             paddingLeft: theme.spacing(2),
-            paddingRight: theme.spacing(2)
+            paddingRight: theme.spacing(2),
+            paddingBottom: theme.spacing(2),
         },
     },
     buttonBody:{
@@ -33,6 +46,11 @@ export default theme => ({
         paddingLeft: theme.spacing(15),
         paddingRight: theme.spacing(15),
         paddingBottom: theme.spacing(10),
+        [theme.breakpoints.down('lg')]: {
+            paddingLeft: '80px',
+            paddingRight: '80px',
+            paddingBottom: theme.spacing(8),
+        },
     },
     title: {
         marginTop: theme.spacing(3)

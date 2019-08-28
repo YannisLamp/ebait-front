@@ -39,7 +39,8 @@ export default function ProfilePage(props) {
                     <Grid
                         className={classes.pageWrapper}
                         item
-                        lg={8}
+                        xl={8}
+                        lg={10}
                     >
                         <Paper className={classes.paper}>
                             <EditUser />

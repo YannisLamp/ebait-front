@@ -21,6 +21,10 @@ const useStyles = makeStyles(theme => ({
         display: 'none'
       }
     },
+    signInPaper: {
+        marginTop: theme.spacing(9),
+        marginBottom: theme.spacing(1),
+    },
     loginAsGuest: {
       marginTop: theme.spacing(8),
     },
@@ -60,7 +64,7 @@ export default function Login(props) {
                             direction="column"
                             justify="center"
                         >
-                            <Paper>
+                            <Paper className={classes.signInPaper}>
                                 <LoginForm />
                             </Paper>
                         </Grid>

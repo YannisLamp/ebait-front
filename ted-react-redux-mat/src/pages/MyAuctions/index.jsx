@@ -36,8 +36,7 @@ export default function MyAuctions(props) {
                     container
                     justify="center"
                 >
-
-
+                    
                     <Grid
                         className={classes.pageWrapper}
                         item

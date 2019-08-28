@@ -40,6 +40,13 @@ const useStyles = makeStyles(theme => ({
     chip: {
         margin: 2,
     },
+    categoriesField: {
+        marginTop: theme.spacing(2),
+        marginLeft: theme.spacing(2),
+        marginRight: theme.spacing(2),
+        width: '40%',
+        marginBottom: theme.spacing(2),
+    }
 
 }));
 
@@ -168,7 +175,7 @@ export default function AuctionDetailsForm(props) {
             </Typography>
             
             <FormControl 
-                className={classes.textField} 
+                className={classes.categoriesField} 
                 variant="outlined"
             >
                     <InputLabel ref={inputLabel} htmlFor="select-multiple-chip">Categories</InputLabel>

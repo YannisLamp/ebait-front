@@ -40,7 +40,14 @@ const styles = theme => ({
         marginTop: theme.spacing(2),
         marginLeft: theme.spacing(2),
         marginRight: theme.spacing(2),
-        width: theme.spacing(26)
+        width: theme.spacing(26),
+    },
+    bottomButton: {
+        marginTop: theme.spacing(2),
+        marginLeft: theme.spacing(2),
+        marginRight: theme.spacing(2),
+        marginBottom: theme.spacing(2),
+        width: theme.spacing(26),
     },
     progress: {
         //display: 'block',
@@ -344,7 +351,7 @@ class EditUser extends Component {
                             <CircularProgress className={classes.progress} />
                         ) : (
                             <Button
-                                className={classes.button}
+                                className={classes.bottomButton}
                                 color="primary"
                                 type="submit"
                                 onClick={this.handleChangePassword}

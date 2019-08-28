@@ -17,8 +17,9 @@ const useStyles = makeStyles(theme => ({
     textField: {
         width: '50%',
     },
-    mapTitle: {
+    map: {
         marginTop: theme.spacing(2),
+        marginBottom: theme.spacing(2),
     }
 }));
 
@@ -62,7 +63,7 @@ export default function CreateAuctionMap(props) {
 
 
             {startingLat && startingLng ? (
-                <div className={classes.mapTitle}>
+                <div className={classes.map}>
                     <Map
                         center={{ lat: startingLat, lng: startingLng }}
                         zoom={15}

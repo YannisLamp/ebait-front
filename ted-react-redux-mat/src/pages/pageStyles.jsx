@@ -10,6 +10,10 @@ export const pageStyles = (theme) => ({
     pageWrapper: {
         marginTop: theme.spacing(14),
     },
+    rightWrapper: {
+        marginTop: theme.spacing(14),
+        marginRight: theme.spacing(4),
+    },
     content: {
         height: '100%',
         display: 'flex',

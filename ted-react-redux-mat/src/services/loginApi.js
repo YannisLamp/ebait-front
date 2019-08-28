@@ -36,6 +36,8 @@ function loginThunk(username, password) {
                     usersApi.getUserInfo(userId)
                         .then(data => {
                             let user = data;
+                            // TEMPORARY FIX NEEDS TO BE REMOVED
+                            user.address = user.location;
                             //user.authorizationJwt = authorizationJwt;
                             dispatch(userActions.loginSuccess(user))
                             // Also store retrieved information locally so that they persist
