@@ -10,7 +10,7 @@ import { Grid, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { pageStyles } from '../pageStyles';
 
-import SignUpForm from './RegisterForm';
+import RegisterForm from './RegisterForm';
 
 
 const useStyles = makeStyles(theme => ({
@@ -45,7 +45,7 @@ export default function Register(props) {
                         xs={8}
                     >
                         <Paper className={classes.formPaper}>
-                            <SignUpForm />
+                            <RegisterForm />
                         </Paper>
                     </Grid>
                 </Grid>

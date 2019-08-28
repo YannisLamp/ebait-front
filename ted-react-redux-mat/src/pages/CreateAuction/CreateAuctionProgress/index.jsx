@@ -1,9 +1,6 @@
 import React from 'react';
 
-// Material
-import { Button, CircularProgress } from '@material-ui/core';
-
-// For importing my custom styles  
+import { Button, CircularProgress } from '@material-ui/core';  
 import { makeStyles } from '@material-ui/core/styles';
 
 
