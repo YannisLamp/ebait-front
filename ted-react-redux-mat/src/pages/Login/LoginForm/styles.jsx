@@ -6,13 +6,10 @@ export default theme => ({
     textAlign: 'center'
   },
   contentBody: {
-    paddingTop: theme.spacing(14),
+    paddingTop: theme.spacing(7),
     flexGrow: 1,
     display: 'flex',
     alignItems: 'center',
-    [theme.breakpoints.down('lg')]: {
-      paddingTop: theme.spacing(8),
-    },
     [theme.breakpoints.down('md')]: {
       justifyContent: 'center'
     }
@@ -20,17 +17,17 @@ export default theme => ({
   form: {
     paddingLeft: '100px',
     paddingRight: '100px',
-    paddingBottom: theme.spacing(20),
+    paddingBottom: theme.spacing(14),
     flexBasis: '700px',
     [theme.breakpoints.down('lg')]: {
       paddingLeft: '80px',
       paddingRight: '80px',
-      paddingBottom: theme.spacing(8),
+      paddingBottom: theme.spacing(7),
     },
     [theme.breakpoints.down('sm')]: {
       paddingLeft: theme.spacing(2),
       paddingRight: theme.spacing(2),
-      paddingBottom: theme.spacing(4),
+      paddingBottom: theme.spacing(3),
     }
   },
   title: {

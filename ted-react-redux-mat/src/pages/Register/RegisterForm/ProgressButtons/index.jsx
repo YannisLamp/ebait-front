@@ -14,6 +14,11 @@ const useStyles = makeStyles(theme => ({
         marginTop: theme.spacing(8),
         justifyContent: 'space-between',
     },
+    circularProgress: {
+        //display: 'block',
+        marginTop: theme.spacing(2),
+        marginRight: theme.spacing(4),
+    },
 }));
 
 export default function ProgressButtons(props) {
@@ -51,7 +56,7 @@ export default function ProgressButtons(props) {
         if (step === 3) {
             if (isLoading) {
                 return (
-                    <CircularProgress />
+                    <CircularProgress className={classes.circularProgress} />
                 );
             }
             else {

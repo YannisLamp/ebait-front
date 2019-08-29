@@ -22,6 +22,8 @@ class LoginForm extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
 
+        this.loginAsGuest = this.loginAsGuest.bind(this);
+
     }
 
     // https://serverless-stack.com/chapters/create-a-login-page.html
@@ -36,12 +38,16 @@ class LoginForm extends Component {
 
         this.setState({ loading: true });
         const { username, password } = this.state;
-        //const { login } = this.props;
         const { dispatch } = this.props;
         if (username && password) {
             console.log('username and pass');
             dispatch(loginApi.loginThunk(username, password));
         }
+    }
+
+    loginAsGuest() {
+        const { dispatch } = this.props;
+        dispatch(loginApi.loginAsGuest());
     }
 
     render() {
@@ -120,7 +126,7 @@ class LoginForm extends Component {
                             or{' '}
                             <Link
                                 className={classes.signUpUrl}
-                                to="/register"
+                                onClick={this.loginAsGuest}
                             >
                                 Continue as guest
                             </Link>

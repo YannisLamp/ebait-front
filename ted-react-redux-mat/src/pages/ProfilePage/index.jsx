@@ -22,6 +22,10 @@ const useStyles = makeStyles(theme => ({
         marginBottom: theme.spacing(2),
         minHeight: '80vh',
     },
+    profileWrapper: {
+        marginTop: theme.spacing(14),
+        marginRight: theme.spacing(10),
+    }
 }));
 
 export default function ProfilePage(props) {
@@ -37,7 +41,7 @@ export default function ProfilePage(props) {
                     justify="center"
                 >
                     <Grid
-                        className={classes.pageWrapper}
+                        className={classes.profileWrapper}
                         item
                         xl={8}
                         lg={10}

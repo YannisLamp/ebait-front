@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-
+import { Link } from 'react-router-dom';
 // Material
-import { Grid, Paper, Button, TextField } from '@material-ui/core';
+import { Grid, Paper, Button, TextField, CircularProgress } from '@material-ui/core';
 
 import { connect } from 'react-redux';
+import { format } from 'date-fns';
 
 // For importing my custom styles  
 import { withStyles } from '@material-ui/core/styles';
@@ -28,7 +29,11 @@ const styles = theme => ({
         paddingLeft: theme.spacing(3),
         paddingRight: theme.spacing(3),
         paddingBottom: theme.spacing(1),
-        minHeight: '70vh'
+        minHeight: '80vh',
+
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
     },
     buttonWrapper: {
         marginTop: theme.spacing(1),
@@ -54,6 +59,18 @@ const styles = theme => ({
         marginTop: theme.spacing(14),
         marginRight: theme.spacing(10),
     },
+    progressButtons: {
+        width: '100%',
+        display: 'inline-flex',
+        marginTop: theme.spacing(1),
+        marginBottom: theme.spacing(1),
+        justifyContent: 'space-between',
+    },
+    circularProgress: {
+        //display: 'block',
+        marginTop: theme.spacing(2),
+        marginRight: theme.spacing(4),
+    },
 });
 
 class CreateAuction extends Component {
@@ -66,8 +83,13 @@ class CreateAuction extends Component {
             endingDate: null,
             firstBid: '',
             buyout: '',
-            allCategories: [],
-            selectedCategories: [],
+            categoryFields: [{
+                selectedIndex: '',
+                selectedValue: '',
+                allCategories: [],
+            }],
+
+            testo: 'aaa',
 
             file1: '',
             imagePreviewUrl1: '',
@@ -75,7 +97,7 @@ class CreateAuction extends Component {
             imagePreviewUrl2: '',
 
             country: this.props.user.country,
-            address: this.props.user.address, 
+            address: this.props.user.address,
             locationDescription: '',
 
             locationQuery: this.props.user.address + ', ' + this.props.user.country,
@@ -85,6 +107,7 @@ class CreateAuction extends Component {
             selectedLng: null,
             hasLocation: false,
 
+            isLoading: false,
             currentStep: 1,
         };
 
@@ -92,8 +115,9 @@ class CreateAuction extends Component {
 
         this.handleCountryChange = this.handleCountryChange.bind(this);
         this.handleAddressChange = this.handleAddressChange.bind(this);
+        this.handleCategoryPick = this.handleCategoryPick.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        
+
         this.updateMap = this.updateMap.bind(this);
         this.handleMapClick = this.handleMapClick.bind(this);
 
@@ -105,26 +129,33 @@ class CreateAuction extends Component {
 
 
     componentDidMount() {
-        auctionsApi.getCategories()
+        auctionsApi.getRootCategories()
             .then(data => {
-                this.setState((prevState, props) => { return { 
-                    allCategories: data
-                }});
-            })
+                this.setState((prevState, props) => {
+                    return {
+                        categoryFields: [{
+                            selectedIndex: '',
+                            selectedValue: '',
+                            allCategories: data,
+                        }],
+                    }
+                });
+            });
 
         nominatimApi.getGeoLocation(this.state.locationQuery)
             .then(data => {
                 const coords = data.features[0].geometry.coordinates;
                 // Coordinates are given in reverse order from API
-                this.setState((prevState, props) => { return { 
-                    startingLat: coords[1],
-                    startingLng: coords[0] 
-                }});
+                this.setState((prevState, props) => {
+                    return {
+                        startingLat: coords[1],
+                        startingLng: coords[0]
+                    }
+                });
             })
 
-            auctionsApi.getUserAuctions()
+        auctionsApi.getUserAuctions()
             .then(data => {
-                console.log(data);
                 this.setState((prevState, props) => { return { auctions: data } });
             })
     }
@@ -143,11 +174,45 @@ class CreateAuction extends Component {
         const { value } = e.target;
         this.setState((prevState, props) => {
             const query = prevState.address + ', ' + value;
-            return { 
+            return {
                 country: value,
                 locationQuery: query
             }
         });
+    }
+
+    handleCategoryPick(e, level) {
+        // Value is the category's index in the level's all categories
+        const catIndex = e.target.value;
+        const cat = this.state.categoryFields[level].allCategories[catIndex];
+        // Get the categories of the next level
+        auctionsApi.getChildrenCategories(cat.id)
+            .then(data => {
+                this.setState((prevState, props) => {
+                    let prevCategories = prevState.categoryFields;
+
+                    // Change current field value
+                    prevCategories[cat.level].selectedIndex = catIndex;
+                    prevCategories[cat.level].selectedValue = cat.name;
+
+                    if (data.length > 0) {
+                        // We want an extra object to be in the list 
+                        prevCategories.splice(cat.level + 2);
+                        prevCategories[cat.level + 1] = {
+                            selectedIndex: '',
+                            selectedValue: '',
+                            allCategories: data,
+                        }
+                    }
+                    else {
+                        prevCategories.splice(cat.level + 1);
+                    }
+
+                    return {
+                        prevCategories,
+                    }
+                });
+            });
     }
 
     updateMap() {
@@ -156,10 +221,12 @@ class CreateAuction extends Component {
             .then(data => {
                 const coords = data.features[0].geometry.coordinates;
                 // Coordinates are given in reverse order from API
-                this.setState((prevState, props) => { return { 
-                    startingLat: coords[1],
-                    startingLng: coords[0]  
-                }});
+                this.setState((prevState, props) => {
+                    return {
+                        startingLat: coords[1],
+                        startingLng: coords[0]
+                    }
+                });
             });
     }
 
@@ -168,7 +235,7 @@ class CreateAuction extends Component {
         const { value } = e.target;
         this.setState((prevState, props) => {
             const query = value + ', ' + prevState.country;
-            return { 
+            return {
                 address: value,
                 locationQuery: query
             }
@@ -176,45 +243,42 @@ class CreateAuction extends Component {
     }
 
     handleMapClick(e) {
-        this.setState((prevState, props) => { return { 
-            selectedLat: e.latlng.lat,
-            selectedLng: e.latlng.lng,
-            hasLocation: true,
-        }});
+        this.setState((prevState, props) => {
+            return {
+                selectedLat: e.latlng.lat,
+                selectedLng: e.latlng.lng,
+                hasLocation: true,
+            }
+        });
     }
 
 
     handleSubmit(e) {
         e.preventDefault();
-
-        // this.setState({ submitted: true });
-        // const { username, password, firstName, lastName, email, phoneNumber,
-        //     country, address, afm } = this.state;
-        // const { dispatch } = this.props;
-
-        // // Check validity 
-        // if (username && password && firstName && lastName && email && phoneNumber &&
-        //     country && address && afm) {
-        //     // dispatch(registerApi.registerThunk(username, password, firstName,
-        //     //     lastName, email, phoneNumber, country, address, afm));
-        // }
-
-        // const { user } = this.props;
-        // console.log(user);
-
-        const { name, description, endingDate, firstBid, buyout, selectedCategories,
+        const { name, description, endingDate, firstBid, buyout, categoryFields,
             country, locationDescription, selectedLat, selectedLng } = this.state;
+        
+        // Convert category fields to categories for API
+        let categories = [];
+        for (let cat of categoryFields) {
+            if (cat.selectedValue != "") {
+                categories.push({ name: cat.selectedValue });
+            }
+        }
 
+        // Convert Date object to proper format
+        const convertedEndingDate = format(endingDate, 'MMM-dd-yy HH:mm:ss');
 
-        auctionsApi.createAuction(name, description, endingDate, 
-                firstBid, buyout, selectedCategories, country, locationDescription,
-                selectedLat, selectedLng)
+        this.setState((prevState, props) => { return { isLoading: true, }});
+        auctionsApi.createAuction(name, description, convertedEndingDate,
+            firstBid, buyout, categories, country, locationDescription,
+            selectedLat, selectedLng)
             .then(data => {
-                
+                this.setState((prevState, props) => { return { isLoading: false, }});
             });
     }
 
-    
+
     prevStep() {
         this.setState((prevState, props) => {
             return { 'currentStep': prevState.currentStep - 1 }
@@ -228,12 +292,12 @@ class CreateAuction extends Component {
     }
 
     render() {
-        const { name, description, endingDate, firstBid, buyout, allCategories, selectedCategories } = this.state;
-    
-        const { currentStep, country, address, locationDescription, locationQuery, 
+        const { name, description, endingDate, firstBid, buyout, isLoading, categoryFields } = this.state;
+
+        const { currentStep, country, address, locationDescription, locationQuery,
             startingLat, startingLng, selectedLat, selectedLng, hasLocation } = this.state;
 
-        
+
 
         const { classes } = this.props;
         return (
@@ -246,107 +310,152 @@ class CreateAuction extends Component {
                     >
 
 
-                    {currentStep===2 ? (
-                        <>
-                        <Grid
-                            className={classes.locationWrapper}
-                            item
-                            lg={3}
-                        >
-                            <Paper className={classes.paper}>
-                                <AuctionLocationForm 
-                                    country={country}
-                                    address={address}
-                                    locationDescription={locationDescription}
+                        {currentStep === 2 ? (
+                            <>
+                                <Grid
+                                    className={classes.locationWrapper}
+                                    item
+                                    lg={3}
+                                >
+                                    <Paper className={classes.paper}>
+                                        <AuctionLocationForm
+                                            country={country}
+                                            address={address}
+                                            locationDescription={locationDescription}
 
-                                    handleCountryChange={this.handleCountryChange}
-                                    handleAddressChange={this.handleAddressChange}
-                                    handleChange={this.handleChange}
-                                    updateMap={this.updateMap}
-                                />
-                            </Paper>
-                        </Grid>
+                                            handleCountryChange={this.handleCountryChange}
+                                            handleAddressChange={this.handleAddressChange}
+                                            handleChange={this.handleChange}
+                                            updateMap={this.updateMap}
+                                        />
 
-                        <Grid
-                            className={classes.rightWrapper}
-                            item
-                            lg={7}
-                        >
-                            <Paper className={classes.paper}>
-                                <CreateAuctionMap 
-                                    locationQuery={locationQuery}
-                                    startingLat={startingLat}
-                                    startingLng={startingLng}
-                                    selectedLat={selectedLat}
-                                    selectedLng={selectedLng}
-                                    hasLocation={hasLocation}
 
-                                    handleChange={this.handleChange}
-                                    handleMapClick={this.handleMapClick}
-                                    updateMap={this.updateMap}
-                                />
-                            </Paper>
-                        </Grid>
-                        </>
-                    ) : (
+                                        <div className={classes.progressButtons}>
+                                            <Button
+                                                onClick={this.prevStep}
+                                                size="large"
+                                                variant="contained"
+                                            >
+                                                Back
+                                            </Button>
 
-                        <>
+                                            {isLoading ? (
+                                                <CircularProgress className={classes.circularProgress} />
+                                            ) : (
+                                                <Button
+                                                    color="primary"
+                                                    onClick={this.handleSubmit}
+                                                    size="large"
+                                                    variant="contained"
+                                                >
+                                                    Create
+                                                </Button>
+                                                )
+                                            }
+                                        </div>
 
-                        <Grid
-                            className={classes.detailsWrapper}
-                            item
-                            lg={6}
-                        >
-                            <Paper className={classes.paper}>
-                                <AuctionDetailsForm
-                                    name={name}
-                                    description={description}
-                                    endingDate={endingDate}
-                                    firstBid={firstBid}
-                                    buyout={buyout}
+                                    </Paper>
+                                </Grid>
 
-                                    allCategories={allCategories}
-                                    selectedCategories={selectedCategories}
+                                <Grid
+                                    className={classes.rightWrapper}
+                                    item
+                                    lg={7}
+                                >
+                                    <Paper className={classes.paper}>
+                                        <CreateAuctionMap
+                                            locationQuery={locationQuery}
+                                            startingLat={startingLat}
+                                            startingLng={startingLng}
+                                            selectedLat={selectedLat}
+                                            selectedLng={selectedLng}
+                                            hasLocation={hasLocation}
 
-                                    handleChange={this.handleChange}
-                                    handleDateChange={this.handleDateChange}
-                                />
+                                            handleChange={this.handleChange}
+                                            handleMapClick={this.handleMapClick}
+                                            updateMap={this.updateMap}
+                                        />
+                                    </Paper>
+                                </Grid>
+                            </>
+                        ) : (
 
-                            </Paper>
-                        </Grid>
+                                <>
 
-                        <Grid
-                            className={classes.rightWrapper}
-                            item
-                            lg={4}
-                        >
-                            <Paper className={classes.paper}>
-                                <AuctionPhotoUpload
-                                    locationQuery={locationQuery}
-                                    startingLat={startingLat}
-                                    startingLng={startingLng}
-                                    selectedLat={selectedLat}
-                                    selectedLng={selectedLng}
-                                    hasLocation={hasLocation}
+                                    <Grid
+                                        className={classes.detailsWrapper}
+                                        item
+                                        lg={6}
+                                    >
+                                        <Paper className={classes.paper}>
+                                            <AuctionDetailsForm
+                                                name={name}
+                                                description={description}
+                                                endingDate={endingDate}
+                                                firstBid={firstBid}
+                                                buyout={buyout}
+                                                categoryFields={categoryFields}
+                                                testo={this.state.testo}
 
-                                    handleChange={this.handleChange}
-                                    handleMapClick={this.handleMapClick}
-                                    updateMap={this.updateMap}
-                                />
-                            </Paper>
-                        </Grid>
 
-                        </>
+                                                handleChange={this.handleChange}
+                                                handleDateChange={this.handleDateChange}
+                                                handleCategoryPick={this.handleCategoryPick}
+                                            />
 
-                    )}         
+                                            <div className={classes.progressButtons}>
+                                                <Button
+                                                    onClick={this.redirectToMyAuctions}
+                                                    size="large"
+                                                    variant="contained"
+                                                >
+                                                    Cancel
+                                                </Button>
 
-                        <Grid
+                                                <Button
+                                                    onClick={this.nextStep}
+                                                    size="large"
+                                                    variant="contained"
+                                                >
+                                                    Next
+                                                </Button>
+                                            </div>
+
+                                        </Paper>
+                                    </Grid>
+
+                                    <Grid
+                                        className={classes.rightWrapper}
+                                        item
+                                        lg={4}
+                                    >
+                                        <Paper className={classes.paper}>
+                                            <AuctionPhotoUpload
+                                                locationQuery={locationQuery}
+                                                startingLat={startingLat}
+                                                startingLng={startingLng}
+                                                selectedLat={selectedLat}
+                                                selectedLng={selectedLng}
+                                                hasLocation={hasLocation}
+
+                                                handleChange={this.handleChange}
+                                                handleMapClick={this.handleMapClick}
+                                                updateMap={this.updateMap}
+                                            />
+                                        </Paper>
+                                    </Grid>
+
+                                </>
+
+                            )}
+
+                        {/* <Grid
                             className={classes.buttonWrapper}
                             item
                             lg={10}
-                        >
-                            {/* <Paper className={classes.buttonPaper}> */}
-                            <div className={classes.buttonPaper}>
+                        > */}
+                        {/* <Paper className={classes.buttonPaper}> */}
+                        {/* <div className={classes.buttonPaper}>
                                     <CreateAuctionProgress 
                                         currentStep={currentStep}
                                         //canSubmit={canSubmit}
@@ -355,9 +464,9 @@ class CreateAuction extends Component {
                                         nextStep={this.nextStep}
                                         handleSubmit={this.handleSubmit}
                                     />
-                            </div>
-                            {/* </Paper> */}
-                        </Grid>
+                            </div> */}
+                        {/* </Paper> */}
+                        {/* </Grid> */}
 
                     </Grid>
                 </div>

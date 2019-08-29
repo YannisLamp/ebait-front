@@ -21,7 +21,6 @@ const useStyles = makeStyles(theme => ({
     text: {
         color: "white",
     },
-
     disabled: {
         pointerEvents: 'none',
         cursor: 'default',
@@ -61,8 +60,7 @@ export default function ActionCard(props) {
                         More ->
                     </CardActions> */}
                     
-                </CardActionArea> 
-               
+                </CardActionArea>
             </Card>
         );
     }
@@ -93,7 +91,6 @@ export default function ActionCard(props) {
                     </CardActions> */}
                     
                 </CardActionArea> 
-               
             </Card>
         );
     }

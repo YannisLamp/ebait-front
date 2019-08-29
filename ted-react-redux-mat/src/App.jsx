@@ -12,11 +12,12 @@ import HomePage from './pages/HomePage';
 import NotFound from './pages/NotFound';
 import AdminPage from './pages/AdminPage';
 import ProfilePage from './pages/ProfilePage';
+import BrowseAuctions from './pages/BrowseAuctions';
 import MyAuctions from './pages/MyAuctions';
 import CreateAuction from './pages/CreateAuction';
 
 // import NotYetAccepted from './pages/NotYetAccepted';
-
+import { AdminRoute } from './routes';
 import { AuthAndVerRoute } from './routes';
 
 // Styles
@@ -67,13 +68,15 @@ export default function App(props) {
 
                 <Route path="/notfound" component={NotFound} />
 
+                <Route exact path="/browse" component={BrowseAuctions} />
+
                 <Route exact path="/myauctions" component={MyAuctions} />
 
                 <Route exact path="/myauctions/create-auction" component={CreateAuction} /> 
 
                 {/* <Route path="/notyetaccepted" component={NotYetAccepted} /> */}
 
-                <Route path="/admin" component={AdminPage}/>
+                <AdminRoute path="/admin" component={AdminPage}/>
 
                 <Route exact path="/profile" component={ProfilePage}/>
 

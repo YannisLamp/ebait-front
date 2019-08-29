@@ -5,14 +5,15 @@ import PaperTitle from '../../../sharedComp/PaperTitle';
 // Material
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
-import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
+import { KeyboardDateTimePicker } from "@material-ui/pickers";
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 
-import { IconButton, TextField, Typography } from '@material-ui/core';
+import { Button, TextField, Typography } from '@material-ui/core';
 
 import { InputLabel, MenuItem, FormControl, Select, Input, Chip, OutlinedInput } from '@material-ui/core';
 
 // For importing my custom styles  
-import { makeStyles, useTheme } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -31,7 +32,7 @@ const useStyles = makeStyles(theme => ({
         marginTop: theme.spacing(2),
         marginLeft: theme.spacing(2),
         marginRight: theme.spacing(2),
-        width: '40%'
+        width: '30%'
     },
     description: {
         paddingTop: theme.spacing(4),
@@ -40,49 +41,37 @@ const useStyles = makeStyles(theme => ({
     chip: {
         margin: 2,
     },
-    categoriesField: {
+    categoryField: {
         marginTop: theme.spacing(2),
         marginLeft: theme.spacing(2),
-        marginRight: theme.spacing(2),
-        width: '40%',
+        marginRight: theme.spacing(1),
+        width: '22%',
         marginBottom: theme.spacing(2),
-    }
-
-}));
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-    PaperProps: {
-        style: {
-            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: 250,
-        },
     },
-};
+}));
 
 function getStyles(name, personName, theme) {
     return {
-      fontWeight:
-        personName.indexOf(name) === -1
-          ? theme.typography.fontWeightRegular
-          : theme.typography.fontWeightMedium,
+        fontWeight:
+            personName.indexOf(name) === -1
+                ? theme.typography.fontWeightRegular
+                : theme.typography.fontWeightMedium,
     };
-  }
+}
 
 
 export default function AuctionDetailsForm(props) {
-    const { name, description, endingDate, firstBid, buyout, allCategories, selectedCategories } = props;
-    const { handleChange, handleDateChange, handleCategoryChange } = props;
 
-    // Some React hook magic from material ui so that the outlined stuff work
-    // const inputLabel = React.useRef(null);
-    // const [labelWidth, setLabelWidth] = React.useState(0);
-    // React.useEffect(() => {
-    //     setLabelWidth(inputLabel.current.offsetWidth);
-    // }, []);
+    const { name, description, endingDate, firstBid, buyout, categoryFields } = props;
+    const { handleChange, handleDateChange, handleCategoryPick } = props;
 
-    const theme = useTheme();
+    //Some React hook magic from material ui so that the outlined stuff work
+    const inputLabel = React.useRef(null);
+    const [labelWidth, setLabelWidth] = React.useState(0);
+    React.useEffect(() => {
+        setLabelWidth(inputLabel.current.offsetWidth);
+    }, []);
+
     const classes = useStyles();
     return (
         <div className={classes.root}>
@@ -123,25 +112,22 @@ export default function AuctionDetailsForm(props) {
             />
 
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
+                <KeyboardDateTimePicker
                     className={classes.textField}
-                    disableToolbar
                     variant="inline"
                     inputVariant="outlined"
-                    format="MM/dd/yyyy"
-                    margin="normal"
-                    id="ending-date"
+                    ampm={false}
                     label="Ending Date"
                     value={endingDate}
-                    name="endingDate"
                     onChange={handleDateChange}
-                    KeyboardButtonProps={{
-                        'aria-label': 'change date',
-                    }}
+                    onError={console.log}
+                    disablePast
+                    format="yyyy/MM/dd HH:mm"
                 />
+
             </MuiPickersUtilsProvider>
-           
-           <Typography
+
+            <Typography
                 className={classes.description}
                 variant="body1"
             >
@@ -173,39 +159,36 @@ export default function AuctionDetailsForm(props) {
             >
                 choose categories that describe your item
             </Typography>
-            
-            {/* <FormControl 
-                className={classes.categoriesField} 
-                variant="outlined"
-            >
-                    <InputLabel ref={inputLabel} htmlFor="select-multiple-chip">Categories</InputLabel>
-                        <Select
-                            multiple
-                            value={selectedCategories}
-                            name="selectedCategories"
-                            onChange={handleChange}
-                            input={<OutlinedInput labelWidth={labelWidth} id="select-multiple-chip" />}
-                            renderValue={selected => (
-                                <div className={classes.chips}>
-                                {selected.map(value => (
-                                    <Chip key={value} label={value} className={classes.chip} />
-                                ))}
-                                </div>
-                            )}
-                            MenuProps={MenuProps}
-                            >
-                            {allCategories.map(cat => (
-                                <MenuItem 
-                                    key={cat.name} 
-                                    value={cat.name} 
-                                    //style={getStyles(cat.name, selectedCategories, theme)}
-                                >
-                                {cat.name}
-                                </MenuItem>
-                            ))}
-                        </Select>
 
-                </FormControl> */}
+            {
+                categoryFields.map((field, level) => {
+                    return (
+                        <FormControl variant="outlined" className={classes.categoryField}>
+                            <InputLabel ref={inputLabel} htmlFor={'categories' + (level + 1)}>
+                                Category {level + 1}
+                            </InputLabel>
+                            <Select
+                                value={field.selectedIndex}
+                                onChange={e => { handleCategoryPick(e, level) }}
+                                input={<OutlinedInput
+                                    labelWidth={labelWidth}
+                                    name="category"
+                                    id={'categories' + (level + 1)}
+                                />}
+                            >
+                                {field.allCategories.map((cat, index) => (
+                                    <MenuItem
+                                        key={index}
+                                        value={index}
+                                    >
+                                        {cat.name}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    );
+                })
+            }
 
         </div>
     );

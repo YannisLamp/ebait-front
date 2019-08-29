@@ -1,13 +1,26 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
-export const AdminRoute = ({ component: Component, ...rest }) => (
-    <Route {...rest} render={props => (
-        
-        // EDW NA ELEGXW AN TO USERTYPE EINAI ADMIN 
-        localStorage.getItem('user')
-        // ME SIDEBAR
-            ? <Sidebar> <Component {...props} /> </Sidebar>
-            : <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
-    )} />
-)
+import { connect } from 'react-redux';
+
+
+export function AdminRoute({ component: Component, ...rest }) { 
+    const user = localStorage.getItem('user');
+    console.log(user);
+    return (
+        <Route {...rest} render={props => (
+            
+            // EDW NA ELEGXW AN TO USERTYPE EINAI ADMIN 
+            
+            // ME SIDEBAR
+                // ? <Sidebar> <Component {...props} /> </Sidebar>
+                true
+                ? <Component {...props} />
+                : <Redirect to='/' />
+        )} />
+    );
+}
+
+
+// const connectedHomePage = connect(mapStateToProps)(HomePage);
+// export default connectedHomePage;

@@ -9,7 +9,7 @@ import {
     ListSubheader, Typography, IconButton
 } from '@material-ui/core';
 
-
+import LimitedList from './LimitedList';
 import UserList from './UserList';
 import AdminList from './AdminList';
 
@@ -27,6 +27,70 @@ function Sidebar(props) {
     const sidebarOpen = props.sidebarOpen;
     const user = props.user;
 
+    function profileCredentials() {
+        if (user.userRole === 'GUEST') {
+            return (
+                <>
+                    <Avatar className={classes.userLogo}>
+                        G
+                    </Avatar>
+
+                    <Typography
+                        className={classes.usernameText}
+                        variant="h5"
+                    >
+                        Guest
+                    </Typography>
+                </>
+            );
+        }
+        else {
+            return (
+                <>
+                    <NavLink to="/profile" className={classes.notDecorated}>
+                        <Avatar className={classes.userLogo}>
+                            {user.firstName.charAt(0) + user.lastName.charAt(0)}
+                        </Avatar>
+                    </NavLink>
+
+                    <Typography
+                        className={classes.usernameText}
+                        variant="h5"
+                    >
+                        {user.username}
+                    </Typography>
+
+                    <Typography
+                        className={classes.nameText}
+                        variant="h6"
+                    >
+                        {user.firstName}{' '}{user.lastName}
+                    </Typography>
+                    <br/>
+                    <br/>
+                    <Typography
+                        className={classes.bioText}
+                        variant="h6"
+                    >
+                        {user.userRole === 'ADMIN' ? 'Administrator' : ''}
+                    </Typography>
+                </>
+            );
+        }
+    }
+
+    function getList() {
+        if (user.userRole === 'GUEST' || (user.userRole === 'USER' && user.verified === false)) {
+            return (<LimitedList userRole={user.userRole} />);
+        }
+        else if (user.userRole === 'USER') {
+            return (<UserList />);
+        }
+        else {
+            return (<AdminList />);
+        }
+    }
+
     return (
         <div className={classes.root}>
             <Drawer
@@ -36,50 +100,20 @@ function Sidebar(props) {
                 className={classes.drawer}
                 variant="persistent"
             >
-                    <div className={classes.profile}>
-                        <NavLink to="/profile" className={classes.notDecorated}>
-                            <Avatar className={classes.userLogo}>
-                                {user.firstName && user.lastName ? 
-                                    user.firstName.charAt(0) + user.lastName.charAt(0) 
-                                :   
-                                    'G'
-                                }
-                            </Avatar>
-                        </NavLink>
+                <div className={classes.profile}>
+                    {profileCredentials()}
+                </div>
 
-                        <Typography
-                            className={classes.usernameText}
-                            variant="h5"
-                        >
-                            {user.username}
-                        </Typography>
+                <Divider className={classes.profileDivider} />
 
-                        <Typography
-                            className={classes.nameText}
-                            variant="h6"
-                        >
-                            {user.firstName}{' '}{user.lastName}
-                        </Typography>
-                        <Typography
-                            className={classes.bioText}
-                            variant="caption"
-                        >
-                            {user.userRole === 'USER' ? 'User' : 'Administrator'}
-                        </Typography>
-                    </div>
-                    <Divider className={classes.profileDivider} />
+                {getList()}
 
-                        { user.userRole === 'USER' ? <UserList /> : <AdminList /> }
-                    
-
-
-                    <Divider className={classes.listDivider} />
-                    
+                <Divider className={classes.listDivider} />
 
             </Drawer>
-            
-            <div 
-                className={clsx(classes.content, {[classes.contentShift]: sidebarOpen,})}
+
+            <div
+                className={clsx(classes.content, { [classes.contentShift]: sidebarOpen, })}
             >
 
                 {props.children}

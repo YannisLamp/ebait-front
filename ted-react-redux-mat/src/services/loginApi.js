@@ -11,8 +11,8 @@ import { usersApi } from './usersApi';
 export const loginApi = {
     loginThunk,
     logoutThunk,
-    refreshUserThunk
-    //loginAsGuest,
+    refreshUserThunk,
+    loginAsGuest,
 };
 
 function loginThunk(username, password) {
@@ -82,6 +82,16 @@ function refreshUserThunk(userId) {
                 localStorage.setItem('user', JSON.stringify(user));
             }
             );
+    }
+}
+
+function loginAsGuest() {
+    return dispatch => {
+        const guest = {
+            userRole: 'GUEST'
+        };
+        dispatch(userActions.loginSuccess(guest));
+        history.push('/');
     }
 }
 

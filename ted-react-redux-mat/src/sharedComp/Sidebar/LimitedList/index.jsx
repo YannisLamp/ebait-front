@@ -23,16 +23,16 @@ import {
 // For importing my custom styles  
 import useStyles from '../styles';
 
-
 // Fix for NavLink forward Ref bug as seen below
 // https://github.com/mui-org/material-ui/issues/15903 
 const ForwardNavLink = React.forwardRef((props, ref) => (
     <NavLink {...props} innerRef={ref} />
 ));
 
-export default function UserList(props) {
+export default function LimitedList(props) {
+    const { userRole } = props;
+    
     const classes = useStyles();
-
     return (
         <List
             component="div"
@@ -58,7 +58,7 @@ export default function UserList(props) {
                 activeClassName={classes.activeListItem}
                 className={classes.listItem}
                 component={ForwardNavLink}
-                to="/auctions"
+                to="/browse"
             >
                 <ListItemIcon className={classes.listItemIcon}>
                     <ShoppingBasketIcon />
@@ -69,7 +69,67 @@ export default function UserList(props) {
                 />
             </ListItem>
 
+
+            <ListItem
+                activeClassName={classes.activeListItem}
+                disabled
+
+            >
+                <ListItemIcon className={classes.listItemIcon}>
+                    <LibraryAddOutlinedIcon />
+                </ListItemIcon>
+                <ListItemText
+                    classes={{ primary: classes.listItemText }}
+                    primary="My Auctions"
+                />
+            </ListItem>
+
+            <ListItem
+                activeClassName={classes.activeListItem}
+                disabled
+            >
+                <ListItemIcon className={classes.listItemIcon}>
+                    <MessageIcon />
+                </ListItemIcon>
+                <ListItemText
+                    classes={{ primary: classes.listItemText }}
+                    primary="Messages"
+                />
+            </ListItem>
+
             <Divider className={classes.listDivider} />
+
+            { userRole === 'GUEST' ? (
+                <ListItem
+                    activeClassName={classes.activeListItem}
+                    disabled
+                >
+                    <ListItemIcon className={classes.listItemIcon}>
+                        <AccountBoxIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                        classes={{ primary: classes.listItemText }}
+                        primary="Profile"
+                    />
+                </ListItem>
+            ) : (
+                <ListItem
+                    activeClassName={classes.activeListItem}
+                    className={classes.listItem}
+                    component={ForwardNavLink}
+                    to="/profile"
+                >
+                <ListItemIcon className={classes.listItemIcon}>
+                    <AccountBoxIcon />
+                </ListItemIcon>
+                <ListItemText
+                    classes={{ primary: classes.listItemText }}
+                    primary="Profile"
+                />
+                </ListItem>
+            )
+            }
+
 
             <ListItem
                 activeClassName={classes.activeListItem}
@@ -82,11 +142,13 @@ export default function UserList(props) {
                 </ListItemIcon>
                 <ListItemText
                     classes={{ primary: classes.listItemText }}
-                    primary="Log In"
+                    primary={userRole === 'GUEST' ? 'Log In' : 'Log Out'}
                 />
             </ListItem>
             
             
+            
+
             
             
         </List>

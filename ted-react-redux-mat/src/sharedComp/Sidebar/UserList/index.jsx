@@ -57,7 +57,7 @@ export default function UserList(props) {
                 activeClassName={classes.activeListItem}
                 className={classes.listItem}
                 component={ForwardNavLink}
-                to="/auctions"
+                to="/browse"
             >
                 <ListItemIcon className={classes.listItemIcon}>
                     <ShoppingBasketIcon />
