@@ -121,6 +121,12 @@ class CreateAuction extends Component {
                     startingLng: coords[0] 
                 }});
             })
+
+            auctionsApi.getUserAuctions()
+            .then(data => {
+                console.log(data);
+                this.setState((prevState, props) => { return { auctions: data } });
+            })
     }
 
 
@@ -205,13 +211,7 @@ class CreateAuction extends Component {
                 selectedLat, selectedLng)
             .then(data => {
                 
-            })
-
-        auctionsApi.getUserAuctions()
-            .then(data => {
-                console.log('TA AUCTIONS MANMU');
-                console.log(data);
-            })
+            });
     }
 
     
@@ -228,52 +228,6 @@ class CreateAuction extends Component {
     }
 
     render() {
-
-    // function formForStep(step, comp) {
-    //     if (step === 1) {
-    //         const { username, password, confirmPassword } = comp.state;
-    //         return (
-    //             < CredentialForm
-    //                 handleChange={comp.handleChange}
-    //                 checkPasswordMatch={comp.checkPasswordMatch}
-    //                 checkUsernameExists={comp.checkUsernameExists}
-
-    //                 username={username}
-    //                 password={password}
-    //                 confirmPassword={confirmPassword}
-    //                 usernameTaken={usernameTaken}
-    //                 passwordsMatch={passwordsMatch}
-    //             />
-    //         );
-    //     }
-    //     else if (step === 2) {
-    //         const { firstName, lastName, email, phoneNumber } = comp.state;
-    //         return (
-    //             < BasicInfoForm
-    //                 handleChange={comp.handleChange}
-
-    //                 firstName={firstName}
-    //                 lastName={lastName}
-    //                 email={email}
-    //                 phoneNumber={phoneNumber}
-    //             />
-    //         );
-    //     }
-    //     else if (step === 3) {
-    //         const { country, address, afm } = comp.state;
-    //         return (
-    //             < LocationForm
-    //                 handleChange={comp.handleChange}
-
-    //                 country={country}
-    //                 address={address}
-    //                 afm={afm}
-    //             />
-    //         );
-    //     }
-    // }
-
-    // let currentForm = formForStep(currentStep, this);
         const { name, description, endingDate, firstBid, buyout, allCategories, selectedCategories } = this.state;
     
         const { currentStep, country, address, locationDescription, locationQuery, 
@@ -391,7 +345,8 @@ class CreateAuction extends Component {
                             item
                             lg={10}
                         >
-                            <Paper className={classes.buttonPaper}>
+                            {/* <Paper className={classes.buttonPaper}> */}
+                            <div className={classes.buttonPaper}>
                                     <CreateAuctionProgress 
                                         currentStep={currentStep}
                                         //canSubmit={canSubmit}
@@ -400,7 +355,8 @@ class CreateAuction extends Component {
                                         nextStep={this.nextStep}
                                         handleSubmit={this.handleSubmit}
                                     />
-                            </Paper>
+                            </div>
+                            {/* </Paper> */}
                         </Grid>
 
                     </Grid>

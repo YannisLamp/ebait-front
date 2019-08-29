@@ -22,6 +22,8 @@ const useStyles = makeStyles(theme => ({
       }
     },
     signInPaper: {
+        paddingTop: theme.spacing(4),
+        paddingBottom: theme.spacing(4),
         marginTop: theme.spacing(9),
         marginBottom: theme.spacing(1),
     },

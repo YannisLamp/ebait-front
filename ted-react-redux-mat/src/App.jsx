@@ -12,7 +12,9 @@ import HomePage from './pages/HomePage';
 import NotFound from './pages/NotFound';
 import AdminPage from './pages/AdminPage';
 import ProfilePage from './pages/ProfilePage';
+import MyAuctions from './pages/MyAuctions';
 import CreateAuction from './pages/CreateAuction';
+
 // import NotYetAccepted from './pages/NotYetAccepted';
 
 import { AuthAndVerRoute } from './routes';
@@ -60,25 +62,27 @@ export default function App(props) {
             <Switch>
                 {/*<PrivateRoute exact path="/login/aaa paradeigma gia exact path" component={HomePage} />*/}
                 <Route exact path="/" component={HomePage} />
-                <Route path="/login" component={Login} />
-                <Route path="/register" component={Register} />
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/register" component={Register} />
 
                 <Route path="/notfound" component={NotFound} />
 
-                <Route path="/create-auction" component={CreateAuction} /> 
+                <Route exact path="/myauctions" component={MyAuctions} />
+
+                <Route exact path="/myauctions/create-auction" component={CreateAuction} /> 
 
                 {/* <Route path="/notyetaccepted" component={NotYetAccepted} /> */}
 
                 <Route path="/admin" component={AdminPage}/>
 
-                <Route path="/profile" component={ProfilePage}/>
+                <Route exact path="/profile" component={ProfilePage}/>
 
 {/*             kai ta 2 για το profile
                 <Route path="/admin/usrID" component={AdminPage} />
                 <Route path="/profile/usrID" component={AdminPage} /> */}
 
-                <AuthAndVerRoute render={() => <Redirect to="/" />} />
-                <Route render={() => <Redirect to="/login" />} />
+                {/* <AuthAndVerRoute render={() => <Redirect to="/" />} /> */}
+                <Route render={() => <Redirect to="/" />} />
             </Switch>
             {/*</header>*/}
             <AlertSnackbar/>

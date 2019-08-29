@@ -74,7 +74,7 @@ export default function UserList(props) {
                 activeClassName={classes.activeListItem}
                 className={classes.listItem}
                 component={ForwardNavLink}
-                to="/my-auctions"
+                to="/myauctions"
             >
                 <ListItemIcon className={classes.listItemIcon}>
                     <LibraryAddOutlinedIcon />

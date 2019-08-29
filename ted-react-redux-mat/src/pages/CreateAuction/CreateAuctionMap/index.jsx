@@ -51,7 +51,7 @@ export default function CreateAuctionMap(props) {
             />
 
             <TextField
-                className={classes.textField + ' ' + classes.mapTitle}
+                className={classes.textField + ' ' + classes.map}
                 label="Location"
                 name="locationQuery"
                 value={locationQuery}

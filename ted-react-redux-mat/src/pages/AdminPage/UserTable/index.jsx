@@ -91,7 +91,7 @@ class UserTable extends Component {
 
         return (
             <div className={classes.root}>
-                <Grid style={{height: "100%"}} container justify="flex-end">
+                {/* <Grid style={{height: "100%"}} container direction="column" justify="flex-end"> */}
                 {/* <Typography variant="h3">
                     Registered Users
                 </Typography> */}
@@ -187,7 +187,7 @@ class UserTable extends Component {
                     </Grid>
                 </Typography> */}
 
-            </Grid>
+            {/* </Grid> */}
             </div>
         );
     }

@@ -76,11 +76,11 @@ export default function AuctionDetailsForm(props) {
     const { handleChange, handleDateChange, handleCategoryChange } = props;
 
     // Some React hook magic from material ui so that the outlined stuff work
-    const inputLabel = React.useRef(null);
-    const [labelWidth, setLabelWidth] = React.useState(0);
-    React.useEffect(() => {
-        setLabelWidth(inputLabel.current.offsetWidth);
-    }, []);
+    // const inputLabel = React.useRef(null);
+    // const [labelWidth, setLabelWidth] = React.useState(0);
+    // React.useEffect(() => {
+    //     setLabelWidth(inputLabel.current.offsetWidth);
+    // }, []);
 
     const theme = useTheme();
     const classes = useStyles();
@@ -174,7 +174,7 @@ export default function AuctionDetailsForm(props) {
                 choose categories that describe your item
             </Typography>
             
-            <FormControl 
+            {/* <FormControl 
                 className={classes.categoriesField} 
                 variant="outlined"
             >
@@ -205,7 +205,7 @@ export default function AuctionDetailsForm(props) {
                             ))}
                         </Select>
 
-                </FormControl>
+                </FormControl> */}
 
         </div>
     );
