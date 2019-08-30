@@ -51,6 +51,7 @@ const useStyles = makeStyles(theme => ({
     start: {
         color: theme.palette.primary.main,
         marginRight: theme.spacing(2),
+        cursor: 'pointer',
     },
     edit: {
         color: 'black',
@@ -58,6 +59,7 @@ const useStyles = makeStyles(theme => ({
     },
     delete: {
         color: 'rgb(220, 0, 78)',
+        cursor: 'pointer',
     },
 }));
 
@@ -78,7 +80,7 @@ export default function MyAuctionsTable(props) {
 
 
     const { auctions, order, orderBy, pageSize, isLoading, currPage, totalAuctions } = props;
-    const { changeUser, handleRequestSort, handleChangePage, handleChangeRowsPerPage } = props;
+    const { handleRequestSort, handleChangePage, handleChangeRowsPerPage, deleteAuction } = props;
 
     //const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.users.length - page * rowsPerPage);
     let emptyRows = pageSize;
@@ -152,7 +154,7 @@ export default function MyAuctionsTable(props) {
                                                             >
                                                                 <EditIcon />
                                                             </Link>
-                                                            <DeleteIcon className={classes.delete} />
+                                                            <DeleteIcon className={classes.delete} onClick={e => deleteAuction(row.itemID)}/>
                                                         </TableCell>
                                                     </TableRow>
                                                 );

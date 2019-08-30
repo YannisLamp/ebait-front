@@ -44,13 +44,15 @@ export default function LoginQuote(props) {
           <Typography
               className={classes.welcomeText}
           >
-            Welcome to Emerld
+            Welcome to eBait
           </Typography>
           <Typography
             className={classes.quoteText}
             variant="h1"
           > 
-            Buy and sell your stuff.
+            Sell your stuff. Make money.
+            <br/>
+            Buy new stuff. Your life's better now.
           </Typography>
         </div>
       </div>

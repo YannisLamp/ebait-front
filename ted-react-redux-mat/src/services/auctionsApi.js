@@ -3,6 +3,7 @@ import axios from './axiosConfig';
 export const auctionsApi = {
     createAuction,
     getUserAuctions,
+    deleteAuction,
 
     getRootCategories,
     getChildrenCategories
@@ -43,7 +44,7 @@ function createAuction(name, description, ends,
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
-        })
+    })
         .then(
             response => {
                 return response.data;
@@ -105,6 +106,17 @@ function getUserAuctions(type) {
             type,
         }
     })
+        .then(response => {
+            return response.data;
+        },
+            error => {
+
+            }
+        );
+}
+
+function deleteAuction(itemID) {
+    return axios.delete('/auctions/' + itemID)
         .then(response => {
             return response.data;
         },

@@ -52,7 +52,7 @@ function ButtonAppBar(props) {
                             className={classes.titleLink}
                             to="/"
                         >
-                            EMERLD
+                            eBait
                         </NavLink>
                     </Typography>
 

@@ -119,7 +119,7 @@ class LoginForm extends Component {
                             </Link>
                         </Typography>
 
-                        <Typography
+                        {/* <Typography
                             className={classes.signUp}
                             variant="body1"
                         >
@@ -130,19 +130,7 @@ class LoginForm extends Component {
                             >
                                 Continue as guest
                             </Link>
-                        </Typography>
-
-                        {/* <div className={classes.guestInline}>
-                            <Typography
-                                className={classes.guestTitle}
-                                variant="h2"
-                            >
-                                or
-                            </Typography>
-                            <Button variant="outlined" color="primary" className={classes.guestBtn}>
-                                Continue as guest
-                            </Button>
-                        </div> */}
+                        </Typography> */}
 
                         <Typography
                             className={classes.guestComment}

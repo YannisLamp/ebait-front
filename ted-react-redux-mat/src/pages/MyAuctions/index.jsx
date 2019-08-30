@@ -54,6 +54,7 @@ class MyAuctions extends Component {
         this.handleChange = this.handleChange.bind(this);
         //this.handleSubmit = this.handleSubmit.bind(this);
 
+        this.deleteAuction = this.deleteAuction.bind(this);
         this.handleChangePage = this.handleChangePage.bind(this);
         this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
     }
@@ -100,6 +101,14 @@ class MyAuctions extends Component {
         });
     }
 
+    deleteAuction(itemID) {
+        console.log('DELETETETETETET');
+        auctionsApi.deleteAuction(itemID)
+            .then(data =>{
+                console.log(data);
+            });
+    }
+
     render() {
         const { pageSize, currPage, auctions, totalAuctions, isLoading } = this.state;
 
@@ -133,6 +142,7 @@ class MyAuctions extends Component {
                                         totalAuctions={totalAuctions}
                                         isLoading={isLoading}
 
+                                        deleteAuction={this.deleteAuction}
                                         // handleRequestSort={this.handleRequestSort}
                                         handleChangePage={this.handleChangePage}
                                         handleChangeRowsPerPage={this.handleChangeRowsPerPage}
