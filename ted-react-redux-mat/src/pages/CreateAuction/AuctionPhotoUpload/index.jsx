@@ -9,8 +9,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 
 import PaperTitle from '../../../sharedComp/PaperTitle';
-//import ContainerDimensions from 'react-container-dimensions'
-
+//import ContainerDimensions from 'react-container-dimensions';
 
 
 const useStyles = makeStyles(theme => ({
@@ -31,22 +30,14 @@ const useStyles = makeStyles(theme => ({
 
 export default function AuctionPhotoUpload(props) {
 
-    const { locationQuery, startingLat, startingLng, selectedLat, selectedLng, hasLocation } = props;
-    const { handleChange, handleMapClick, updateMap } = props;
+    const { file1 } = props;
+    const { uploadFile, onFile1Change } = props;
     const style = { height: '400px' };
 
     const classes = useStyles();
 
     // If the user has clicked on the map, place a marker
-    let marker = null
-    if (hasLocation) {
-        marker = (
-            <Marker position={{ lat: selectedLat, lng: selectedLng }}>
-                <Popup>Auction Location</Popup>
-            </Marker>
-        );
-    }
-
+    console.log(file1);
     return (
         <div>
 
@@ -57,14 +48,15 @@ export default function AuctionPhotoUpload(props) {
 
 
             <input
-                accept="image/*"
+                //accept="image/*"
                 className={classes.input}
                 id="contained-button-file"
-                multiple
+                //multiple
                 type="file"
+                onChange={onFile1Change}
             />
             <label htmlFor="contained-button-file">
-                <Button variant="contained" component="span" className={classes.button}>
+                <Button variant="contained" component="span" className={classes.button} >
                     Upload
                 </Button>
             </label>

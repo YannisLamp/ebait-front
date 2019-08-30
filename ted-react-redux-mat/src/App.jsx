@@ -18,7 +18,8 @@ import CreateAuction from './pages/CreateAuction';
 
 // import NotYetAccepted from './pages/NotYetAccepted';
 import { AdminRoute } from './routes';
-import { AuthAndVerRoute } from './routes';
+import { VerifiedRoute } from './routes';
+import { UserRoute } from './routes';
 
 // Styles
 import useStyles from './styles';
@@ -65,24 +66,15 @@ export default function App(props) {
                 <Route exact path="/" component={HomePage} />
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/register" component={Register} />
-
-                <Route path="/notfound" component={NotFound} />
-
                 <Route exact path="/browse" component={BrowseAuctions} />
+                <Route path="/notfound" component={NotFound} />
+                
+                <UserRoute exact path="/profile" component={ProfilePage}/>
 
-                <Route exact path="/myauctions" component={MyAuctions} />
-
-                <Route exact path="/myauctions/create-auction" component={CreateAuction} /> 
-
-                {/* <Route path="/notyetaccepted" component={NotYetAccepted} /> */}
+                <VerifiedRoute exact path="/myauctions" component={MyAuctions} />
+                <VerifiedRoute exact path="/myauctions/create-auction" component={CreateAuction} />
 
                 <AdminRoute path="/admin" component={AdminPage}/>
-
-                <Route exact path="/profile" component={ProfilePage}/>
-
-{/*             kai ta 2 για το profile
-                <Route path="/admin/usrID" component={AdminPage} />
-                <Route path="/profile/usrID" component={AdminPage} /> */}
 
                 {/* <AuthAndVerRoute render={() => <Redirect to="/" />} /> */}
                 <Route render={() => <Redirect to="/" />} />

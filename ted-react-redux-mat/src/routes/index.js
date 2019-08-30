@@ -1,2 +1,3 @@
-export * from './AuthAndVerRoute';
 export * from './AdminRoute';
+export * from './VerifiedRoute';
+export * from './UserRoute';

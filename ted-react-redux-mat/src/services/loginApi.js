@@ -90,6 +90,7 @@ function loginAsGuest() {
         const guest = {
             userRole: 'GUEST'
         };
+        localStorage.setItem('user', JSON.stringify(guest));
         dispatch(userActions.loginSuccess(guest));
         history.push('/');
     }

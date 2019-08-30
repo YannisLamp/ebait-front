@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { history } from '../../utils';
 // Material
 import { Grid, Paper, Button, TextField, CircularProgress } from '@material-ui/core';
 
@@ -117,6 +117,8 @@ class CreateAuction extends Component {
         this.handleAddressChange = this.handleAddressChange.bind(this);
         this.handleCategoryPick = this.handleCategoryPick.bind(this);
         this.handleChange = this.handleChange.bind(this);
+
+        this.onFile1Change = this.onFile1Change.bind(this); 
 
         this.updateMap = this.updateMap.bind(this);
         this.handleMapClick = this.handleMapClick.bind(this);
@@ -252,6 +254,11 @@ class CreateAuction extends Component {
         });
     }
 
+    onFile1Change(event) {
+        console.log(event);
+        this.setState((prevState, props) => { return { file1: event.target.files[0] }});
+    }
+
 
     handleSubmit(e) {
         e.preventDefault();
@@ -275,6 +282,7 @@ class CreateAuction extends Component {
             selectedLat, selectedLng)
             .then(data => {
                 this.setState((prevState, props) => { return { isLoading: false, }});
+                history.push('/myauctions');
             });
     }
 
@@ -292,7 +300,7 @@ class CreateAuction extends Component {
     }
 
     render() {
-        const { name, description, endingDate, firstBid, buyout, isLoading, categoryFields } = this.state;
+        const { name, description, endingDate, firstBid, buyout, isLoading, categoryFields, file1 } = this.state;
 
         const { currentStep, country, address, locationDescription, locationQuery,
             startingLat, startingLng, selectedLat, selectedLng, hasLocation } = this.state;
@@ -431,16 +439,10 @@ class CreateAuction extends Component {
                                     >
                                         <Paper className={classes.paper}>
                                             <AuctionPhotoUpload
-                                                locationQuery={locationQuery}
-                                                startingLat={startingLat}
-                                                startingLng={startingLng}
-                                                selectedLat={selectedLat}
-                                                selectedLng={selectedLng}
-                                                hasLocation={hasLocation}
+                                                file1={file1}
+                                                onFile1Change={this.onFile1Change}
 
                                                 handleChange={this.handleChange}
-                                                handleMapClick={this.handleMapClick}
-                                                updateMap={this.updateMap}
                                             />
                                         </Paper>
                                     </Grid>
