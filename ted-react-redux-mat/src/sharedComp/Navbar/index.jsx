@@ -36,7 +36,8 @@ function ButtonAppBar(props) {
         <ElevationScroll {...props}>
             <AppBar>
                 <Toolbar>
-                    <Box visibility={user ? "visible" : "hidden"}>
+                    {/* <Box visibility={user ? "visible" : "hidden"}> */}
+                    <Box>
                         <IconButton
                             edge="start"
                             className={classes.menuButton}

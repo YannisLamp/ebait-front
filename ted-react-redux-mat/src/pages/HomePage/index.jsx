@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
 
 function HomePage(props) {
     const { user } = props;
-    const hasPriv = user.userRole === 'GUEST' || (user.userRole === 'USER' && user.verified === false) ? false : true;
+    const hasPriv = !user || (user.userRole === 'USER' && user.verified === false) ? false : true;
 
     const classes = useStyles();
     return (
@@ -94,7 +94,7 @@ function HomePage(props) {
                                     />
                                 </Grid>
 
-                                { user.userRole === 'ADMIN' ? (
+                                { user && user.userRole === 'ADMIN' ? (
                                     <Grid item xs={12}>
                                         <ActionCard 
                                             title="Verify Users" 

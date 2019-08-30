@@ -21,9 +21,6 @@ class LoginForm extends Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-
-        this.loginAsGuest = this.loginAsGuest.bind(this);
-
     }
 
     // https://serverless-stack.com/chapters/create-a-login-page.html
@@ -43,11 +40,6 @@ class LoginForm extends Component {
             console.log('username and pass');
             dispatch(loginApi.loginThunk(username, password));
         }
-    }
-
-    loginAsGuest() {
-        const { dispatch } = this.props;
-        dispatch(loginApi.loginAsGuest());
     }
 
     render() {
@@ -117,25 +109,6 @@ class LoginForm extends Component {
                             >
                                 Register
                             </Link>
-                        </Typography>
-
-                        {/* <Typography
-                            className={classes.signUp}
-                            variant="body1"
-                        >
-                            or{' '}
-                            <Link
-                                className={classes.signUpUrl}
-                                onClick={this.loginAsGuest}
-                            >
-                                Continue as guest
-                            </Link>
-                        </Typography> */}
-
-                        <Typography
-                            className={classes.guestComment}
-                            variant="body1"
-                        >
                         </Typography>
 
                     </form>

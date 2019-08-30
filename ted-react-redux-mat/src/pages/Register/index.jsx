@@ -10,6 +10,7 @@ import { Grid, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { pageStyles } from '../pageStyles';
 
+import Sidebar from '../../sharedComp/Sidebar';
 import RegisterForm from './RegisterForm';
 
 
@@ -26,37 +27,39 @@ export default function Register(props) {
 
     const classes = useStyles();
     return (
-        <div className={classes.root}>
-            <Grid
-                className={classes.grid}
-                container
-            >
+        <Sidebar>
+            <div className={classes.root}>
                 <Grid
-                    item
-                    lg={4}
-                    xs={2}
-                />
-                <Grid
+                    className={classes.grid}
                     container
-                    justify="center"
                 >
                     <Grid
-                        className={classes.content}
                         item
                         lg={4}
-                        xs={8}
+                        xs={2}
+                    />
+                    <Grid
+                        container
+                        justify="center"
                     >
-                        <Paper className={classes.registerPaper}>
-                            <RegisterForm />
-                        </Paper>
+                        <Grid
+                            className={classes.content}
+                            item
+                            lg={4}
+                            xs={8}
+                        >
+                            <Paper className={classes.registerPaper}>
+                                <RegisterForm />
+                            </Paper>
+                        </Grid>
                     </Grid>
+                    <Grid
+                        item
+                        lg={4}
+                        xs={2}
+                    />
                 </Grid>
-                <Grid
-                    item
-                    lg={4}
-                    xs={2}
-                />
-            </Grid>
-        </div>
+            </div>
+        </Sidebar>
     );
 }

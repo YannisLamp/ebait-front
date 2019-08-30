@@ -1,4 +1,4 @@
-import { authHeader, history } from '../utils';
+import { history } from '../utils';
 import axios from './axiosConfig';
 
 import { userActions } from '../store/ducks/userStore';
@@ -12,7 +12,6 @@ export const loginApi = {
     loginThunk,
     logoutThunk,
     refreshUserThunk,
-    loginAsGuest,
 };
 
 function loginThunk(username, password) {
@@ -82,17 +81,6 @@ function refreshUserThunk(userId) {
                 localStorage.setItem('user', JSON.stringify(user));
             }
             );
-    }
-}
-
-function loginAsGuest() {
-    return dispatch => {
-        const guest = {
-            userRole: 'GUEST'
-        };
-        localStorage.setItem('user', JSON.stringify(guest));
-        dispatch(userActions.loginSuccess(guest));
-        history.push('/');
     }
 }
 

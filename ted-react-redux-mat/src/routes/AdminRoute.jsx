@@ -7,8 +7,6 @@ import { connect } from 'react-redux';
 function AdminRoute({ component: Component, user: user, ...rest }) {
     return (
         <Route {...rest} render={props => (
-            // ME SIDEBAR
-            // ? <Sidebar> <Component {...props} /> </Sidebar>
             user.userRole === 'ADMIN'
                 ? <Component {...props} />
                 : <Redirect to='/' />

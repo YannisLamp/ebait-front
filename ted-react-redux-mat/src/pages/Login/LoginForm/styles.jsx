@@ -83,21 +83,4 @@ export default theme => ({
     marginBottom: theme.spacing(1),
     marginTop: theme.spacing(2)
   },
-
-
-  guestInline: {
-    display: 'inline-flex',
-    marginTop: theme.spacing(10),
-  },
-  guestTitle:{
-    alignText: 'center',
-    marginRight: theme.spacing(4),
-  },
-  guestBtn: {
-    
-  },
-  guestComment: {
-    marginTop: theme.spacing(2),
-    color: theme.palette.text.primary
-  },
 });

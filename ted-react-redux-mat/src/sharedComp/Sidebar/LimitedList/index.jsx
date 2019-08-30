@@ -99,7 +99,7 @@ export default function LimitedList(props) {
 
             <Divider className={classes.listDivider} />
 
-            { userRole === 'GUEST' ? (
+            { !userRole ? (
                 <ListItem
                     activeClassName={classes.activeListItem}
                     disabled
@@ -142,7 +142,7 @@ export default function LimitedList(props) {
                 </ListItemIcon>
                 <ListItemText
                     classes={{ primary: classes.listItemText }}
-                    primary={userRole === 'GUEST' ? 'Log In' : 'Log Out'}
+                    primary={!userRole ? 'Log In' : 'Log Out'}
                 />
             </ListItem>
             

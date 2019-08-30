@@ -28,7 +28,7 @@ function Sidebar(props) {
     const user = props.user;
 
     function profileCredentials() {
-        if (user.userRole === 'GUEST') {
+        if (!user) {
             return (
                 <>
                     <Avatar className={classes.userLogo}>
@@ -80,8 +80,11 @@ function Sidebar(props) {
     }
 
     function getList() {
-        if (user.userRole === 'GUEST' || (user.userRole === 'USER' && user.verified === false)) {
-            return (<LimitedList userRole={user.userRole} />);
+        if (!user) {
+            return (<LimitedList />);
+        }
+        else if (user.userRole === 'USER' && user.verified === false) {
+            return (<LimitedList userRole={'USER'} />);
         }
         else if (user.userRole === 'USER') {
             return (<UserList />);
