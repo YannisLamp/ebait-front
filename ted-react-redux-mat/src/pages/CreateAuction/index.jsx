@@ -4,7 +4,7 @@ import { history } from '../../utils';
 import { Grid, Paper, Button, TextField, CircularProgress } from '@material-ui/core';
 
 import { connect } from 'react-redux';
-import { format } from 'date-fns';
+import { format, parse } from 'date-fns';
 
 // For importing my custom styles  
 import { withStyles } from '@material-ui/core/styles';
@@ -15,7 +15,6 @@ import AuctionLocationForm from './AuctionLocationForm';
 import AuctionDetailsForm from './AuctionDetailsForm';
 import CreateAuctionMap from './CreateAuctionMap';
 import AuctionPhotoUpload from './AuctionPhotoUpload';
-import CreateAuctionProgress from './CreateAuctionProgress';
 
 import { nominatimApi } from '../../services';
 import { auctionsApi } from '../../services';
@@ -28,7 +27,6 @@ const styles = theme => ({
         paddingTop: theme.spacing(3),
         paddingLeft: theme.spacing(3),
         paddingRight: theme.spacing(3),
-        paddingBottom: theme.spacing(1),
         minHeight: '80vh',
 
         display: "flex",
@@ -63,13 +61,16 @@ const styles = theme => ({
         width: '100%',
         display: 'inline-flex',
         marginTop: theme.spacing(1),
-        marginBottom: theme.spacing(1),
-        justifyContent: 'space-between',
+        marginBottom: theme.spacing(4),
+        justifyContent: 'flex-end',
+    },
+    buttonMargin: {
+        marginRight: theme.spacing(3),
     },
     circularProgress: {
         //display: 'block',
         marginTop: theme.spacing(2),
-        marginRight: theme.spacing(4),
+        marginRight: theme.spacing(3),
     },
 });
 
@@ -77,12 +78,13 @@ class CreateAuction extends Component {
 
     constructor(props) {
         super(props);
+        const auction = this.props.location.state ? this.props.location.state.auction : null;
         this.state = {
-            name: '',
-            description: '',
-            endingDate: null,
-            firstBid: '',
-            buyout: '',
+            name: auction ? auction.name : '',
+            description: auction ? auction.description : '',
+            ends: auction ? parse(auction.ends, 'MMM-dd-yy HH:mm:ss', new Date()) : null,
+            firstBid: auction ? auction.firstBid : '',
+            buyout: auction ? auction.buyout : '',
             categoryFields: [{
                 selectedIndex: '',
                 selectedValue: '',
@@ -96,9 +98,9 @@ class CreateAuction extends Component {
             file2: '',
             imagePreviewUrl2: '',
 
-            country: this.props.user.country,
-            address: this.props.user.address,
-            locationDescription: '',
+            country: auction ? auction.country : this.props.user.country,
+            address: auction ? auction.address : this.props.user.address,
+            locationDescription: auction ? auction.locationDescription : '',
 
             locationQuery: this.props.user.address + ', ' + this.props.user.country,
             startingLat: null,
@@ -118,7 +120,8 @@ class CreateAuction extends Component {
         this.handleCategoryPick = this.handleCategoryPick.bind(this);
         this.handleChange = this.handleChange.bind(this);
 
-        this.onFile1Change = this.onFile1Change.bind(this); 
+        this.redirectToMyAuctions = this.redirectToMyAuctions.bind(this);
+        this.onFile1Change = this.onFile1Change.bind(this);
 
         this.updateMap = this.updateMap.bind(this);
         this.handleMapClick = this.handleMapClick.bind(this);
@@ -131,18 +134,25 @@ class CreateAuction extends Component {
 
 
     componentDidMount() {
-        auctionsApi.getRootCategories()
-            .then(data => {
-                this.setState((prevState, props) => {
-                    return {
-                        categoryFields: [{
-                            selectedIndex: '',
-                            selectedValue: '',
-                            allCategories: data,
-                        }],
-                    }
+        // If categoryFields has more than one object, 
+        // then we have to fetch the allCategories for each field level
+        if (this.state.categoryFields.length > 1) {
+
+        }
+        else {
+            auctionsApi.getRootCategories()
+                .then(data => {
+                    this.setState((prevState, props) => {
+                        return {
+                            categoryFields: [{
+                                selectedIndex: prevState.categoryFields[0].selectedIndex,
+                                selectedValue: prevState.categoryFields[0].selectedValue,
+                                allCategories: data,
+                            }],
+                        }
+                    });
                 });
-            });
+        }
 
         nominatimApi.getGeoLocation(this.state.locationQuery)
             .then(data => {
@@ -156,7 +166,7 @@ class CreateAuction extends Component {
                 });
             })
 
-        auctionsApi.getUserAuctions()
+        auctionsApi.getUserAuctions('active')
             .then(data => {
                 this.setState((prevState, props) => { return { auctions: data } });
             })
@@ -169,7 +179,7 @@ class CreateAuction extends Component {
     }
 
     handleDateChange(date) {
-        this.setState((prevState, props) => { return { endingDate: date } });
+        this.setState((prevState, props) => { return { ends: date } });
     }
 
     handleCountryChange(e) {
@@ -255,16 +265,20 @@ class CreateAuction extends Component {
     }
 
     onFile1Change(event) {
+        event.persist();
         console.log(event);
-        this.setState((prevState, props) => { return { file1: event.target.files[0] }});
+        this.setState((prevState, props) => { return { file1: event.target.files[0] } });
     }
 
+    redirectToMyAuctions() {
+        history.push('/myauctions');
+    }
 
     handleSubmit(e) {
         e.preventDefault();
-        const { name, description, endingDate, firstBid, buyout, categoryFields,
-            country, locationDescription, selectedLat, selectedLng } = this.state;
-        
+        const { name, description, ends, firstBid, buyout, categoryFields,
+            country, locationDescription, selectedLat, selectedLng, file1 } = this.state;
+
         // Convert category fields to categories for API
         let categories = [];
         for (let cat of categoryFields) {
@@ -274,15 +288,15 @@ class CreateAuction extends Component {
         }
 
         // Convert Date object to proper format
-        const convertedEndingDate = format(endingDate, 'MMM-dd-yy HH:mm:ss');
+        const convertedends = format(ends, 'MMM-dd-yy HH:mm:ss');
 
-        this.setState((prevState, props) => { return { isLoading: true, }});
-        auctionsApi.createAuction(name, description, convertedEndingDate,
+        this.setState((prevState, props) => { return { isLoading: true, } });
+        auctionsApi.createAuction(name, description, convertedends,
             firstBid, buyout, categories, country, locationDescription,
-            selectedLat, selectedLng)
+            selectedLat, selectedLng, file1)
             .then(data => {
-                this.setState((prevState, props) => { return { isLoading: false, }});
-                history.push('/myauctions');
+                this.setState((prevState, props) => { return { isLoading: false, } });
+                this.redirectToMyAuctions();
             });
     }
 
@@ -300,7 +314,7 @@ class CreateAuction extends Component {
     }
 
     render() {
-        const { name, description, endingDate, firstBid, buyout, isLoading, categoryFields, file1 } = this.state;
+        const { name, description, ends, firstBid, buyout, isLoading, categoryFields, file1 } = this.state;
 
         const { currentStep, country, address, locationDescription, locationQuery,
             startingLat, startingLng, selectedLat, selectedLng, hasLocation } = this.state;
@@ -316,7 +330,6 @@ class CreateAuction extends Component {
                         container
                         justify="center"
                     >
-
 
                         {currentStep === 2 ? (
                             <>
@@ -336,31 +349,6 @@ class CreateAuction extends Component {
                                             handleChange={this.handleChange}
                                             updateMap={this.updateMap}
                                         />
-
-
-                                        <div className={classes.progressButtons}>
-                                            <Button
-                                                onClick={this.prevStep}
-                                                size="large"
-                                                variant="contained"
-                                            >
-                                                Back
-                                            </Button>
-
-                                            {isLoading ? (
-                                                <CircularProgress className={classes.circularProgress} />
-                                            ) : (
-                                                <Button
-                                                    color="primary"
-                                                    onClick={this.handleSubmit}
-                                                    size="large"
-                                                    variant="contained"
-                                                >
-                                                    Create
-                                                </Button>
-                                                )
-                                            }
-                                        </div>
 
                                     </Paper>
                                 </Grid>
@@ -383,6 +371,32 @@ class CreateAuction extends Component {
                                             handleMapClick={this.handleMapClick}
                                             updateMap={this.updateMap}
                                         />
+
+
+                                        <div className={classes.progressButtons}>
+                                            <Button
+                                                className={classes.buttonMargin}
+                                                onClick={this.prevStep}
+                                                size="large"
+                                                variant="contained"
+                                            >
+                                                Back
+                                            </Button>
+
+                                            {isLoading ? (
+                                                <CircularProgress className={classes.circularProgress} />
+                                            ) : (
+                                                    <Button
+                                                        color="primary"
+                                                        onClick={this.handleSubmit}
+                                                        size="large"
+                                                        variant="contained"
+                                                    >
+                                                        Create
+                                                    </Button>
+                                                )
+                                            }
+                                        </div>
                                     </Paper>
                                 </Grid>
                             </>
@@ -393,13 +407,13 @@ class CreateAuction extends Component {
                                     <Grid
                                         className={classes.detailsWrapper}
                                         item
-                                        lg={6}
+                                        lg={5}
                                     >
                                         <Paper className={classes.paper}>
                                             <AuctionDetailsForm
                                                 name={name}
                                                 description={description}
-                                                endingDate={endingDate}
+                                                ends={ends}
                                                 firstBid={firstBid}
                                                 buyout={buyout}
                                                 categoryFields={categoryFields}
@@ -411,8 +425,26 @@ class CreateAuction extends Component {
                                                 handleCategoryPick={this.handleCategoryPick}
                                             />
 
+                                        </Paper>
+                                    </Grid>
+
+                                    <Grid
+                                        className={classes.rightWrapper}
+                                        item
+                                        lg={5}
+                                    >
+                                        <Paper className={classes.paper}>
+                                            <AuctionPhotoUpload
+                                                file1={file1}
+                                                onFile1Change={this.onFile1Change}
+
+                                                handleChange={this.handleChange}
+                                            />
+
                                             <div className={classes.progressButtons}>
                                                 <Button
+                                                    className={classes.buttonMargin}
+                                                    style={{color: 'white', backgroundColor: 'rgb(220, 0, 78)'}}
                                                     onClick={this.redirectToMyAuctions}
                                                     size="large"
                                                     variant="contained"
@@ -428,22 +460,6 @@ class CreateAuction extends Component {
                                                     Next
                                                 </Button>
                                             </div>
-
-                                        </Paper>
-                                    </Grid>
-
-                                    <Grid
-                                        className={classes.rightWrapper}
-                                        item
-                                        lg={4}
-                                    >
-                                        <Paper className={classes.paper}>
-                                            <AuctionPhotoUpload
-                                                file1={file1}
-                                                onFile1Change={this.onFile1Change}
-
-                                                handleChange={this.handleChange}
-                                            />
                                         </Paper>
                                     </Grid>
 

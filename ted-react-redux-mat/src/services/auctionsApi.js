@@ -3,24 +3,24 @@ import axios from './axiosConfig';
 export const auctionsApi = {
     createAuction,
     getUserAuctions,
-    
+
     getRootCategories,
     getChildrenCategories
 };
 
 
-function createAuction(name, description, endingDate, 
+function createAuction(name, description, ends,
     firstBid, buyout, categories, country, locationDescription,
-    selectedLat, selectedLng) {
+    selectedLat, selectedLng, imageFile) {
 
     const jsonRequest = {
         name: name,
         description: description,
-        ends: endingDate,
+        ends: ends,
         firstBid: firstBid,
         buyPrice: buyout,
         country: country,
-        
+
         categories: categories,
 
         location: {
@@ -28,17 +28,28 @@ function createAuction(name, description, endingDate,
             longitude: selectedLng,
             text: locationDescription
         },
-        
     }
 
+    const json = JSON.stringify(jsonRequest);
+    const blob = new Blob([json], {
+        type: 'application/json'
+    });
 
-    return axios.post('/auctions', jsonRequest)
+    const formData = new FormData();
+    formData.append('item', blob);
+    formData.append('imageFile', imageFile);
+
+    return axios.post('/auctions', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
         .then(
             response => {
                 return response.data;
             },
             error => {
-                
+
 
             }
         );
@@ -65,10 +76,10 @@ function getActiveAuctions() {
             // pageSize: pageSize,
             // order: order,
         }
-        })
+    })
         .then(response => {
-                return response.data;
-            },
+            return response.data;
+        },
             error => {
 
             }
@@ -78,8 +89,8 @@ function getActiveAuctions() {
 function buyoutAuction(id) {
     return axios.put('/auctions/buyout' + id)
         .then(response => {
-                return response.data;
-            },
+            return response.data;
+        },
             error => {
 
             }
@@ -87,16 +98,16 @@ function buyoutAuction(id) {
 }
 
 
-function getUserAuctions() {
+function getUserAuctions(type) {
     return axios.get('/auctions', {
-        //'active', 'finished', 'archived'
+        //'created', 'started', 'finished'
         params: {
-            //type: 'active',
+            type,
         }
-        })
+    })
         .then(response => {
-                return response.data;
-            },
+            return response.data;
+        },
             error => {
 
             }
@@ -107,8 +118,8 @@ function getUserAuctions() {
 function getRootCategories() {
     return axios.get('/categories/root')
         .then(response => {
-                return response.data;
-            },
+            return response.data;
+        },
             error => {
 
             }
@@ -119,8 +130,8 @@ function getRootCategories() {
 function getChildrenCategories(parentId) {
     return axios.get('/categories/children/' + parentId)
         .then(response => {
-                return response.data;
-            },
+            return response.data;
+        },
             error => {
 
             }

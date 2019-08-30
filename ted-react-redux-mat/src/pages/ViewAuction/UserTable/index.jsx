@@ -97,7 +97,7 @@ class UserTable extends Component {
                 </Typography> */}
 
                 <PaperTitle
-                    title='Registered Users'
+                    title=' Registered Users'
                     suggestion={''}
                 />
 

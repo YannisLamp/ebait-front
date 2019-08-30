@@ -8,6 +8,9 @@ import {
 } from '@material-ui/core';
 
 import { CheckBox as CheckBoxIcon, CheckBoxOutlineBlank as CheckBoxBlankIcon } from '@material-ui/icons';
+import EditIcon from '@material-ui/icons/Edit';
+import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 import PaperTitle from '../../../sharedComp/PaperTitle';
 import UserTableHead from './UserTableHead';
@@ -44,7 +47,18 @@ const useStyles = makeStyles(theme => ({
     },
     pagination: {
         color: theme.palette.text.primary,
-    }
+    },
+    start: {
+        color: theme.palette.primary.main,
+        marginRight: theme.spacing(2),
+    },
+    edit: {
+        color: 'black',
+        marginRight: theme.spacing(2),
+    },
+    delete: {
+        color: 'rgb(220, 0, 78)',
+    },
 }));
 
 
@@ -105,7 +119,9 @@ export default function MyAuctionsTable(props) {
                                     />
                                     <TableBody>
                                         {
-                                            auctions.map((row, index) => {
+                                            auctions
+                                                .slice(currPage * pageSize, currPage * pageSize + pageSize)
+                                                .map((row, index) => {
                                                 return (
                                                     <TableRow
                                                         hover
@@ -122,10 +138,26 @@ export default function MyAuctionsTable(props) {
                                                         <TableCell align="right">{row.firstBid}</TableCell>
                                                         <TableCell align="right">{row.buyPrice}</TableCell>
                                                         <TableCell align="right">{row.ends}</TableCell>
-                                                        <TableCell align="right">{getActions()}</TableCell>
+                                                        {/* <TableCell align="right">{getActions()}</TableCell> */}
+                                                        <TableCell align="right">
+                                                            <PlayArrowIcon className={classes.start} />
+                                                            <Link 
+                                                                className={classes.edit}
+                                                                to={{
+                                                                    pathname: '/myauctions/create-auction',
+                                                                    state: {
+                                                                        auction: row
+                                                                    }
+                                                                }}
+                                                            >
+                                                                <EditIcon />
+                                                            </Link>
+                                                            <DeleteIcon className={classes.delete} />
+                                                        </TableCell>
                                                     </TableRow>
                                                 );
-                                            })}
+                                            })
+                                        }
                                         {/* {emptyRows > 0 && (
                                         <TableRow style={{ height: 49 * emptyRows }}>
                                             <TableCell colSpan={5} />

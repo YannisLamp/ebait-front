@@ -41,12 +41,14 @@ const useStyles = makeStyles(theme => ({
     chip: {
         margin: 2,
     },
+    categories: {
+        marginBottom: theme.spacing(4),
+    },
     categoryField: {
         marginTop: theme.spacing(2),
         marginLeft: theme.spacing(2),
         marginRight: theme.spacing(1),
         width: '22%',
-        marginBottom: theme.spacing(2),
     },
 }));
 
@@ -62,7 +64,7 @@ function getStyles(name, personName, theme) {
 
 export default function AuctionDetailsForm(props) {
 
-    const { name, description, endingDate, firstBid, buyout, categoryFields } = props;
+    const { name, description, ends, firstBid, buyout, categoryFields } = props;
     const { handleChange, handleDateChange, handleCategoryPick } = props;
 
     //Some React hook magic from material ui so that the outlined stuff work
@@ -118,7 +120,7 @@ export default function AuctionDetailsForm(props) {
                     inputVariant="outlined"
                     ampm={false}
                     label="Ending Date"
-                    value={endingDate}
+                    value={ends}
                     onChange={handleDateChange}
                     onError={console.log}
                     disablePast
@@ -160,10 +162,11 @@ export default function AuctionDetailsForm(props) {
                 choose categories that describe your item
             </Typography>
 
+            <div className={classes.categories}>
             {
                 categoryFields.map((field, level) => {
                     return (
-                        <FormControl variant="outlined" className={classes.categoryField}>
+                        <FormControl variant="outlined" className={classes.categoryField} key={level}>
                             <InputLabel ref={inputLabel} htmlFor={'categories' + (level + 1)}>
                                 Category {level + 1}
                             </InputLabel>
@@ -189,6 +192,7 @@ export default function AuctionDetailsForm(props) {
                     );
                 })
             }
+            </div>
 
         </div>
     );

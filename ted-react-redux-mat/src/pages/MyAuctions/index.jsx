@@ -24,7 +24,6 @@ const styles = theme => ({
         paddingRight: theme.spacing(3),
         marginBottom: theme.spacing(2),
         minHeight: '80vh',
-        //height: '75vh',
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between"

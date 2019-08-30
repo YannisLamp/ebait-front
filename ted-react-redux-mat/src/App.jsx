@@ -15,6 +15,8 @@ import ProfilePage from './pages/ProfilePage';
 import BrowseAuctions from './pages/BrowseAuctions';
 import MyAuctions from './pages/MyAuctions';
 import CreateAuction from './pages/CreateAuction';
+import ViewAuction from './pages/ViewAuction';
+import Messages from './pages/Messages';
 
 // import NotYetAccepted from './pages/NotYetAccepted';
 import { AdminRoute } from './routes';
@@ -67,12 +69,16 @@ export default function App(props) {
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/register" component={Register} />
                 <Route exact path="/browse" component={BrowseAuctions} />
+
+                <Route exact path="/viewauction" component={ViewAuction} />
+
                 <Route path="/notfound" component={NotFound} />
                 
                 <UserRoute exact path="/profile" component={ProfilePage}/>
 
                 <VerifiedRoute exact path="/myauctions" component={MyAuctions} />
                 <VerifiedRoute exact path="/myauctions/create-auction" component={CreateAuction} />
+                <VerifiedRoute exact path="/messages" component={Messages} />
 
                 <AdminRoute path="/admin" component={AdminPage}/>
 

@@ -46,7 +46,6 @@ export default function AuctionPhotoUpload(props) {
                 suggestion={'optionally upload a maximum of two photos of your item'}
             />
 
-
             <input
                 //accept="image/*"
                 className={classes.input}
@@ -60,6 +59,7 @@ export default function AuctionPhotoUpload(props) {
                     Upload
                 </Button>
             </label>
+            {file1 ? (<img style={{maxWidth: '100%', height: 'auto'}} src={URL.createObjectURL(file1)}/>) : ''}
 
             <ButtonBase
                 focusRipple
@@ -93,5 +93,4 @@ export default function AuctionPhotoUpload(props) {
 
         </div>
     );
-
 }

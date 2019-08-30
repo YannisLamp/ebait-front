@@ -75,6 +75,7 @@ function HomePage(props) {
                                     <ActionCard 
                                         title="Messages" 
                                         bodyText="explanation paopap" 
+                                        to="/messages" 
                                         backgroundColor="#863a81" 
                                         disabled={!hasPriv}
                                     />
