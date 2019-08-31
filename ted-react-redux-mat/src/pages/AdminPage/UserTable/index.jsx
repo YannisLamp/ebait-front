@@ -12,7 +12,6 @@ import { CheckBox as CheckBoxIcon, CheckBoxOutlineBlank as CheckBoxBlankIcon } f
 import PaperTitle from '../../../sharedComp/PaperTitle';
 import UserTableHead from './UserTableHead';
 
-
 import { withStyles } from '@material-ui/core';
 
 import { usersApi } from '../../../services'
@@ -58,10 +57,6 @@ class UserTable extends Component {
         
     }
 
-
-    
-    
-
     headRows = [
         { id: 'username', right: false, disablePadding: true, label: 'Username' },
         { id: 'firstName', right: true, disablePadding: false, label: 'First Name' },
@@ -71,11 +66,6 @@ class UserTable extends Component {
         { id: 'email', right: true, disablePadding: false, label: 'Email' },
         { id: 'verified', right: true, disablePadding: false, label: 'Verified' },
     ];
-
-
-
-    
-
 
     render() {
         const { users, order, orderBy, pageSize, isLoading, currPage, totalUsers } = this.props;
@@ -91,16 +81,10 @@ class UserTable extends Component {
 
         return (
             <div className={classes.root}>
-                {/* <Grid style={{height: "100%"}} container direction="column" justify="flex-end"> */}
-                {/* <Typography variant="h3">
-                    Registered Users
-                </Typography> */}
-
                 <PaperTitle
                     title='Registered Users'
                     suggestion={''}
                 />
-
 
                 <div className={classes.tableWrapper}>
                     {isLoading ? (
@@ -191,7 +175,6 @@ class UserTable extends Component {
             </div>
         );
     }
-
 
 }
 
