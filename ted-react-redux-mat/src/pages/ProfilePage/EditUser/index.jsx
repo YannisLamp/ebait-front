@@ -77,9 +77,9 @@ class EditUser extends Component {
             afm: user.afm,
             infoLoading: false,
 
-            oldPassword: null,
-            password: null,
-            confirmPassword: null,
+            oldPassword: '',
+            password: '',
+            confirmPassword: '',
             passLoading: false,
         };
 
@@ -237,7 +237,7 @@ class EditUser extends Component {
 
                     <Grid
                         container
-                        justify="left"
+                        justify="flex-start"
                         className={classes.container}
                     >
 

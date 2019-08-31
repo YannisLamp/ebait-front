@@ -37,7 +37,7 @@ export default function ActionCard(props) {
     if (disabled) {
         return (
             <Card className={classes.disabled} >
-                <CardActionArea  component={Link} className={classes.notDecorated}>
+                <CardActionArea className={classes.notDecorated}>
                     <CardContent style={{ backgroundColor: 'grey' }}>
                         {/* <Typography className={classes.title} color="textPrimary" gutterBottom>
                             Word of the Day

@@ -89,7 +89,7 @@ function HomePage(props) {
                                         title="Profile" 
                                         bodyText="explanation paopap"
                                         to="/profile" 
-                                        backgroundColor="#e9a127" 
+                                        backgroundColor="#FDD835" 
                                         disabled={!hasPriv}
                                     />
                                 </Grid>

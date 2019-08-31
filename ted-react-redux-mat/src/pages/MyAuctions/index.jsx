@@ -51,15 +51,22 @@ class MyAuctions extends Component {
 
         };
 
+        this.loadAuctions = this.loadAuctions.bind(this);
+
         this.handleChange = this.handleChange.bind(this);
         //this.handleSubmit = this.handleSubmit.bind(this);
 
+        this.startAuction = this.startAuction.bind(this);
         this.deleteAuction = this.deleteAuction.bind(this);
         this.handleChangePage = this.handleChangePage.bind(this);
         this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
     }
 
     componentDidMount() {
+        this.loadAuctions();
+    }
+
+    loadAuctions() {
         auctionsApi.getUserAuctions()
             .then(data => {
                 console.log(data);
@@ -101,17 +108,22 @@ class MyAuctions extends Component {
         });
     }
 
+    startAuction(itemID) {
+        auctionsApi.startAuction(itemID)
+            .then(data => {
+                this.loadAuctions();
+            });
+    }
+
     deleteAuction(itemID) {
-        console.log('DELETETETETETET');
         auctionsApi.deleteAuction(itemID)
-            .then(data =>{
-                console.log(data);
+            .then(data => {
+                this.loadAuctions();
             });
     }
 
     render() {
         const { pageSize, currPage, auctions, totalAuctions, isLoading } = this.state;
-
 
         const { classes } = this.props;
         return (
@@ -130,52 +142,53 @@ class MyAuctions extends Component {
                         >
                             <Paper className={classes.paper}>
 
-                                    <MyAuctionsTable
+                                <MyAuctionsTable
 
-                                        // order={order}
-                                        // orderBy={orderBy}
-                                        pageSize={pageSize}
-                                        currPage={currPage}
+                                    // order={order}
+                                    // orderBy={orderBy}
+                                    pageSize={pageSize}
+                                    currPage={currPage}
 
-                                        auctions={auctions}
-                                        // totalPages={totalPages}
-                                        totalAuctions={totalAuctions}
-                                        isLoading={isLoading}
+                                    auctions={auctions}
+                                    // totalPages={totalPages}
+                                    totalAuctions={totalAuctions}
+                                    isLoading={isLoading}
 
-                                        deleteAuction={this.deleteAuction}
-                                        // handleRequestSort={this.handleRequestSort}
-                                        handleChangePage={this.handleChangePage}
-                                        handleChangeRowsPerPage={this.handleChangeRowsPerPage}
+                                    startAuction={this.startAuction}
+                                    deleteAuction={this.deleteAuction}
+                                    // handleRequestSort={this.handleRequestSort}
+                                    handleChangePage={this.handleChangePage}
+                                    handleChangeRowsPerPage={this.handleChangeRowsPerPage}
 
-                                    />
+                                />
 
-                                    <Grid
-                                        container
-                                        justify="flex-end"
-                                    >
-                                        <Link to="/myauctions/create-auction">
-                                            <Button
-                                                className={classes.auctionButton}
-                                                color="primary"
-                                                //onClick={handleSubmit}
-                                                size="large"
-                                                variant="contained"
-                                            >
-                                                Create Auction
+                                <Grid
+                                    container
+                                    justify="flex-end"
+                                >
+                                    <Link to="/myauctions/create-auction">
+                                        <Button
+                                            className={classes.auctionButton}
+                                            color="primary"
+                                            //onClick={handleSubmit}
+                                            size="large"
+                                            variant="contained"
+                                        >
+                                            Create Auction
                                             </Button>
-                                        </Link>
-                                    </Grid>
-                                
+                                    </Link>
+                                </Grid>
+
                             </Paper>
                         </Grid>
 
                     </Grid>
                 </div>
             </Sidebar>
-                );
-        
-            }
-        }
-        
+        );
+
+    }
+}
+
 const styledMyAuctions = withStyles(styles)(MyAuctions);
 export default styledMyAuctions;

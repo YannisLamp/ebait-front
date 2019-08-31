@@ -3,6 +3,7 @@ import axios from './axiosConfig';
 export const auctionsApi = {
     createAuction,
     getUserAuctions,
+    startAuction,
     deleteAuction,
 
     getRootCategories,
@@ -115,6 +116,17 @@ function getUserAuctions(type) {
         );
 }
 
+function startAuction(itemID) {
+    return axios.put('/auctions/start/' + itemID)
+        .then(response => {
+            return response.data;
+        },
+            error => {
+
+            }
+        );
+}
+
 function deleteAuction(itemID) {
     return axios.delete('/auctions/' + itemID)
         .then(response => {
@@ -125,7 +137,6 @@ function deleteAuction(itemID) {
             }
         );
 }
-
 
 function getRootCategories() {
     return axios.get('/categories/root')

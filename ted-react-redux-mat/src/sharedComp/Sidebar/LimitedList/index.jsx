@@ -71,9 +71,7 @@ export default function LimitedList(props) {
 
 
             <ListItem
-                activeClassName={classes.activeListItem}
                 disabled
-
             >
                 <ListItemIcon className={classes.listItemIcon}>
                     <LibraryAddOutlinedIcon />
@@ -85,7 +83,6 @@ export default function LimitedList(props) {
             </ListItem>
 
             <ListItem
-                activeClassName={classes.activeListItem}
                 disabled
             >
                 <ListItemIcon className={classes.listItemIcon}>
@@ -101,7 +98,6 @@ export default function LimitedList(props) {
 
             { !userRole ? (
                 <ListItem
-                    activeClassName={classes.activeListItem}
                     disabled
                 >
                     <ListItemIcon className={classes.listItemIcon}>

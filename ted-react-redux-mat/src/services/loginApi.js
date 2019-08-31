@@ -54,17 +54,22 @@ function loginThunk(username, password) {
                 error => {
                     dispatch(userActions.loginFailure(error));
                     if (error.response) {
-                        dispatch(alertActions.error(error.response.message));
+                        //dispatch(alertActions.error(error.response.message));
+
+                        if (error.response.status === 401) {
+                            // auto logout if 401 response returned from api
+                            // dispatch(logoutThunk);
+                            //window.location.reload(true);
+                        }
+                        else if (error.response.status === 403) {
+                            dispatch(alertActions.error('Incorrect username or password'));
+                        }
                     }
                     else {
                         dispatch(alertActions.error(error.message));
                     }
 
-                    if (error.response.status === 401) {
-                        // auto logout if 401 response returned from api
-                        // dispatch(logoutThunk);
-                        //window.location.reload(true);
-                    }
+                    
                 }
             );
     }

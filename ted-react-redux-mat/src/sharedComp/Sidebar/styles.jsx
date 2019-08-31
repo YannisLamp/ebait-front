@@ -67,9 +67,9 @@ export default makeStyles(theme => ({
     activeListItem: {
         //borderLeft: `4px solid ${theme.palette.primary.secondary}`,
         //borderRadius: '4px',
-        backgroundColor: theme.palette.primary.light,
+        backgroundColor: theme.palette.primary.main,
         '& $listItemIcon': {
-            color: theme.palette.secondary.light,
+            color: theme.palette.secondary.main,
             //marginLeft: '-4px'
         },
         '& $listItemText': {

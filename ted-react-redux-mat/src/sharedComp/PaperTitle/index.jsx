@@ -8,6 +8,9 @@ import { makeStyles } from '@material-ui/core/styles';
 
 
 const useStyles = makeStyles(theme => ({
+    root: {
+        backgroundColor: theme.palette.primary.light,
+    },
     suggestion: {
         color: theme.palette.text.primary,
         marginTop: theme.spacing(2),
@@ -23,7 +26,7 @@ export default function PaperTitle(props) {
 
     const { title, suggestion } = props;
     return (
-        <>
+        <div className={classes.root}>
             <Typography
                 className={classes.title}
                 variant="h3"
@@ -38,6 +41,6 @@ export default function PaperTitle(props) {
             </Typography>
 
             <Divider className={classes.divider} />
-        </>
+        </div>
     );
 }

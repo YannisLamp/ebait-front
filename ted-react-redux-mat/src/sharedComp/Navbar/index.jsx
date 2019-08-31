@@ -2,13 +2,45 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { userActions } from '../../store/ducks/userStore';
-import { AppBar, Toolbar, Typography, Button, IconButton, TextField, Box, Badge, Menu } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, IconButton, TextField, MenuItem, Badge, Menu, Box } from '@material-ui/core';
 
 // Material icons
 import { Menu as MenuIcon, Input as InputIcon, Mail as MailIcon, Notifications as NotificationsIcon, AccountCircle } from '@material-ui/icons/';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 
-import useStyles from './styles';
+import { makeStyles } from '@material-ui/core/styles';
+
+
+const useStyles = makeStyles(theme => ({
+    root: {
+    },
+    menuButton: {
+        marginRight: theme.spacing(2),
+    },
+    title: {
+        flexGrow: 1,
+        fontSize: '35px',
+        fontWeight: '600',
+    },
+    titleLink: {
+        textDecoration: 'none',
+        color: theme.palette.text.secondary,
+    },
+    noDecoration: {
+        textDecoration: 'none',
+        color: theme.palette.text.primary,
+    },
+    //grow: {
+    //  flexGrow: 1,
+    //},
+    sectionDesktop: {
+        display: 'none',
+        [theme.breakpoints.up('md')]: {
+            display: 'flex',
+        },
+    },
+}));
+
 
 function ElevationScroll(props) {
     const { children } = props;
@@ -22,16 +54,27 @@ function ElevationScroll(props) {
     });
 }
 
-function ButtonAppBar(props) {
-    const classes = useStyles();
+function Navbar(props) {
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const isMenuOpen = Boolean(anchorEl);
 
     const user = props.user;
-
     function toggleSidebar() {
         const { dispatch } = props;
         dispatch(userActions.toggleSidebar());
     }
 
+
+    function handleProfileMenuOpen(event) {
+        setAnchorEl(event.currentTarget);
+    }
+
+    function handleMenuClose() {
+        setAnchorEl(null);
+    }
+
+
+    const classes = useStyles();
     return (
         <ElevationScroll {...props}>
             <AppBar>
@@ -75,37 +118,64 @@ function ButtonAppBar(props) {
                                 aria-label="account of current user"
                                 // aria-controls={menuId}
                                 aria-haspopup="true"
-                                // onClick={handleProfileMenuOpen}
+                                onClick={handleProfileMenuOpen}
                                 color="inherit"
                             >
                                 <AccountCircle />
                             </IconButton>
+                            <Menu
+                                anchorEl={anchorEl}
+                                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                                //id={menuId}
+                                keepMounted
+                                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                                open={isMenuOpen}
+                                onClose={handleMenuClose}
+                            >
+                                <MenuItem onClick={handleMenuClose}>
+                                    <NavLink
+                                        className={classes.noDecoration}
+                                        to="/profile"
+                                    >
+                                        Profile
+                                    </NavLink>
+                                </MenuItem>
+                                <MenuItem onClick={handleMenuClose}>
+                                    <NavLink
+                                        className={classes.noDecoration}
+                                        to="/login"
+                                    >
+                                        Log Out
+                                    </NavLink>
+                                </MenuItem>
+                            </Menu>
+
                         </div>
-                    ) : (
-                        <NavLink
-                            className={classes.titleLink}
-                            to="/login"
-                        >
-                            <IconButton color="inherit">
-                                <InputIcon />
-                            </IconButton>
-                        </NavLink>
-                    )}
+                            ) : (
+                            <NavLink
+                                className={classes.titleLink}
+                                to="/login"
+                            >
+                                <IconButton color="inherit">
+                                    <InputIcon />
+                                </IconButton>
+                            </NavLink>
+                            )}
                 </Toolbar>
             </AppBar>
         </ElevationScroll>
-    );
-}
-
-
+                );
+            }
+            
+            
 function mapStateToProps(state) {
-    const { userStore } = state;
-    const { user, sidebarOpen } = userStore;
+    const {userStore} = state;
+    const {user, sidebarOpen } = userStore;
     return {
-        user
-    };
-}
-
-
-const connectedButtonAppBar = connect(mapStateToProps)(ButtonAppBar);
-export default connectedButtonAppBar;
+                    user
+                };
+            }
+            
+            
+            const connectedNavbar = connect(mapStateToProps)(Navbar);
+export default connectedNavbar;

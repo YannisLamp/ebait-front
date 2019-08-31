@@ -33,7 +33,6 @@ class LoginForm extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        this.setState({ loading: true });
         const { username, password } = this.state;
         const { dispatch } = this.props;
         if (username && password) {
@@ -43,12 +42,10 @@ class LoginForm extends Component {
     }
 
     render() {
-        const { username, password, loading } = this.state;
-        const submitted = false;
+        const { username } = this.state;
 
         const { classes, userStore } = this.props;
         const { loggingIn } = userStore;
-
         return (
             <div className={classes.content}>
                 <div className={classes.contentBody}>
@@ -70,6 +67,7 @@ class LoginForm extends Component {
                                 className={classes.textField}
                                 label="Username"
                                 name="username"
+                                value={username}
                                 type="text"
                                 variant="outlined"
                                 onChange={this.handleChange}

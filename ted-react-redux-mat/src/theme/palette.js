@@ -9,9 +9,12 @@ export default {
   },
   primary: {
     contrastText: white,
-    main: '#16a085',
-    light: '#16a085',
-    dark: '#16a085',
+    // main: '#16a085',
+    // light: '#16a085',
+    // dark: '#16a085',
+    main: '#009688',
+    light: '#80CBC4',
+    dark: '#009688',
     // main: 'rgb(41, 170, 159)',
     // light: 'rgb(41, 170, 159)',
     // dark: 'rgb(41, 170, 159)'

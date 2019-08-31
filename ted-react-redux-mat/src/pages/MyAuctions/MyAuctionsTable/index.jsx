@@ -80,7 +80,7 @@ export default function MyAuctionsTable(props) {
 
 
     const { auctions, order, orderBy, pageSize, isLoading, currPage, totalAuctions } = props;
-    const { handleRequestSort, handleChangePage, handleChangeRowsPerPage, deleteAuction } = props;
+    const { handleRequestSort, handleChangePage, handleChangeRowsPerPage, deleteAuction, startAuction } = props;
 
     //const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.users.length - page * rowsPerPage);
     let emptyRows = pageSize;
@@ -142,7 +142,7 @@ export default function MyAuctionsTable(props) {
                                                         <TableCell align="right">{row.ends}</TableCell>
                                                         {/* <TableCell align="right">{getActions()}</TableCell> */}
                                                         <TableCell align="right">
-                                                            <PlayArrowIcon className={classes.start} />
+                                                            <PlayArrowIcon className={classes.start} onClick={e => startAuction(row.itemID)}/>
                                                             <Link 
                                                                 className={classes.edit}
                                                                 to={{
