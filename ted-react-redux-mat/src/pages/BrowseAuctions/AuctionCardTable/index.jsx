@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
 export default function MyAuctionsTable(props) {
 
     const { auctions, order, orderBy, pageSize, isLoading, currPage, totalAuctions } = props;
-    const { changeUser, handleRequestSort, handleChangePage, handleChangeRowsPerPage } = props;
+    const { changeUser, handleRequestSort, handleChangePage, handleChangeItemsPerPage } = props;
 
     //const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.users.length - page * rowsPerPage);
     let emptyRows = pageSize;
@@ -95,6 +95,7 @@ export default function MyAuctionsTable(props) {
 
                                 <TablePagination
                                     className={classes.pagination}
+                                    labelRowsPerPage="Auctions Per Page"
                                     rowsPerPageOptions={[5, 10, 15]}
                                     component="div"
                                     count={totalAuctions}
@@ -107,7 +108,7 @@ export default function MyAuctionsTable(props) {
                                         'aria-label': 'next page',
                                     }}
                                     onChangePage={handleChangePage}
-                                    onChangeRowsPerPage={handleChangeRowsPerPage}
+                                    onChangeItemsPerPage={handleChangeItemsPerPage}
 
                                 />
                             </>

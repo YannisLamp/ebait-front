@@ -11,6 +11,7 @@ import Sidebar from '../../sharedComp/Sidebar';
 import UserTable from './AuctionDetails';
 
 import { usersApi } from '../../services';
+import { nominatimApi } from '../../services';
 
 
 const styles = theme => ({
@@ -22,8 +23,7 @@ const styles = theme => ({
         paddingRight: theme.spacing(3),
         paddingBottom: theme.spacing(4),
         marginBottom: theme.spacing(2),
-        height: '80vh',
-        //height: '75vh',
+        minHeight: '80vh',
     },
     prevPaper: {
         width: '100%',
@@ -32,7 +32,6 @@ const styles = theme => ({
         paddingRight: theme.spacing(3),
         marginBottom: theme.spacing(1),
         minHeight: '40vh',
-        //height: '75vh',
     },
     prevWrapper: {
         marginTop: theme.spacing(14),
@@ -46,117 +45,34 @@ class ViewAuction extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            order: 'asc',
-            orderBy: 'username',
-            pageSize: 10,
-            currPage: 0,
+            auction: this.props.auction,
             
-            users: [],
-            totalPages: null,
-            totalUsers: null,
             isLoading: true,
-
-            userToVerify: null,
-            isVerifying: false,
         };
 
-        this.queryTableData = this.queryTableData.bind(this);
-        this.handleChangePage = this.handleChangePage.bind(this);
-        this.handleRequestSort = this.handleRequestSort.bind(this);
-        this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
-        this.changeUser = this.changeUser.bind(this);
-
-        this.verifyUser = this.verifyUser.bind(this);
+        this.queryAuctionLocation = this.queryAuctionLocation.bind(this);
+        
     }
 
     componentDidMount() {
-        const { orderBy, order, pageSize, currPage } = this.state;
-        this.queryTableData(orderBy, order, pageSize, currPage);
+        //const { 
+        //this.queryAuctionLocation(query);
     }
 
 
-    queryTableData(orderBy, order, pageSize, currPage) {
-        // Start Loading
-        this.setState((prevState, props) => {
-            return { isLoading: true }
-        })
-
-        usersApi.getUsers(orderBy, order, pageSize, currPage)
+    queryAuctionLocation(query) {
+        nominatimApi.getGeoLocation(query)
             .then(data => {
+                const coords = data.features[0].geometry.coordinates;
+                // Coordinates are given in reverse order from API
                 this.setState((prevState, props) => {
-                    
-                    // At first select the first user of the table
-                    // for information display
-                    let firstUser = null;
-                    if (data.users.length > 0) {
-                        firstUser = data.users[0];
-                    }
-
+                    let { auction } = prevState;
+                    //auction.
                     return {
-                        users: data.users,
-                        totalPages: data.totalPages,
-                        totalUsers: data.totalUsers,
-                        isLoading: false,
-                        userToVerify: firstUser
+                        auction
                     }
-                })
-            });
-    }
-
-    handleRequestSort(event, property) {
-        this.setState((prevState, props) => {
-            const { order, orderBy, pageSize } = prevState;
-            const isDesc = orderBy === property && order === 'desc';
-            const newOrder = isDesc ? 'asc' : 'desc';
-
-            // Also alters State and needs to know the new state
-            this.queryTableData(property, newOrder, pageSize, 0);
-            return {
-                order: newOrder,
-                orderBy: property,
-                currPage: 0,
-            }
-        });
-    }
-
-    handleChangePage(event, newPage) {
-        this.setState((prevState, props) => {
-            const { order, orderBy, pageSize } = prevState;
-
-            this.queryTableData(orderBy, order, pageSize, newPage);
-            return {
-                currPage: newPage
-            }
-        });
-    }
-
-    handleChangeRowsPerPage(event) {
-        this.setState((prevState, props) => {
-            const { order, orderBy } = prevState;
-            const newPageSize = +event.target.value;
-
-            this.queryTableData(orderBy, order, newPageSize, 0);
-            return {
-                currPage: 0,
-                pageSize: newPageSize,
-            }
-        });
-
-    }
-
-    verifyUser() {
-        const { userId } = this.state.userToVerify;
-        this.setState((prevState, props) => { return { isVerifying: true } });
-        usersApi.verifyUser(userId)
-            .then(data => {
-                const { order, orderBy, currPage, pageSize } = this.state;
-                this.queryTableData(orderBy, order, pageSize, currPage);
-                this.setState((prevState, props) => { return { isVerifying: false } });
-            });
-    }
-
-    changeUser(user) {
-        this.setState((prevState, props) => { return { userToVerify: user } });
+                });
+            })
     }
 
 

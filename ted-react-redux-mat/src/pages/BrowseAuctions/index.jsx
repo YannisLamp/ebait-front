@@ -32,32 +32,26 @@ const styles = theme => ({
 });
 
 
-class AdminPage extends Component {
+class BrowseAuctions extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             auctions: [],
 
-            order: 'asc',
-            orderBy: 'username',
             pageSize: 10,
             currPage: 0,
             
-            users: [],
             totalPages: null,
-            totalUsers: null,
+            totalAuctions: null,
             isLoading: false,
 
-            userToVerify: null,
             isVerifying: false,
         };
 
         this.loadAuctions = this.loadAuctions.bind(this);
         this.handleChangePage = this.handleChangePage.bind(this);
-        this.handleRequestSort = this.handleRequestSort.bind(this);
-        this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
-        this.changeUser = this.changeUser.bind(this);
+        this.handleChangeItemsPerPage = this.handleChangeItemsPerPage.bind(this);
     }
 
     componentDidMount() {
@@ -78,25 +72,6 @@ class AdminPage extends Component {
             });
     }
 
-
-    
-
-    handleRequestSort(event, property) {
-        this.setState((prevState, props) => {
-            const { order, orderBy, pageSize } = prevState;
-            const isDesc = orderBy === property && order === 'desc';
-            const newOrder = isDesc ? 'asc' : 'desc';
-
-            // Also alters State and needs to know the new state
-            this.queryTableData(property, newOrder, pageSize, 0);
-            return {
-                order: newOrder,
-                orderBy: property,
-                currPage: 0,
-            }
-        });
-    }
-
     handleChangePage(event, newPage) {
         this.setState((prevState, props) => {
             const { order, orderBy, pageSize } = prevState;
@@ -108,7 +83,7 @@ class AdminPage extends Component {
         });
     }
 
-    handleChangeRowsPerPage(event) {
+    handleChangeItemsPerPage(event) {
         this.setState((prevState, props) => {
             const { order, orderBy } = prevState;
             const newPageSize = +event.target.value;
@@ -130,8 +105,8 @@ class AdminPage extends Component {
 
 
     render() {
-        const { auctions, order, orderBy, pageSize, currPage, totalPages,
-            totalUsers, isLoading, userToVerify, isVerifying } = this.state;
+        const { auctions, pageSize, currPage, totalPages,
+            totalAuctions, isLoading } = this.state;
         
         const { classes } = this.props;
         return (
@@ -166,19 +141,17 @@ class AdminPage extends Component {
                                 <AuctionCardTable
                                     auctions={auctions}
                                     
-                                    order={order}
-                                    orderBy={orderBy}
                                     pageSize={pageSize}
                                     currPage={currPage}
                                     
                                     totalPages={totalPages}
-                                    totalUsers={totalUsers}
+                                    totalAuctions={totalAuctions}
                                     isLoading={isLoading}
                                     
                                     changeUser={this.changeUser} 
                                     handleRequestSort={this.handleRequestSort}
                                     handleChangePage={this.handleChangePage}
-                                    handleChangeRowsPerPage={this.handleChangeRowsPerPage}
+                                    handleChangeItemsPerPage={this.handleChangeItemsPerPage}
                                 />
                             </Paper>
                         </Grid>
@@ -192,5 +165,5 @@ class AdminPage extends Component {
     }
 }
 
-const styledAdminPage = withStyles(styles)(AdminPage);
-export default styledAdminPage;
+const styledBrowseAuctions = withStyles(styles)(BrowseAuctions);
+export default styledBrowseAuctions;
