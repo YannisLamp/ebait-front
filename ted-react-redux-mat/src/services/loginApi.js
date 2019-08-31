@@ -55,7 +55,6 @@ function loginThunk(username, password) {
                     dispatch(userActions.loginFailure(error));
                     if (error.response) {
                         //dispatch(alertActions.error(error.response.message));
-
                         if (error.response.status === 401) {
                             // auto logout if 401 response returned from api
                             // dispatch(logoutThunk);

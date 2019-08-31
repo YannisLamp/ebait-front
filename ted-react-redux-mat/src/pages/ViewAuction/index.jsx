@@ -8,7 +8,7 @@ import { withStyles } from '@material-ui/core';
 import { pageStyles } from '../pageStyles';
 
 import Sidebar from '../../sharedComp/Sidebar';
-import UserTable from './UserTable';
+import UserTable from './AuctionDetails';
 
 import { usersApi } from '../../services';
 
@@ -187,22 +187,12 @@ class ViewAuction extends Component {
                             >
 
                                 <Paper className={classes.prevPaper}>
-                                    {/* <UserVerification 
-                                        style={{height: '100%'}}
-                                        user={userToVerify} 
-                                        isLoading={isVerifying} 
-                                        verifyUser={this.verifyUser} 
-                                    /> */}
+                                   
                                 </Paper>
 
 
                                 <Paper className={classes.prevPaper}>
-                                    {/* <UserVerification 
-                                        style={{height: '100%'}}
-                                        user={userToVerify} 
-                                        isLoading={isVerifying} 
-                                        verifyUser={this.verifyUser} 
-                                    /> */}
+                                   
                                 </Paper>
 
 
@@ -230,22 +220,7 @@ class ViewAuction extends Component {
                             >
 
                             <Paper className={classes.paper}>
-                                <UserTable
-                                    order={order}
-                                    orderBy={orderBy}
-                                    pageSize={pageSize}
-                                    currPage={currPage}
-
-                                    users={users}
-                                    totalPages={totalPages}
-                                    totalUsers={totalUsers}
-                                    isLoading={isLoading}
-                                    
-                                    changeUser={this.changeUser} 
-                                    handleRequestSort={this.handleRequestSort}
-                                    handleChangePage={this.handleChangePage}
-                                    handleChangeRowsPerPage={this.handleChangeRowsPerPage}
-                                />
+                                
                             </Paper>
                             
                             </Grid>

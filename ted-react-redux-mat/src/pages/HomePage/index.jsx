@@ -55,7 +55,7 @@ function HomePage(props) {
                                 <Grid item xs={6}>
                                     <ActionCard 
                                         title="Browse Auctions" 
-                                        bodyText="explanation paopap" 
+                                        bodyText="Check out auctions created from all around the world, spanning thousands of different categories." 
                                         to="/browse" 
                                         backgroundColor="#29aa9f"
                                     />
@@ -64,7 +64,7 @@ function HomePage(props) {
                                 <Grid item xs={6}>
                                     <ActionCard 
                                         title="My Auctions" 
-                                        bodyText="explanation paopap"
+                                        bodyText="Manage and create your own auctions with just a few clicks."
                                         to="/myauctions" 
                                         backgroundColor="#5fba43"
                                         disabled={!hasPriv}
@@ -74,7 +74,7 @@ function HomePage(props) {
                                 <Grid item xs={6}>
                                     <ActionCard 
                                         title="Messages" 
-                                        bodyText="explanation paopap" 
+                                        bodyText="Contact sellers or auction winners with extreme ease with our messaging system." 
                                         to="/messages" 
                                         backgroundColor="#863a81" 
                                         disabled={!hasPriv}
@@ -87,7 +87,7 @@ function HomePage(props) {
                                 <Grid item xs={6}>
                                     <ActionCard 
                                         title="Profile" 
-                                        bodyText="explanation paopap"
+                                        bodyText="View and edit your account information."
                                         to="/profile" 
                                         backgroundColor="#FDD835" 
                                         disabled={!hasPriv}
@@ -98,7 +98,7 @@ function HomePage(props) {
                                     <Grid item xs={12}>
                                         <ActionCard 
                                             title="Verify Users" 
-                                            bodyText="explanation paopap"
+                                            bodyText="Verify new users by reviewing their account information."
                                             to="/admin" 
                                             backgroundColor="#ea7e3e"
                                         />

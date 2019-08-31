@@ -9,9 +9,10 @@ import { pageStyles } from '../pageStyles';
 
 import Sidebar from '../../sharedComp/Sidebar';
 
-import { usersApi } from '../../services';
+import { auctionsApi } from '../../services';
 
 import AuctionFilters from './AuctionFilters';
+import AuctionCardTable from './AuctionCardTable';
 
 
 const styles = theme => ({
@@ -23,7 +24,6 @@ const styles = theme => ({
         paddingRight: theme.spacing(3),
         marginBottom: theme.spacing(2),
         minHeight: '80vh',
-        //height: '75vh',
     },
     filterWrapper: {
         marginTop: theme.spacing(14),
@@ -37,6 +37,8 @@ class AdminPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            auctions: [],
+
             order: 'asc',
             orderBy: 'username',
             pageSize: 10,
@@ -45,54 +47,39 @@ class AdminPage extends Component {
             users: [],
             totalPages: null,
             totalUsers: null,
-            isLoading: true,
+            isLoading: false,
 
             userToVerify: null,
             isVerifying: false,
         };
 
-        this.queryTableData = this.queryTableData.bind(this);
+        this.loadAuctions = this.loadAuctions.bind(this);
         this.handleChangePage = this.handleChangePage.bind(this);
         this.handleRequestSort = this.handleRequestSort.bind(this);
         this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
         this.changeUser = this.changeUser.bind(this);
-
-        this.verifyUser = this.verifyUser.bind(this);
     }
 
     componentDidMount() {
-        const { orderBy, order, pageSize, currPage } = this.state;
-        this.queryTableData(orderBy, order, pageSize, currPage);
+        this.loadAuctions();
     }
 
-
-    queryTableData(orderBy, order, pageSize, currPage) {
-        // Start Loading
-        this.setState((prevState, props) => {
-            return { isLoading: true }
-        })
-
-        usersApi.getUsers(orderBy, order, pageSize, currPage)
+    loadAuctions() {
+        auctionsApi.getUserAuctions()
             .then(data => {
+                console.log(data);
                 this.setState((prevState, props) => {
-                    
-                    // At first select the first user of the table
-                    // for information display
-                    let firstUser = null;
-                    if (data.users.length > 0) {
-                        firstUser = data.users[0];
-                    }
-
                     return {
-                        users: data.users,
-                        totalPages: data.totalPages,
-                        totalUsers: data.totalUsers,
+                        auctions: data,
+                        totalAuctions: data.length,
                         isLoading: false,
-                        userToVerify: firstUser
                     }
-                })
+                });
             });
     }
+
+
+    
 
     handleRequestSort(event, property) {
         this.setState((prevState, props) => {
@@ -135,16 +122,7 @@ class AdminPage extends Component {
 
     }
 
-    verifyUser() {
-        const { userId } = this.state.userToVerify;
-        this.setState((prevState, props) => { return { isVerifying: true } });
-        usersApi.verifyUser(userId)
-            .then(data => {
-                const { order, orderBy, currPage, pageSize } = this.state;
-                this.queryTableData(orderBy, order, pageSize, currPage);
-                this.setState((prevState, props) => { return { isVerifying: false } });
-            });
-    }
+    
 
     changeUser(user) {
         this.setState((prevState, props) => { return { userToVerify: user } });
@@ -152,7 +130,7 @@ class AdminPage extends Component {
 
 
     render() {
-        const { users, order, orderBy, pageSize, currPage, totalPages,
+        const { auctions, order, orderBy, pageSize, currPage, totalPages,
             totalUsers, isLoading, userToVerify, isVerifying } = this.state;
         
         const { classes } = this.props;
@@ -185,13 +163,14 @@ class AdminPage extends Component {
                             lg={8}
                         >
                             <Paper className={classes.paper}>
-                                {/* <UserTable
+                                <AuctionCardTable
+                                    auctions={auctions}
+                                    
                                     order={order}
                                     orderBy={orderBy}
                                     pageSize={pageSize}
                                     currPage={currPage}
-
-                                    users={users}
+                                    
                                     totalPages={totalPages}
                                     totalUsers={totalUsers}
                                     isLoading={isLoading}
@@ -200,7 +179,7 @@ class AdminPage extends Component {
                                     handleRequestSort={this.handleRequestSort}
                                     handleChangePage={this.handleChangePage}
                                     handleChangeRowsPerPage={this.handleChangeRowsPerPage}
-                                /> */}
+                                />
                             </Paper>
                         </Grid>
 
