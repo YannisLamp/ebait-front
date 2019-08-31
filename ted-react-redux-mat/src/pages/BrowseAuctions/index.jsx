@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 // Material
-import { Grid, Paper } from '@material-ui/core';
+import { Grid, Paper, FormControl, InputLabel, Select, OutlinedInput, MenuItem } from '@material-ui/core';
 
 // For importing my custom styles  
 import { withStyles } from '@material-ui/core';
@@ -11,9 +11,11 @@ import Sidebar from '../../sharedComp/Sidebar';
 
 import { auctionsApi } from '../../services';
 
+import PaperTitle from '../../sharedComp/PaperTitle';
+
 import AuctionFilters from './AuctionFilters';
 import AuctionCardTable from './AuctionCardTable';
-
+import CategoryList from './CategoryList';
 
 const styles = theme => ({
     ...pageStyles(theme),
@@ -24,6 +26,14 @@ const styles = theme => ({
         paddingRight: theme.spacing(3),
         marginBottom: theme.spacing(2),
         minHeight: '80vh',
+    },
+    titlePaper: {
+        width: '100%',
+        paddingTop: theme.spacing(3),
+        paddingLeft: theme.spacing(2),
+        paddingRight: theme.spacing(2),
+        paddingBottom: theme.spacing(1),
+        marginBottom: theme.spacing(1),
     },
     filterWrapper: {
         marginTop: theme.spacing(14),
@@ -37,11 +47,17 @@ class BrowseAuctions extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            categoryFields: [{
+                selectedIndex: '',
+                selectedValue: '',
+                allCategories: [],
+            }],
+
             auctions: [],
 
             pageSize: 10,
             currPage: 0,
-            
+
             totalPages: null,
             totalAuctions: null,
             isLoading: false,
@@ -50,12 +66,26 @@ class BrowseAuctions extends Component {
         };
 
         this.loadAuctions = this.loadAuctions.bind(this);
+        this.handleCategoryPick = this.handleCategoryPick.bind(this);
         this.handleChangePage = this.handleChangePage.bind(this);
         this.handleChangeItemsPerPage = this.handleChangeItemsPerPage.bind(this);
     }
 
     componentDidMount() {
         this.loadAuctions();
+
+        auctionsApi.getRootCategories()
+            .then(data => {
+                this.setState((prevState, props) => {
+                    return {
+                        categoryFields: [{
+                            selectedIndex: prevState.categoryFields[0].selectedIndex,
+                            selectedValue: prevState.categoryFields[0].selectedValue,
+                            allCategories: data,
+                        }],
+                    }
+                });
+            });
     }
 
     loadAuctions() {
@@ -67,6 +97,40 @@ class BrowseAuctions extends Component {
                         auctions: data,
                         totalAuctions: data.length,
                         isLoading: false,
+                    }
+                });
+            });
+    }
+
+    handleCategoryPick(e, level) {
+        // Value is the category's index in the level's all categories
+        const catIndex = e.target.value;
+        const cat = this.state.categoryFields[level].allCategories[catIndex];
+        // Get the categories of the next level
+        auctionsApi.getChildrenCategories(cat.id)
+            .then(data => {
+                this.setState((prevState, props) => {
+                    let prevCategories = prevState.categoryFields;
+
+                    // Change current field value
+                    prevCategories[cat.level].selectedIndex = catIndex;
+                    prevCategories[cat.level].selectedValue = cat.name;
+
+                    if (data.length > 0) {
+                        // We want an extra object to be in the list 
+                        prevCategories.splice(cat.level + 2);
+                        prevCategories[cat.level + 1] = {
+                            selectedIndex: '',
+                            selectedValue: '',
+                            allCategories: data,
+                        }
+                    }
+                    else {
+                        prevCategories.splice(cat.level + 1);
+                    }
+
+                    return {
+                        prevCategories,
                     }
                 });
             });
@@ -97,7 +161,7 @@ class BrowseAuctions extends Component {
 
     }
 
-    
+
 
     changeUser(user) {
         this.setState((prevState, props) => { return { userToVerify: user } });
@@ -105,9 +169,10 @@ class BrowseAuctions extends Component {
 
 
     render() {
+
         const { auctions, pageSize, currPage, totalPages,
-            totalAuctions, isLoading } = this.state;
-        
+            totalAuctions, isLoading, categoryFields } = this.state;
+
         const { classes } = this.props;
         return (
             <Sidebar>
@@ -119,44 +184,57 @@ class BrowseAuctions extends Component {
                         justify="center"
                     >
 
-                        <Grid
+                        {/* <Grid
                             className={classes.filterWrapper}
                             item
                             lg={2}
                         >
                             <Paper className={classes.paper}>
-                                <AuctionFilters 
-                                
-                                
+                                <AuctionFilters
+
+
                                 />
                             </Paper>
-                        </Grid>
+                        </Grid> */}
 
                         <Grid
                             className={classes.rightWrapper}
                             item
-                            lg={8}
+                            lg={10}
                         >
-                            <Paper className={classes.paper}>
-                                <AuctionCardTable
-                                    auctions={auctions}
-                                    
-                                    pageSize={pageSize}
-                                    currPage={currPage}
-                                    
-                                    totalPages={totalPages}
-                                    totalAuctions={totalAuctions}
-                                    isLoading={isLoading}
-                                    
-                                    changeUser={this.changeUser} 
-                                    handleRequestSort={this.handleRequestSort}
-                                    handleChangePage={this.handleChangePage}
-                                    handleChangeItemsPerPage={this.handleChangeItemsPerPage}
+                            {/* <Paper className={classes.titlePaper}> */}
+                                <PaperTitle
+                                    title='Browse Auctions'
+                                    suggestion={''}
                                 />
-                            </Paper>
+
+                                <CategoryList 
+                                    categoryFields={categoryFields}
+                                    
+                                    handleCategoryPick={this.handleCategoryPick}
+                                />
+
+                            {/* </Paper> */}
+
+                            <AuctionCardTable
+                                auctions={auctions}
+
+                                pageSize={pageSize}
+                                currPage={currPage}
+
+                                totalPages={totalPages}
+                                totalAuctions={totalAuctions}
+                                isLoading={isLoading}
+
+                                changeUser={this.changeUser}
+                                handleRequestSort={this.handleRequestSort}
+                                handleChangePage={this.handleChangePage}
+                                handleChangeItemsPerPage={this.handleChangeItemsPerPage}
+                            />
+                            {/* </Paper> */}
                         </Grid>
 
-                        
+
 
                     </Grid>
                 </div>

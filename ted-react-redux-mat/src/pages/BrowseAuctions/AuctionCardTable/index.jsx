@@ -56,10 +56,10 @@ export default function MyAuctionsTable(props) {
     const classes = useStyles();
     return (
         <div className={classes.root}>
-                <PaperTitle
+                {/* <PaperTitle
                     title='Browse Auctions'
                     suggestion={''}
-                />
+                /> */}
 
 
                 <div className={classes.tableWrapper}>

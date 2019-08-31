@@ -8,14 +8,16 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
     card: {
-        maxWidth: 230,
+        minWidth: 270,
+        minHeight: 380,
+        //maxWidth: 400,
     },
     media: {
-        height: 140,
+        height: 260,
     },
-});
+}));
 
 export default function MediaCard(props) {
     const { name, description, imageUrl, currentBid, category } = props;

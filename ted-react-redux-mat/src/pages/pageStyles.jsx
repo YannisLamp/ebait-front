@@ -1,4 +1,4 @@
-//import Image from '../auctionBack.gif';
+//import Image from '../item_default.jpg';
 
 export const pageStyles = (theme) => ({
     root: {
