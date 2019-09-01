@@ -39,19 +39,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-export default function MyAuctionsTable(props) {
+export default function AuctionCardTable(props) {
 
-    const { auctions, order, orderBy, pageSize, isLoading, currPage, totalAuctions } = props;
-    const { changeUser, handleRequestSort, handleChangePage, handleChangeItemsPerPage } = props;
+    const { auctions, pageSize, isLoading, currPage, totalAuctions } = props;
+    const { handleChangePage, handleChangeItemsPerPage } = props;
 
-    //const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.users.length - page * rowsPerPage);
-    let emptyRows = pageSize;
-    if (props.auctions) {
-        emptyRows = emptyRows - props.auctions.length;
-    }
-
-
-    
 
     const classes = useStyles();
     return (
@@ -72,13 +64,13 @@ export default function MyAuctionsTable(props) {
                                 style={{ height: "100%" }} 
                                 container 
                                 //direction="column" 
-                                justify="flex-start"
+                                justify="center"
                             >
                             {
                                 auctions
                                 .map((card, index) => {
                                     const imageUrl = card.photos[0] ? card.photos[0].fileDownloadUri : '';
-                                    console.log(card);
+                                    console.log(imageUrl);
                                     return (
                                         <Grid className={classes.card} item>
                                             <AuctionCard

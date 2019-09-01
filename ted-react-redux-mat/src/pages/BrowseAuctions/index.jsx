@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 
 // Material
-import { Grid, Paper, FormControl, InputLabel, Select, OutlinedInput, MenuItem } from '@material-ui/core';
+import { Grid, Paper, IconButton } from '@material-ui/core';
+import FilterListIcon from '@material-ui/icons/FilterList';
 
 // For importing my custom styles  
 import { withStyles } from '@material-ui/core';
@@ -15,7 +16,7 @@ import PaperTitle from '../../sharedComp/PaperTitle';
 
 import AuctionFilters from './AuctionFilters';
 import AuctionCardTable from './AuctionCardTable';
-import CategoryList from './CategoryList';
+import CategoryList from '../../sharedComp/CategoryList';
 
 const styles = theme => ({
     ...pageStyles(theme),
@@ -34,6 +35,9 @@ const styles = theme => ({
         paddingRight: theme.spacing(2),
         paddingBottom: theme.spacing(1),
         marginBottom: theme.spacing(1),
+    },
+    bareTitle: {
+        paddingTop: theme.spacing(3),
     },
     filterWrapper: {
         marginTop: theme.spacing(14),
@@ -54,6 +58,7 @@ class BrowseAuctions extends Component {
             }],
 
             auctions: [],
+            showFilters: false,
 
             pageSize: 10,
             currPage: 0,
@@ -61,12 +66,11 @@ class BrowseAuctions extends Component {
             totalPages: null,
             totalAuctions: null,
             isLoading: false,
-
-            isVerifying: false,
         };
 
         this.loadAuctions = this.loadAuctions.bind(this);
         this.handleCategoryPick = this.handleCategoryPick.bind(this);
+        this.changeFilterVisibility = this.changeFilterVisibility.bind(this);
         this.handleChangePage = this.handleChangePage.bind(this);
         this.handleChangeItemsPerPage = this.handleChangeItemsPerPage.bind(this);
     }
@@ -136,6 +140,10 @@ class BrowseAuctions extends Component {
             });
     }
 
+    changeFilterVisibility() {
+        this.setState((prevState, props) => { return { showFilters: !prevState.showFilters } });
+    }
+ 
     handleChangePage(event, newPage) {
         this.setState((prevState, props) => {
             const { order, orderBy, pageSize } = prevState;
@@ -170,7 +178,7 @@ class BrowseAuctions extends Component {
 
     render() {
 
-        const { auctions, pageSize, currPage, totalPages,
+        const { auctions, showFilters, pageSize, currPage, totalPages,
             totalAuctions, isLoading, categoryFields } = this.state;
 
         const { classes } = this.props;
@@ -183,56 +191,100 @@ class BrowseAuctions extends Component {
                         //alignItems="center"
                         justify="center"
                     >
+                        
 
-                        {/* <Grid
-                            className={classes.filterWrapper}
-                            item
-                            lg={2}
-                        >
-                            <Paper className={classes.paper}>
-                                <AuctionFilters
+                        { showFilters ? (
+                            <>
+                            <Grid
+                                className={classes.filterWrapper}
+                                item
+                                lg={2}
+                            >
+                                <Paper className={classes.paper}>
+                                    <AuctionFilters
 
 
+                                    />
+                                </Paper>
+                            </Grid>
+
+                            <Grid
+                                className={classes.rightWrapper}
+                                item
+                                lg={8}
+                            >
+                                {/* <Paper className={classes.titlePaper}> */}
+                                    <PaperTitle
+                                        className={classes.bareTitle}
+                                        title='Browse Auctions'
+                                        suggestion={''}
+                                    />
+                                    <IconButton  onClick={this.changeFilterVisibility}><FilterListIcon /> </IconButton>
+
+                                    <CategoryList 
+                                        categoryFields={categoryFields}
+                                        handleCategoryPick={this.handleCategoryPick}
+                                    />
+
+                                {/* </Paper> */}
+
+                                <AuctionCardTable
+                                    auctions={auctions}
+
+                                    pageSize={pageSize}
+                                    currPage={currPage}
+
+                                    totalPages={totalPages}
+                                    totalAuctions={totalAuctions}
+                                    isLoading={isLoading}
+
+                                    changeUser={this.changeUser}
+                                    handleRequestSort={this.handleRequestSort}
+                                    handleChangePage={this.handleChangePage}
+                                    handleChangeItemsPerPage={this.handleChangeItemsPerPage}
                                 />
-                            </Paper>
-                        </Grid> */}
+                                {/* </Paper> */}
+                            </Grid>
+                            </>
+                        ) : (
+                            <Grid
+                                className={classes.rightWrapper}
+                                item
+                                lg={10}
+                            >
+                                {/* <Paper className={classes.titlePaper}> */}
+                                    <PaperTitle
+                                        className={classes.bareTitle}
+                                        title='Browse Auctions'
+                                        suggestion={''}
+                                    />
+                                    <FilterListIcon onClick={this.changeFilterVisibility} />
 
-                        <Grid
-                            className={classes.rightWrapper}
-                            item
-                            lg={10}
-                        >
-                            {/* <Paper className={classes.titlePaper}> */}
-                                <PaperTitle
-                                    title='Browse Auctions'
-                                    suggestion={''}
+                                    <CategoryList 
+                                        categoryFields={categoryFields}
+                                        handleCategoryPick={this.handleCategoryPick}
+                                    />
+
+                                {/* </Paper> */}
+
+                                <AuctionCardTable
+                                    auctions={auctions}
+
+                                    pageSize={pageSize}
+                                    currPage={currPage}
+
+                                    totalPages={totalPages}
+                                    totalAuctions={totalAuctions}
+                                    isLoading={isLoading}
+
+                                    changeUser={this.changeUser}
+                                    handleRequestSort={this.handleRequestSort}
+                                    handleChangePage={this.handleChangePage}
+                                    handleChangeItemsPerPage={this.handleChangeItemsPerPage}
                                 />
-
-                                <CategoryList 
-                                    categoryFields={categoryFields}
-                                    
-                                    handleCategoryPick={this.handleCategoryPick}
-                                />
-
-                            {/* </Paper> */}
-
-                            <AuctionCardTable
-                                auctions={auctions}
-
-                                pageSize={pageSize}
-                                currPage={currPage}
-
-                                totalPages={totalPages}
-                                totalAuctions={totalAuctions}
-                                isLoading={isLoading}
-
-                                changeUser={this.changeUser}
-                                handleRequestSort={this.handleRequestSort}
-                                handleChangePage={this.handleChangePage}
-                                handleChangeItemsPerPage={this.handleChangeItemsPerPage}
-                            />
-                            {/* </Paper> */}
-                        </Grid>
+                                {/* </Paper> */}
+                            </Grid>
+                        )}
 
 
 

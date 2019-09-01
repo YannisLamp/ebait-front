@@ -93,10 +93,9 @@ class CreateAuction extends Component {
 
             testo: 'aaa',
 
-            file1: '',
-            imagePreviewUrl1: '',
-            file2: '',
-            imagePreviewUrl2: '',
+            photos: [],
+            shownPhoto: '',
+
 
             country: auction ? auction.country : this.props.user.country,
             address: auction ? auction.address : this.props.user.address,
@@ -121,7 +120,9 @@ class CreateAuction extends Component {
         this.handleChange = this.handleChange.bind(this);
 
         this.redirectToMyAuctions = this.redirectToMyAuctions.bind(this);
-        this.onFile1Change = this.onFile1Change.bind(this);
+        this.onPhotoAddition = this.onPhotoAddition.bind(this);
+        this.selectShownPhoto = this.selectShownPhoto.bind(this);
+        this.onPhotoDelete = this.onPhotoDelete.bind(this);
 
         this.updateMap = this.updateMap.bind(this);
         this.handleMapClick = this.handleMapClick.bind(this);
@@ -264,10 +265,41 @@ class CreateAuction extends Component {
         });
     }
 
-    onFile1Change(event) {
+    onPhotoAddition(event) {
         event.persist();
         console.log(event);
-        this.setState((prevState, props) => { return { file1: event.target.files[0] } });
+        this.setState((prevState, props) => { 
+            const { photos } = prevState;
+            for (const photo of event.target.files) {
+                photos.push(photo);
+            }
+            return { 
+                photos: photos,
+                shownPhoto: photos.length-1,
+            } 
+        });
+    }
+
+    selectShownPhoto(index) {
+        this.setState((prevState, props) => { return { shownPhoto: index } });
+    }
+
+    onPhotoDelete(index) {
+        this.setState((prevState, props) => { 
+            const { photos, shownPhoto } = prevState;
+            photos.splice(index, 1);
+
+            // Don't let the shown photo index become -1
+            let newShownPhoto = shownPhoto - 1;
+            if (newShownPhoto < 0) {
+                newShownPhoto = 0 
+            }
+
+            return { 
+                photos: photos,
+                shownPhoto: newShownPhoto,
+            }
+        });
     }
 
     redirectToMyAuctions() {
@@ -277,7 +309,7 @@ class CreateAuction extends Component {
     handleSubmit(e) {
         e.preventDefault();
         const { name, description, ends, firstBid, buyout, categoryFields,
-            country, locationDescription, selectedLat, selectedLng, file1 } = this.state;
+            country, locationDescription, selectedLat, selectedLng, photos } = this.state;
 
         // Convert category fields to categories for API
         let categories = [];
@@ -292,8 +324,8 @@ class CreateAuction extends Component {
 
         this.setState((prevState, props) => { return { isLoading: true, } });
         auctionsApi.createAuction(name, description, convertedends,
-            firstBid, buyout, categories, country, locationDescription,
-            selectedLat, selectedLng, file1)
+                firstBid, buyout, categories, country, locationDescription,
+                selectedLat, selectedLng, photos)
             .then(data => {
                 this.setState((prevState, props) => { return { isLoading: false, } });
                 this.redirectToMyAuctions();
@@ -314,11 +346,10 @@ class CreateAuction extends Component {
     }
 
     render() {
-        const { name, description, ends, firstBid, buyout, isLoading, categoryFields, file1 } = this.state;
+        const { name, description, ends, firstBid, buyout, isLoading, categoryFields, photos, shownPhoto } = this.state;
 
         const { currentStep, country, address, locationDescription, locationQuery,
             startingLat, startingLng, selectedLat, selectedLng, hasLocation } = this.state;
-
 
 
         const { classes } = this.props;
@@ -435,10 +466,13 @@ class CreateAuction extends Component {
                                     >
                                         <Paper className={classes.paper}>
                                             <AuctionPhotoUpload
-                                                file1={file1}
-                                                onFile1Change={this.onFile1Change}
+                                                photos={photos}
+                                                shownPhoto={shownPhoto}
 
-                                                handleChange={this.handleChange}
+                                                onPhotoAddition={this.onPhotoAddition}
+                                                selectShownPhoto={this.selectShownPhoto}
+                                                onPhotoDelete={this.onPhotoDelete}
+
                                             />
 
                                             <div className={classes.progressButtons}>

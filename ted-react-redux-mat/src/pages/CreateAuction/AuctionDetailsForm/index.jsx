@@ -10,7 +10,7 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 
 import { Button, TextField, Typography } from '@material-ui/core';
 
-import { InputLabel, MenuItem, FormControl, Select, Input, Chip, OutlinedInput } from '@material-ui/core';
+import CategoryList from '../../../sharedComp/CategoryList';
 
 // For importing my custom styles  
 import { makeStyles } from '@material-ui/core';
@@ -38,9 +38,6 @@ const useStyles = makeStyles(theme => ({
         paddingTop: theme.spacing(4),
         paddingBottom: theme.spacing(1),
     },
-    chip: {
-        margin: 2,
-    },
     categories: {
         marginBottom: theme.spacing(4),
     },
@@ -52,27 +49,11 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-function getStyles(name, personName, theme) {
-    return {
-        fontWeight:
-            personName.indexOf(name) === -1
-                ? theme.typography.fontWeightRegular
-                : theme.typography.fontWeightMedium,
-    };
-}
-
 
 export default function AuctionDetailsForm(props) {
-
     const { name, description, ends, firstBid, buyout, categoryFields } = props;
     const { handleChange, handleDateChange, handleCategoryPick } = props;
 
-    //Some React hook magic from material ui so that the outlined stuff work
-    const inputLabel = React.useRef(null);
-    const [labelWidth, setLabelWidth] = React.useState(0);
-    React.useEffect(() => {
-        setLabelWidth(inputLabel.current.offsetWidth);
-    }, []);
 
     const classes = useStyles();
     return (
@@ -163,35 +144,10 @@ export default function AuctionDetailsForm(props) {
             </Typography>
 
             <div className={classes.categories}>
-            {
-                categoryFields.map((field, level) => {
-                    return (
-                        <FormControl variant="outlined" className={classes.categoryField} key={level}>
-                            <InputLabel ref={inputLabel} htmlFor={'categories' + (level + 1)}>
-                                Category {level + 1}
-                            </InputLabel>
-                            <Select
-                                value={field.selectedIndex}
-                                onChange={e => { handleCategoryPick(e, level) }}
-                                input={<OutlinedInput
-                                    labelWidth={labelWidth}
-                                    name="category"
-                                    id={'categories' + (level + 1)}
-                                />}
-                            >
-                                {field.allCategories.map((cat, index) => (
-                                    <MenuItem
-                                        key={index}
-                                        value={index}
-                                    >
-                                        {cat.name}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                    );
-                })
-            }
+                <CategoryList
+                    categoryFields={categoryFields}
+                    handleCategoryPick={handleCategoryPick}
+                />
             </div>
 
         </div>

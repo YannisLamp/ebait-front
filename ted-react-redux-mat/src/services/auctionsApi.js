@@ -13,7 +13,7 @@ export const auctionsApi = {
 
 function createAuction(name, description, ends,
     firstBid, buyout, categories, country, locationDescription,
-    selectedLat, selectedLng, imageFile) {
+    selectedLat, selectedLng, photos) {
 
     const jsonRequest = {
         name: name,
@@ -32,23 +32,22 @@ function createAuction(name, description, ends,
         },
     }
 
-    const json = JSON.stringify(jsonRequest);
-    const blob = new Blob([json], {
-        type: 'application/json'
-    });
-
-    const formData = new FormData();
-    formData.append('item', blob);
-    formData.append('imageFile', imageFile);
-
-    return axios.post('/auctions', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-    })
+    return axios.post('/auctions', jsonRequest)
         .then(
             response => {
-                return response.data;
+                console.log(response.data);
+
+                // After the auction is created, make a request to append all the photos
+                // the user has uploaded
+                const auctionId = response.data.itemID;
+                uploadMultiplePhotos(auctionId, photos)
+                    .then(response => {
+                        return response.data;
+                    },
+                        error => {
+            
+                        }
+                    );
             },
             error => {
 
@@ -99,6 +98,49 @@ function buyoutAuction(id) {
         );
 }
 
+function deleteAuctionPhoto(photoId) {
+    return axios.get('/auctions/delete_photo/id', {
+
+    })
+        .then(response => {
+            return response.data;
+        },
+            error => {
+
+            }
+        );
+}
+
+function uploadMultiplePhotos(auctionId, photos) {
+    // const json = JSON.stringify(jsonRequest);
+    // const blob = new Blob([json], {
+    //     type: 'application/json'
+    // });
+
+    const formData = new FormData();
+    //formData.append('item', blob);
+
+    for (const photo of photos) {
+        formData.append('imageFile', photo);
+    }
+    // formData.append('imageFile', imageFile);
+    // formData.append('imageFile', imageFile);
+
+    return axios.post('/auctions/' + auctionId + '/upload_multiple_photos', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+        .then(
+            response => {
+                return response.data;
+            },
+            error => {
+
+
+            }
+        );
+}
 
 function getUserAuctions(type) {
     return axios.get('/auctions', {

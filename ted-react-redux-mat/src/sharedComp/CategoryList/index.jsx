@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
         marginTop: theme.spacing(2),
         marginLeft: theme.spacing(2),
         marginRight: theme.spacing(1),
-        width: '15%',
+        width: 180,
     },
 }));
 
@@ -40,7 +40,6 @@ export default function CategoryList(props) {
     const classes = useStyles();
     return (
         <div className={classes.root}>
-            
             <div className={classes.categories}>
             {
                 categoryFields.map((field, level) => {
@@ -73,7 +72,6 @@ export default function CategoryList(props) {
                 })
             }
             </div>
-
         </div>
     );
 }

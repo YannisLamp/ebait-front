@@ -14,16 +14,16 @@ import Sidebar from '../../sharedComp/Sidebar';
 import LoginQuote from './LoginQuote';
 import LoginForm from './LoginForm';
 
-import Image from '../../item_default.jpg';
+//import Image from '../../item_default.jpg';
 
 const useStyles = makeStyles(theme => ({
     ...pageStyles(theme),
-    backImg: {
-        backgroundImage: `url(${Image})`,
-        backgroundSize: 'cover',
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center',
-    },
+    // backImg: {
+    //     backgroundImage: `url(${Image})`,
+    //     backgroundSize: 'cover',
+    //     backgroundRepeat: 'no-repeat',
+    //     backgroundPosition: 'center',
+    // },
     quoteWrapper: {
       [theme.breakpoints.down('md')]: {
         display: 'none'

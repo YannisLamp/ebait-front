@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 // Material
 import {
-    Grid, Paper, Button, Typography, CircularProgress,
+    Grid, Paper, IconButton, Typography, CircularProgress,
     Table, TableBody, TableRow, TableCell, Checkbox, TablePagination, Switch
 } from '@material-ui/core';
 
@@ -50,16 +50,12 @@ const useStyles = makeStyles(theme => ({
     },
     start: {
         color: theme.palette.primary.main,
-        marginRight: theme.spacing(2),
-        cursor: 'pointer',
     },
     edit: {
         color: 'black',
-        marginRight: theme.spacing(2),
     },
     delete: {
         color: 'rgb(220, 0, 78)',
-        cursor: 'pointer',
     },
 }));
 
@@ -142,8 +138,9 @@ export default function MyAuctionsTable(props) {
                                                         <TableCell align="right">{row.ends}</TableCell>
                                                         {/* <TableCell align="right">{getActions()}</TableCell> */}
                                                         <TableCell align="right">
-                                                            <PlayArrowIcon className={classes.start} onClick={e => startAuction(row.itemID)}/>
-                                                            <Link 
+                                                            <IconButton><PlayArrowIcon className={classes.start} onClick={e => startAuction(row.itemID)}/></IconButton>
+                                                            <IconButton>
+                                                            <Link
                                                                 className={classes.edit}
                                                                 to={{
                                                                     pathname: '/myauctions/create-auction',
@@ -154,7 +151,8 @@ export default function MyAuctionsTable(props) {
                                                             >
                                                                 <EditIcon />
                                                             </Link>
-                                                            <DeleteIcon className={classes.delete} onClick={e => deleteAuction(row.itemID)}/>
+                                                            </IconButton>
+                                                            <IconButton><DeleteIcon className={classes.delete} onClick={e => deleteAuction(row.itemID)}/></IconButton>
                                                         </TableCell>
                                                     </TableRow>
                                                 );
