@@ -10,16 +10,4 @@ export const pageStyles = (theme) => ({
     grid: {
         minHeight: '100vh'
     },
-    pageWrapper: {
-        marginTop: theme.spacing(14),
-    },
-    rightWrapper: {
-        marginTop: theme.spacing(14),
-        marginRight: theme.spacing(4),
-    },
-    content: {
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column'
-    },
 });

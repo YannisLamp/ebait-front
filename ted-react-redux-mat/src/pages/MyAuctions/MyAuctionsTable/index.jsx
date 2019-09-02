@@ -7,7 +7,6 @@ import {
     Table, TableBody, TableRow, TableCell, Checkbox, TablePagination, Switch
 } from '@material-ui/core';
 
-import { CheckBox as CheckBoxIcon, CheckBoxOutlineBlank as CheckBoxBlankIcon } from '@material-ui/icons';
 import EditIcon from '@material-ui/icons/Edit';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import DeleteIcon from '@material-ui/icons/Delete';

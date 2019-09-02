@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function MediaCard(props) {
     const { auction, currentBid, category } = props;
-    const imageUrl = auction.photos[0] ? auction.photos[0].fileDownloadUri : '';
+    const imageUrl = auction.photos[0] ? auction.photos[0].fileDownloadUri : auction.defaultPhoto.fileDownloadUri;
 
     const classes = useStyles();
     return (

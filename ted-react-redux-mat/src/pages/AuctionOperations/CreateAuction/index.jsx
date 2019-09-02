@@ -50,12 +50,16 @@ const styles = theme => ({
         marginBottom: theme.spacing(4),
     },
     locationWrapper: {
-        marginTop: theme.spacing(14),
+        marginTop: theme.spacing(12),
         marginRight: theme.spacing(10),
     },
     detailsWrapper: {
-        marginTop: theme.spacing(14),
+        marginTop: theme.spacing(12),
         marginRight: theme.spacing(10),
+    },
+    rightWrapper: {
+        marginTop: theme.spacing(12),
+        marginRight: theme.spacing(4),
     },
     progressButtons: {
         display: 'inline-flex',
@@ -93,8 +97,7 @@ class CreateAuction extends Component {
 
 
             country: this.props.user.country,
-            address: this.props.user.address,
-            locationDescription: '',
+            locationDescription: this.props.user.address,
 
             locationQuery: this.props.user.address + ', ' + this.props.user.country,
             startingLat: null,
@@ -110,8 +113,8 @@ class CreateAuction extends Component {
         this.handleDateChange = this.handleDateChange.bind(this);
 
         this.handleCountryChange = this.handleCountryChange.bind(this);
-        this.handleAddressChange = this.handleAddressChange.bind(this);
         this.handleCategoryPick = this.handleCategoryPick.bind(this);
+        this.deleteCategory = this.deleteCategory.bind(this);
         this.handleChange = this.handleChange.bind(this);
 
         this.redirectToMyAuctions = this.redirectToMyAuctions.bind(this);
@@ -171,7 +174,7 @@ class CreateAuction extends Component {
     handleCountryChange(e) {
         const { value } = e.target;
         this.setState((prevState, props) => {
-            const query = prevState.address + ', ' + value;
+            const query = prevState.locationDescription + ', ' + value;
             return {
                 country: value,
                 locationQuery: query
@@ -213,6 +216,24 @@ class CreateAuction extends Component {
             });
     }
 
+    deleteCategory() {
+        this.setState((prevState, props) => {
+            let prevCategories = prevState.categoryFields;
+            
+            if(prevCategories.length === 1) {
+                prevCategories[0].selectedIndex = '';
+                prevCategories[0].selectedValue = '';
+            }
+            else {
+                prevCategories.pop();
+            }
+
+            return {
+                categoryFields: prevCategories
+            }
+        });
+    }
+
     updateMap() {
         const query = this.state.locationQuery;
         nominatimApi.getGeoLocation(query)
@@ -226,18 +247,6 @@ class CreateAuction extends Component {
                     }
                 });
             });
-    }
-
-
-    handleAddressChange(e) {
-        const { value } = e.target;
-        this.setState((prevState, props) => {
-            const query = value + ', ' + prevState.country;
-            return {
-                address: value,
-                locationQuery: query
-            }
-        });
     }
 
     handleMapClick(e) {
@@ -333,7 +342,7 @@ class CreateAuction extends Component {
     render() {
         const { name, description, ends, firstBid, buyout, isLoading, categoryFields, photos, shownPhoto } = this.state;
 
-        const { currentStep, country, address, locationDescription, locationQuery,
+        const { currentStep, country, locationDescription, locationQuery,
             startingLat, startingLng, selectedLat, selectedLng, hasLocation } = this.state;
 
 
@@ -357,11 +366,9 @@ class CreateAuction extends Component {
                                     <Paper className={classes.paper}>
                                         <AuctionLocationForm
                                             country={country}
-                                            address={address}
                                             locationDescription={locationDescription}
 
                                             handleCountryChange={this.handleCountryChange}
-                                            handleAddressChange={this.handleAddressChange}
                                             handleChange={this.handleChange}
                                             updateMap={this.updateMap}
                                         />
@@ -437,6 +444,7 @@ class CreateAuction extends Component {
                                                 handleChange={this.handleChange}
                                                 handleDateChange={this.handleDateChange}
                                                 handleCategoryPick={this.handleCategoryPick}
+                                                deleteCategory={this.deleteCategory}
                                             />
 
                                         </Paper>

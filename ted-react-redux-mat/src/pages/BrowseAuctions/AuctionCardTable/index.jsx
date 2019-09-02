@@ -96,7 +96,7 @@ export default function AuctionCardTable(props) {
                                         'aria-label': 'next page',
                                     }}
                                     onChangePage={handleChangePage}
-                                    onChangeItemsPerPage={handleChangeItemsPerPage}
+                                    onChangeRowsPerPage={handleChangeItemsPerPage}
 
                                 />
                             </>

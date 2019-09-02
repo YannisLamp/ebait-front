@@ -39,8 +39,12 @@ const styles = theme => ({
         minHeight: '40vh',
     },
     prevWrapper: {
-        marginTop: theme.spacing(14),
+        marginTop: theme.spacing(12),
         marginRight: theme.spacing(7),
+    },
+    rightWrapper: {
+        marginTop: theme.spacing(12),
+        marginRight: theme.spacing(4),
     },
 });
 
@@ -70,6 +74,7 @@ class ViewAuction extends Component {
 
     componentDidMount() {
         const { auction } = this.state;
+
         if (!auction.location.latitude || auction.location.longitude) {
             const { text } = auction.location;
             this.queryAuctionLocation(text);
@@ -108,6 +113,13 @@ class ViewAuction extends Component {
 
     render() {
         const { auction, isFullscreenPhotos, fullscreenIndex, bid } = this.state;
+        let photos = [];
+        if (auction.photos.length === 0) {
+            photos.push(auction.defaultPhoto);
+        }
+        else {
+            photos = auction.photos;
+        }
 
         console.log('AUCTIONNNNN');
         console.log(auction);
@@ -137,7 +149,7 @@ class ViewAuction extends Component {
                                 {/* <Grid item> */}
                                     <Paper className={classes.prevPaper}>
                                         <AuctionCarousel 
-                                            photos={auction.photos}
+                                            photos={photos}
                                             isFullscreenPhotos={isFullscreenPhotos}
                                             fullscreenIndex={fullscreenIndex}
                                             

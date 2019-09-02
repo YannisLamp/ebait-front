@@ -29,8 +29,8 @@ const useStyles = makeStyles(theme => ({
 
 export default function AuctionLocationForm(props) {
 
-    const { country, address, locationDescription } = props;
-    const { handleCountryChange, handleAddressChange, handleChange, updateMap } = props;
+    const { country, locationDescription } = props;
+    const { handleCountryChange, handleChange, updateMap } = props;
 
     const classes = useStyles();
     return (
@@ -52,7 +52,7 @@ export default function AuctionLocationForm(props) {
                     onChange={handleCountryChange}
                     onBlur={updateMap}
                 />
-                <TextField
+                {/* <TextField
                     className={classes.textField}
                     label="Address"
                     name="address"
@@ -61,7 +61,7 @@ export default function AuctionLocationForm(props) {
                     variant="outlined"
                     onChange={handleAddressChange}
                     onBlur={updateMap}
-                />
+                /> */}
                 <TextField
                     className={classes.textField}
                     label="Location Description"

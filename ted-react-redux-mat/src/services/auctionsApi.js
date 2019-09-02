@@ -84,23 +84,17 @@ function editAuction(itemID, name, description, ends,
         },
     }
 
-    for (const photo of deletedPhotos) {
-        deleteAuctionPhoto(photo.photoId);
-    }
-
     return axios.put('/auctions/' + itemID, jsonRequest)
         .then(
             response => {
-                console.log(response.data);
-
-                // After the auction is edited, make a request to append all the new photos
-                // the user has uploaded
-                uploadMultiplePhotos(itemID, photos);
-
                 // Then delete all the photos that the iser has deleted in the UI
                 for (const photo of deletedPhotos) {
                     deleteAuctionPhoto(photo.photoId);
                 }
+
+                // After the auction is edited, make a request to append all the new photos
+                // the user has uploaded
+                return uploadMultiplePhotos(itemID, photos);
             },
             error => {
 

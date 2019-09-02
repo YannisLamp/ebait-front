@@ -50,12 +50,16 @@ const styles = theme => ({
         marginBottom: theme.spacing(4),
     },
     locationWrapper: {
-        marginTop: theme.spacing(14),
+        marginTop: theme.spacing(12),
         marginRight: theme.spacing(10),
     },
     detailsWrapper: {
-        marginTop: theme.spacing(14),
+        marginTop: theme.spacing(12),
         marginRight: theme.spacing(10),
+    },
+    rightWrapper: {
+        marginTop: theme.spacing(12),
+        marginRight: theme.spacing(4),
     },
     progressButtons: {
         width: '100%',
@@ -109,8 +113,6 @@ class EditAuction extends Component {
             shownPhoto: auction.photos ? 0 : '',
 
             country: auction.country ? auction.country : '',
-            // No address is returned, only location coords and text
-            address: '',
             locationDescription: auction.location.text ? auction.location.text : '',
 
             locationQuery: auction.location.text ? auction.location.text : '',
@@ -130,8 +132,8 @@ class EditAuction extends Component {
         this.handleDateChange = this.handleDateChange.bind(this);
 
         this.handleCountryChange = this.handleCountryChange.bind(this);
-        this.handleAddressChange = this.handleAddressChange.bind(this);
         this.handleCategoryPick = this.handleCategoryPick.bind(this);
+        this.deleteCategory = this.deleteCategory.bind(this);
         this.handleChange = this.handleChange.bind(this);
 
         this.redirectToMyAuctions = this.redirectToMyAuctions.bind(this);
@@ -233,7 +235,7 @@ class EditAuction extends Component {
     handleCountryChange(e) {
         const { value } = e.target;
         this.setState((prevState, props) => {
-            const query = prevState.address + ', ' + value;
+            const query = prevState.locationDescription + ', ' + value;
             return {
                 country: value,
                 locationQuery: query
@@ -275,6 +277,24 @@ class EditAuction extends Component {
             });
     }
 
+    deleteCategory() {
+        this.setState((prevState, props) => {
+            let prevCategories = prevState.categoryFields;
+            
+            if(prevCategories.length === 1) {
+                prevCategories[0].selectedIndex = '';
+                prevCategories[0].selectedValue = '';
+            }
+            else {
+                prevCategories.pop();
+            }
+
+            return {
+                categoryFields: prevCategories
+            }
+        });
+    }
+
     updateMap() {
         const query = this.state.locationQuery;
         nominatimApi.getGeoLocation(query)
@@ -288,18 +308,6 @@ class EditAuction extends Component {
                     }
                 });
             });
-    }
-
-
-    handleAddressChange(e) {
-        const { value } = e.target;
-        this.setState((prevState, props) => {
-            const query = value + ', ' + prevState.country;
-            return {
-                address: value,
-                locationQuery: query
-            }
-        });
     }
 
     handleMapClick(e) {
@@ -407,7 +415,7 @@ class EditAuction extends Component {
     render() {
         const { name, description, ends, firstBid, buyout, isLoading, categoryFields, photos, shownPhoto } = this.state;
 
-        const { currentStep, country, address, locationDescription, locationQuery,
+        const { currentStep, country, locationDescription, locationQuery,
             startingLat, startingLng, selectedLat, selectedLng, hasLocation } = this.state;
 
 
@@ -431,11 +439,9 @@ class EditAuction extends Component {
                                     <Paper className={classes.paper}>
                                         <AuctionLocationForm
                                             country={country}
-                                            address={address}
                                             locationDescription={locationDescription}
 
                                             handleCountryChange={this.handleCountryChange}
-                                            handleAddressChange={this.handleAddressChange}
                                             handleChange={this.handleChange}
                                             updateMap={this.updateMap}
                                         />
@@ -511,6 +517,7 @@ class EditAuction extends Component {
                                                 handleChange={this.handleChange}
                                                 handleDateChange={this.handleDateChange}
                                                 handleCategoryPick={this.handleCategoryPick}
+                                                deleteCategory={this.deleteCategory}
                                             />
 
                                         </Paper>

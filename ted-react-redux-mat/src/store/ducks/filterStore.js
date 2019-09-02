@@ -2,9 +2,13 @@ import { alertActions } from './alertStore';
 
 // Action types
 const userTypes = {
-    REGISTER_REQUEST: 'my_app/user/REGISTER_REQUEST',
-    REGISTER_SUCCESS: 'my_app/user/REGISTER_SUCCESS',
+    EMPTY_FILTERS: 'ebait/user/EMPTY_FILTERS',
+    ALTER_FILTERS: 'ebait/user/ALTER_FILTERS',
 
+    EMPTY_CATEGORIES: 'ebait/user/EMPTY_CATEGORIES',
+    ALTER_CATEGORIES: 'ebait/user/ALTER_CATEGORIES',
+
+    TOGGLE_FILTERS: 'ebait/user/TOGGLE_FILTERS',
 }
 
 
@@ -12,16 +16,14 @@ const userTypes = {
 
 // Action creators
 export const userActions = {
-    registerRequest,
-    registerSuccess,
-    registerFailure,
-    loginRequest,
-    loginSuccess,
-    loginFailure,
-    logoutAction,
-    refreshUser,
-    toggleSidebar
+    emptyFilters,
+    alterFilters,
+    emptyCategories,
+    alterCategories,
+    toggleFilters,
 }
+
+
 
 function registerRequest(user) {
     return { type: userTypes.REGISTER_REQUEST, user } 
@@ -68,7 +70,7 @@ console.log(user);
 const initialState = user ? { loggedIn: true, user, sidebarOpen: true } : { loggedIn: false, sidebarOpen: true };
 // Reducer
 export default function reducer(state = initialState, action) {
-    const { loggedIn, user, sidebarOpen } = state;
+    const {  filtersOpen } = state;
 
     switch (action.type) {
     case userTypes.REGISTER_REQUEST:

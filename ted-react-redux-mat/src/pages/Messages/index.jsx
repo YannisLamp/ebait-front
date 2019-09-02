@@ -33,8 +33,12 @@ const styles = theme => ({
         //height: '75vh',
     },
     prevWrapper: {
-        marginTop: theme.spacing(14),
+        marginTop: theme.spacing(12),
         marginRight: theme.spacing(10),
+    },
+    rightWrapper: {
+        marginTop: theme.spacing(12),
+        marginRight: theme.spacing(4),
     },
 });
 

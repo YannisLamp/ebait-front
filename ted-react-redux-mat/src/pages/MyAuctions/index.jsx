@@ -29,7 +29,7 @@ const styles = theme => ({
         justifyContent: "space-between"
     },
     tableWrapper: {
-        marginTop: theme.spacing(14),
+        marginTop: theme.spacing(12),
         marginRight: theme.spacing(10),
     },
     auctionButton: {

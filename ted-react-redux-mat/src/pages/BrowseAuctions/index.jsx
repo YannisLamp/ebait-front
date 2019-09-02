@@ -20,6 +20,7 @@ import CategoryList from '../../sharedComp/CategoryList';
 
 const styles = theme => ({
     ...pageStyles(theme),
+
     paper: {
         width: '100%',
         paddingTop: theme.spacing(3),
@@ -27,6 +28,14 @@ const styles = theme => ({
         paddingRight: theme.spacing(3),
         marginBottom: theme.spacing(2),
         minHeight: '80vh',
+    },
+    filterPaper: {
+        width: '100%',
+        paddingTop: theme.spacing(3),
+        paddingLeft: theme.spacing(3),
+        paddingRight: theme.spacing(3),
+        paddingBottom: theme.spacing(3),
+        marginBottom: theme.spacing(2),
     },
     titlePaper: {
         width: '100%',
@@ -40,8 +49,12 @@ const styles = theme => ({
         paddingTop: theme.spacing(3),
     },
     filterWrapper: {
-        marginTop: theme.spacing(14),
+        marginTop: theme.spacing(12),
         marginRight: theme.spacing(10),
+    },
+    rightWrapper: {
+        marginTop: theme.spacing(14),
+        marginRight: theme.spacing(4),
     },
 });
 
@@ -77,6 +90,7 @@ class BrowseAuctions extends Component {
         };
 
         this.loadAuctions = this.loadAuctions.bind(this);
+        this.refreshAuctions = this.refreshAuctions.bind(this);
         this.handleCategoryPick = this.handleCategoryPick.bind(this);
         this.changeFilterVisibility = this.changeFilterVisibility.bind(this);
         this.handleChangePage = this.handleChangePage.bind(this);
@@ -85,7 +99,11 @@ class BrowseAuctions extends Component {
     }
 
     componentDidMount() {
-        this.loadAuctions();
+        const { categoryFields, description, lowestPrice, highestPrice,
+            location, order, orderBy, currPage, pageSize } = this.state;
+
+        this.loadAuctions(categoryFields, description, lowestPrice, highestPrice,
+            location, order, orderBy, currPage, pageSize);
 
         auctionsApi.getRootCategories()
             .then(data => {
@@ -101,17 +119,24 @@ class BrowseAuctions extends Component {
             });
     }
 
-    loadAuctions() {
-        const { categoryFields, description, lowestPrice, highestPrice, 
+    refreshAuctions() {
+        const { categoryFields, description, lowestPrice, highestPrice,
             location, order, orderBy, currPage, pageSize } = this.state;
 
+        this.loadAuctions(categoryFields, description, lowestPrice, highestPrice,
+            location, order, orderBy, currPage, pageSize);
+    }
+
+    loadAuctions(categoryFields, description, lowestPrice, highestPrice,
+        location, order, orderBy, currPage, pageSize) {
+
         let categories = []
-        for (const category of categoryFields.slice(0, categoryFields.length-1)) {
+        for (const category of categoryFields.slice(0, categoryFields.length - 1)) {
             categories.push(category.selectedValue);
         }
 
         auctionsApi.getAllAuctions(categories, description, lowestPrice, highestPrice, location,
-                order, orderBy, currPage, pageSize)
+            order, orderBy, currPage, pageSize)
             .then(data => {
                 console.log(data);
                 this.setState((prevState, props) => {
@@ -158,15 +183,35 @@ class BrowseAuctions extends Component {
             });
     }
 
+    deleteCategory() {
+        this.setState((prevState, props) => {
+            let prevCategories = prevState.categoryFields;
+
+            if (prevCategories.length === 1) {
+                prevCategories[0].selectedIndex = '';
+                prevCategories[0].selectedValue = '';
+            }
+            else {
+                prevCategories.pop();
+            }
+
+            return {
+                categoryFields: prevCategories
+            }
+        });
+    }
+
     changeFilterVisibility() {
         this.setState((prevState, props) => { return { showFilters: !prevState.showFilters } });
     }
- 
+
     handleChangePage(event, newPage) {
         this.setState((prevState, props) => {
-            const { order, orderBy, pageSize } = prevState;
+            const { categoryFields, description, lowestPrice, highestPrice,
+                location, order, orderBy, pageSize } = prevState;
 
-            this.queryTableData(orderBy, order, pageSize, newPage);
+            this.loadAuctions(categoryFields, description, lowestPrice, highestPrice,
+                location, order, orderBy, newPage, pageSize);
             return {
                 currPage: newPage
             }
@@ -175,10 +220,12 @@ class BrowseAuctions extends Component {
 
     handleChangeItemsPerPage(event) {
         this.setState((prevState, props) => {
-            const { order, orderBy } = prevState;
+            const { categoryFields, description, lowestPrice, highestPrice,
+                location, order, orderBy } = prevState;
             const newPageSize = +event.target.value;
 
-            this.queryTableData(orderBy, order, newPageSize, 0);
+            this.loadAuctions(categoryFields, description, lowestPrice, highestPrice,
+                location, order, orderBy, 0, newPageSize);
             return {
                 currPage: 0,
                 pageSize: newPageSize,
@@ -194,7 +241,7 @@ class BrowseAuctions extends Component {
 
     render() {
 
-        const { auctions, showFilters, pageSize, currPage, totalPages,
+        const { auctions, showFilters, pageSize, currPage,
             totalAuctions, isLoading, categoryFields, description, lowestPrice,
             highestPrice, location, } = this.state;
 
@@ -208,103 +255,56 @@ class BrowseAuctions extends Component {
                         //alignItems="center"
                         justify="center"
                     >
-                        
+                        <Grid
+                            className={classes.rightWrapper}
+                            item
+                            lg={10}
+                        >
+                            {/* <Paper className={classes.titlePaper}> */}
+                            <PaperTitle
+                                className={classes.bareTitle}
+                                title='Browse Auctions'
+                                suggestion={''}
+                            />
+                            <FilterListIcon onClick={this.changeFilterVisibility} />
 
-                        { showFilters ? (
-                            <>
-                            <Grid
-                                className={classes.filterWrapper}
-                                item
-                                lg={2}
-                            >
-                                <Paper className={classes.paper}>
-                                    <AuctionFilters
-                                        description={description}
-                                        lowestPrice={lowestPrice}
-                                        highestPrice={highestPrice}
-                                        location={location}
+                            {showFilters ? (
+                                <>
+                                <AuctionFilters
+                                    description={description}
+                                    lowestPrice={lowestPrice}
+                                    highestPrice={highestPrice}
+                                    location={location}
 
-                                        handleChange={this.handleChange}
-                                        loadAuctions={this.loadAuctions}
-                                    />
-                                </Paper>
-                            </Grid>
-
-                            <Grid
-                                className={classes.rightWrapper}
-                                item
-                                lg={8}
-                            >
-                                {/* <Paper className={classes.titlePaper}> */}
-                                    <PaperTitle
-                                        className={classes.bareTitle}
-                                        title='Browse Auctions'
-                                        suggestion={''}
-                                    />
-                                    <IconButton  onClick={this.changeFilterVisibility}><FilterListIcon /> </IconButton>
-
-                                    <CategoryList 
-                                        categoryFields={categoryFields}
-                                        handleCategoryPick={this.handleCategoryPick}
-                                    />
-
-                                {/* </Paper> */}
-
-                                <AuctionCardTable
-                                    auctions={auctions}
-
-                                    pageSize={pageSize}
-                                    currPage={currPage}
-
-                                    //totalPages={totalPages}
-                                    totalAuctions={totalAuctions}
-                                    isLoading={isLoading}
-
-                                    handleChangePage={this.handleChangePage}
-                                    handleChangeItemsPerPage={this.handleChangeItemsPerPage}
+                                    handleChange={this.handleChange}
+                                    refreshAuctions={this.refreshAuctions}
                                 />
-                                {/* </Paper> */}
-                            </Grid>
-                            </>
-                        ) : (
-                            <Grid
-                                className={classes.rightWrapper}
-                                item
-                                lg={10}
-                            >
-                                {/* <Paper className={classes.titlePaper}> */}
-                                    <PaperTitle
-                                        className={classes.bareTitle}
-                                        title='Browse Auctions'
-                                        suggestion={''}
-                                    />
-                                    <FilterListIcon onClick={this.changeFilterVisibility} />
 
-                                    <CategoryList 
-                                        categoryFields={categoryFields}
-                                        handleCategoryPick={this.handleCategoryPick}
-                                    />
-
-                                {/* </Paper> */}
-
-                                <AuctionCardTable
-                                    auctions={auctions}
-
-                                    pageSize={pageSize}
-                                    currPage={currPage}
-
-                                    //totalPages={totalPages}
-                                    totalAuctions={totalAuctions}
-                                    isLoading={isLoading}
-
-                                    handleChangePage={this.handleChangePage}
-                                    handleChangeItemsPerPage={this.handleChangeItemsPerPage}
+                                <CategoryList
+                                    categoryFields={categoryFields}
+                                    handleCategoryPick={this.handleCategoryPick}
                                 />
-                                {/* </Paper> */}
-                            </Grid>
+                                </>
+                            ) : ''}
+
+                            {/* </Paper> */}
+
+                            <AuctionCardTable
+                                auctions={auctions}
+
+                                pageSize={pageSize}
+                                currPage={currPage}
+
+                                //totalPages={totalPages}
+                                totalAuctions={totalAuctions}
+                                isLoading={isLoading}
+
+                                handleChangePage={this.handleChangePage}
+                                handleChangeItemsPerPage={this.handleChangeItemsPerPage}
+                            />
+                            {/* </Paper> */}
+                        </Grid>
                         )}
-
-
 
                     </Grid>
                 </div>

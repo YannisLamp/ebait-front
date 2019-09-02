@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
         minHeight: '80vh',
     },
     profileWrapper: {
-        marginTop: theme.spacing(14),
+        marginTop: theme.spacing(12),
         marginRight: theme.spacing(10),
     }
 }));

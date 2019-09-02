@@ -15,11 +15,14 @@ const useStyles = makeStyles(theme => ({
     card: {
         height: '100%',
         color: "white",
+        backgroundColor: theme.palette.primary.dark,
     },
     text: {
         color: "white",
     },
     disabled: {
+        height: '100%',
+        backgroundColor: 'grey',
         pointerEvents: 'none',
         cursor: 'default',
         opacity: 0.6,
@@ -34,9 +37,11 @@ export default function ActionCard(props) {
 
     if (disabled) {
         return (
-            <Card className={classes.disabled} >
+            <Card 
+                className={classes.disabled} 
+            >
                 <CardActionArea className={classes.notDecorated}>
-                    <CardContent style={{ backgroundColor: 'grey' }}>
+                    <CardContent >
                         {/* <Typography className={classes.title} color="textPrimary" gutterBottom>
                             Word of the Day
                         </Typography> */}
@@ -64,7 +69,10 @@ export default function ActionCard(props) {
     }
     else {
         return (
-            <Card className={classes.card} style={{ backgroundColor }}>
+            <Card 
+                className={classes.card} 
+                //style={{ backgroundColor }}
+            >
                 <CardActionArea component={Link} to={props.to} className={classes.notDecorated}>
                     <CardContent>
                         {/* <Typography className={classes.title} color="textPrimary" gutterBottom>

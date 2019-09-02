@@ -1,9 +1,9 @@
 
 // Action types
 const alertTypes = {
-    SUCCESS: 'my_app/alert/SUCCESS',
-    ERROR: 'my_app/alert/ERROR',
-    CLEAR: 'my_app/alert/CLEAR'
+    SUCCESS: 'ebait/alert/SUCCESS',
+    ERROR: 'ebait/alert/ERROR',
+    CLEAR: 'ebait/alert/CLEAR'
 };
 
 

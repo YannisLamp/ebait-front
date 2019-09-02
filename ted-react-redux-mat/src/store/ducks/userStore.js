@@ -2,22 +2,20 @@ import { alertActions } from './alertStore';
 
 // Action types
 const userTypes = {
-    REGISTER_REQUEST: 'my_app/user/REGISTER_REQUEST',
-    REGISTER_SUCCESS: 'my_app/user/REGISTER_SUCCESS',
-    REGISTER_FAILURE: 'my_app/user/REGISTER_FAILURE',
+    REGISTER_REQUEST: 'ebait/user/REGISTER_REQUEST',
+    REGISTER_SUCCESS: 'ebait/user/REGISTER_SUCCESS',
+    REGISTER_FAILURE: 'ebait/user/REGISTER_FAILURE',
 
-    LOGIN_REQUEST: 'my_app/user/LOGIN_REQUEST',
-    LOGIN_SUCCESS: 'my_app/user/LOGIN_SUCCESS',
-    LOGIN_FAILURE: 'my_app/user/LOGIN_FAILURE',
+    LOGIN_REQUEST: 'ebait/user/LOGIN_REQUEST',
+    LOGIN_SUCCESS: 'ebait/user/LOGIN_SUCCESS',
+    LOGIN_FAILURE: 'ebait/user/LOGIN_FAILURE',
 
-    LOGOUT: 'my_app/user/LOGOUT',
+    LOGOUT: 'ebait/user/LOGOUT',
 
-    REFRESH_USER: 'my_app/user/REFRESH_USER',
+    REFRESH_USER: 'ebait/user/REFRESH_USER',
 
-    TOGGLE_SIDEBAR: 'my_app/user/TOGGLE_SIDEBAR',
+    TOGGLE_SIDEBAR: 'ebait/user/TOGGLE_SIDEBAR',
 }
-
-
 
 
 // Action creators

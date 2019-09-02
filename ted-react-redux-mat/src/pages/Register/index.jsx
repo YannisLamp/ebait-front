@@ -16,9 +16,14 @@ import RegisterForm from './RegisterForm';
 
 const useStyles = makeStyles(theme => ({
     ...pageStyles(theme),
+    content: {
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column'
+    },
     registerPaper: {
         minHeight: '70vh',
-        marginTop: theme.spacing(9),
+        marginTop: theme.spacing(10),
         marginBottom: theme.spacing(1),
     },
 }));

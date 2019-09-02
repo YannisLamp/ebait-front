@@ -16,6 +16,9 @@ import WarningMsg from './WarningMsg';
 
 const useStyles = makeStyles(theme => ({
     ...pageStyles(theme),
+    menuCard: {
+        backgroundColor: theme.palette.common.dark,
+    }
 }));
 
 function HomePage(props) {
@@ -54,6 +57,7 @@ function HomePage(props) {
 
                                 <Grid item xs={6}>
                                     <ActionCard 
+                                        className={classes.manuCard}
                                         title="Browse Auctions" 
                                         bodyText="Check out auctions created from all around the world, spanning thousands of different categories." 
                                         to="/browse" 
@@ -67,7 +71,7 @@ function HomePage(props) {
                                         bodyText="Manage and create your own auctions with just a few clicks."
                                         to="/myauctions" 
                                         //backgroundColor="#5fba43"
-                                        backgroundColor="#29aa9f"
+                                        //backgroundColor="#29aa9f"
                                         disabled={!hasPriv}
                                     />
                                 </Grid>
@@ -78,7 +82,7 @@ function HomePage(props) {
                                         bodyText="Contact sellers or auction winners with extreme ease with our messaging system." 
                                         to="/messages" 
                                         // backgroundColor="#863a81"
-                                        backgroundColor="#FDD835" 
+                                        //backgroundColor="#FDD835" 
                                         disabled={!hasPriv}
                                     />
                                 </Grid>
@@ -91,7 +95,7 @@ function HomePage(props) {
                                         title="Profile" 
                                         bodyText="View and edit your account information."
                                         to="/profile" 
-                                        backgroundColor="#FDD835" 
+                                        //backgroundColor="#FDD835" 
                                         disabled={!hasPriv}
                                     />
                                 </Grid>
@@ -102,7 +106,7 @@ function HomePage(props) {
                                             title="Verify Users" 
                                             bodyText="Verify new users by reviewing their account information."
                                             to="/admin" 
-                                            backgroundColor="#607D8B"
+                                            //backgroundColor="#607D8B"
                                         />
                                     </Grid>
                                 ) :

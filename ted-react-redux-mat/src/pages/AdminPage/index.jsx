@@ -15,7 +15,13 @@ import { usersApi } from '../../services';
 
 
 const styles = theme => ({
-    ...pageStyles(theme),
+    pageWrapper: {
+        marginTop: theme.spacing(12),
+    },
+    rightWrapper: {
+        marginTop: theme.spacing(12),
+        marginRight: theme.spacing(4),
+    },
     paper: {
         width: '100%',
         paddingTop: theme.spacing(3),
@@ -26,7 +32,7 @@ const styles = theme => ({
         //height: '75vh',
     },
     tableWrapper: {
-        marginTop: theme.spacing(14),
+        marginTop: theme.spacing(12),
         marginRight: theme.spacing(10),
     },
 });

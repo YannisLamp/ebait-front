@@ -10,6 +10,11 @@ import { pageStyles } from '../pageStyles';
 
 const useStyles = makeStyles(theme => ({
     //...pageStyles(theme),
+    content: {
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column'
+    },
     formPaper: {
         minHeight: '75vh',
     },

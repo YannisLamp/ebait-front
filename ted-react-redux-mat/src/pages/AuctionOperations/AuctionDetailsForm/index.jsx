@@ -52,7 +52,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function AuctionDetailsForm(props) {
     const { name, description, ends, firstBid, buyout, categoryFields } = props;
-    const { handleChange, handleDateChange, handleCategoryPick } = props;
+    const { handleChange, handleDateChange, handleCategoryPick, deleteCategory } = props;
 
 
     const classes = useStyles();
@@ -147,6 +147,7 @@ export default function AuctionDetailsForm(props) {
                 <CategoryList
                     categoryFields={categoryFields}
                     handleCategoryPick={handleCategoryPick}
+                    deleteCategory={deleteCategory}
                 />
             </div>
 

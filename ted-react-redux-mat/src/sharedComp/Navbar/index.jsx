@@ -8,6 +8,8 @@ import { AppBar, Toolbar, Typography, IconButton, TextField, MenuItem, Badge, Me
 import { Menu as MenuIcon, Input as InputIcon, Mail as MailIcon, Notifications as NotificationsIcon, AccountCircle } from '@material-ui/icons/';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 
+import Image from '../../static/logo_psonia_cropped.png';
+
 import { makeStyles } from '@material-ui/core/styles';
 
 
@@ -19,8 +21,8 @@ const useStyles = makeStyles(theme => ({
     },
     title: {
         flexGrow: 1,
-        fontSize: '35px',
-        fontWeight: '600',
+        //fontSize: '35px',
+        //fontWeight: '600',
     },
     titleLink: {
         textDecoration: 'none',
@@ -91,14 +93,21 @@ function Navbar(props) {
                             <MenuIcon />
                         </IconButton>
                     </Box>
-                    <Typography variant="caption" className={classes.title}>
+                    {/* <Typography variant="caption" className={classes.title}>
                         <NavLink
                             className={classes.titleLink}
                             to="/"
                         >
                             eBait
                         </NavLink>
-                    </Typography>
+                    </Typography> */}
+                    <Box className={classes.title} >
+                    <NavLink
+                        to="/"
+                    >
+                        <img src={Image} style={{height:'50px', width:'auto'}}/>
+                    </NavLink>
+                    </Box>
 
                     {/* <div className={classes.grow} /> */}
                     {user ? (
@@ -151,7 +160,7 @@ function Navbar(props) {
                             </Menu>
 
                         </div>
-                            ) : (
+                    ) : (
                             <NavLink
                                 className={classes.titleLink}
                                 to="/login"
@@ -160,22 +169,22 @@ function Navbar(props) {
                                     <InputIcon />
                                 </IconButton>
                             </NavLink>
-                            )}
+                        )}
                 </Toolbar>
             </AppBar>
         </ElevationScroll>
-                );
-            }
-            
-            
+    );
+}
+
+
 function mapStateToProps(state) {
-    const {userStore} = state;
-    const {user, sidebarOpen } = userStore;
+    const { userStore } = state;
+    const { user, sidebarOpen } = userStore;
     return {
-                    user
-                };
-            }
-            
-            
-            const connectedNavbar = connect(mapStateToProps)(Navbar);
+        user
+    };
+}
+
+
+const connectedNavbar = connect(mapStateToProps)(Navbar);
 export default connectedNavbar;
