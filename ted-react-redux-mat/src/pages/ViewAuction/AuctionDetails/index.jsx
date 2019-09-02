@@ -39,8 +39,8 @@ const useStyles = makeStyles(theme => ({
 
 export default function AuctionDetails(props) {
 
-    const { name, description, currentBid, firstBid, bid, isBidding, isBuying, } = props;
-    const { placeBid, handleChange } = props;
+    const { name, description, currentBid, firstBid, myBid, isBidding, isBuying, } = props;
+    const { handleChange, placeBid } = props;
 
 
     const classes = useStyles();
@@ -74,9 +74,9 @@ export default function AuctionDetails(props) {
 
                     <Grid container justify="flex-end">
                         <TextField
-                            name="bid"
-                            value={bid}
-                            label="bid"
+                            name="myBid"
+                            value={myBid}
+                            label="myBid"
                             type="text"
                             variant="outlined"
                             onChange={handleChange}

@@ -176,7 +176,11 @@ function buyoutAuction(id) {
 }
 
 function bidAuction(id, amount) {
-    return axios.put('/auctions/add_bid/' + id)
+    const jsonRequest = {
+        amount: amount
+    }
+
+    return axios.put('/auctions/add_bid/' + id, jsonRequest)
         .then(response => {
             return response.data;
         },

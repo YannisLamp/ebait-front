@@ -13,6 +13,7 @@ import AuctionCarousel from './AuctionCarousel';
 import ViewAuctionMap from './ViewAuctionMap';
 
 import { usersApi } from '../../services';
+import { auctionsApi } from '../../services';
 import { nominatimApi } from '../../services';
 
 
@@ -56,7 +57,7 @@ class ViewAuction extends Component {
         this.state = {
             auction: this.props.location.state.auction,
 
-            bid: '',
+            myBid: '',
             isBidding: false,
             isBuying: false,
 
@@ -66,6 +67,8 @@ class ViewAuction extends Component {
 
         this.queryAuctionLocation = this.queryAuctionLocation.bind(this);
         
+        this.placeBid = this.placeBid.bind(this);
+
         this.setFullscreenIndex = this.setFullscreenIndex.bind(this);
         this.changeFullscreenPhotos = this.changeFullscreenPhotos.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -97,6 +100,15 @@ class ViewAuction extends Component {
             })
     }
 
+    placeBid() {
+        const { auction, myBid } = this.state;
+
+        auctionsApi.placeBid(auction.itemID, myBid)
+            .then(response => {
+                console.log('egine bid');
+            })
+    }
+
     changeFullscreenPhotos() {
         console.log('FULLSCREEEEEN');
         this.setState((prevState, props) => { return { isFullscreenPhotos: !prevState.isFullscreenPhotos } });
@@ -112,7 +124,7 @@ class ViewAuction extends Component {
     }
 
     render() {
-        const { auction, isFullscreenPhotos, fullscreenIndex, bid } = this.state;
+        const { auction, isFullscreenPhotos, fullscreenIndex, myBid } = this.state;
         let photos = [];
         if (auction.photos.length === 0) {
             photos.push(auction.defaultPhoto);
@@ -193,9 +205,10 @@ class ViewAuction extends Component {
                                         currentBid={auction.currentBid}
                                         firstBid={auction.firstBid}
 
-                                        bid={bid}
+                                        myBid={myBid}
 
                                         handleChange={this.handleChange}
+                                        placeBid={this.placeBid}
                                     />
                                 </Paper>
 

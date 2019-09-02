@@ -54,8 +54,8 @@ export default function CategoryList(props) {
                     {
                         categoryFields.map((field, level) => {
                             return (
-                                <Grid item>
-                                    <FormControl variant="outlined" className={classes.categoryField} key={level}>
+                                <Grid item key={level}>
+                                    <FormControl variant="outlined" className={classes.categoryField}>
                                         <InputLabel ref={inputLabel} htmlFor={'categories' + (level + 1)}>
                                             Category {level + 1}
                                         </InputLabel>

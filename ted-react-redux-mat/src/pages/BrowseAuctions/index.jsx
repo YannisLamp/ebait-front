@@ -86,7 +86,7 @@ class BrowseAuctions extends Component {
 
             //totalPages: null,
             totalAuctions: null,
-            isLoading: false,
+            isLoading: true,
         };
 
         this.loadAuctions = this.loadAuctions.bind(this);
@@ -129,6 +129,8 @@ class BrowseAuctions extends Component {
 
     loadAuctions(categoryFields, description, lowestPrice, highestPrice,
         location, order, orderBy, currPage, pageSize) {
+
+        this.setState((prevState, props) => { return { isLoading: true } });
 
         let categories = []
         for (const category of categoryFields.slice(0, categoryFields.length - 1)) {
@@ -260,49 +262,51 @@ class BrowseAuctions extends Component {
                             item
                             lg={10}
                         >
-                            {/* <Paper className={classes.titlePaper}> */}
-                            <PaperTitle
-                                className={classes.bareTitle}
-                                title='Browse Auctions'
-                                suggestion={''}
-                            />
-                            <FilterListIcon onClick={this.changeFilterVisibility} />
-
-                            {showFilters ? (
-                                <>
-                                <AuctionFilters
-                                    description={description}
-                                    lowestPrice={lowestPrice}
-                                    highestPrice={highestPrice}
-                                    location={location}
-
-                                    handleChange={this.handleChange}
-                                    refreshAuctions={this.refreshAuctions}
+                            <Paper className={classes.titlePaper}>
+                                <PaperTitle
+                                    className={classes.bareTitle}
+                                    title='Browse Auctions'
+                                    suggestion={''}
                                 />
+                                <FilterListIcon onClick={this.changeFilterVisibility} />
 
-                                <CategoryList
-                                    categoryFields={categoryFields}
-                                    handleCategoryPick={this.handleCategoryPick}
+                                {showFilters ? (
+                                    <>
+                                        <AuctionFilters
+                                            description={description}
+                                            lowestPrice={lowestPrice}
+                                            highestPrice={highestPrice}
+                                            location={location}
+
+                                            handleChange={this.handleChange}
+                                            refreshAuctions={this.refreshAuctions}
+                                        />
+
+                                        <CategoryList
+                                            categoryFields={categoryFields}
+                                            handleCategoryPick={this.handleCategoryPick}
+                                        />
+                                    </>
+                                ) : ''}
+
+                            </Paper>
+
+                            {isLoading ? '' : (
+                                <AuctionCardTable
+                                    auctions={auctions}
+
+                                    pageSize={pageSize}
+                                    currPage={currPage}
+
+                                    //totalPages={totalPages}
+                                    totalAuctions={totalAuctions}
+                                    isLoading={isLoading}
+
+                                    handleChangePage={this.handleChangePage}
+                                    handleChangeItemsPerPage={this.handleChangeItemsPerPage}
                                 />
-                                </>
-                            ) : ''}
+                            )}
 
-                            {/* </Paper> */}
-
-                            <AuctionCardTable
-                                auctions={auctions}
-
-                                pageSize={pageSize}
-                                currPage={currPage}
-
-                                //totalPages={totalPages}
-                                totalAuctions={totalAuctions}
-                                isLoading={isLoading}
-
-                                handleChangePage={this.handleChangePage}
-                                handleChangeItemsPerPage={this.handleChangeItemsPerPage}
-                            />
-                            {/* </Paper> */}
                         </Grid>
                         )}
 

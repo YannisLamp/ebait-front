@@ -44,6 +44,8 @@ export default function AuctionCardTable(props) {
     const { auctions, pageSize, isLoading, currPage, totalAuctions } = props;
     const { handleChangePage, handleChangeItemsPerPage } = props;
 
+    console.log('TOTAL AUCTIONS');
+    console.log(totalAuctions);
 
     const classes = useStyles();
     return (
