@@ -138,12 +138,12 @@ export default function MyAuctionsTable(props) {
                                                         <TableCell align="right">{row.ends}</TableCell>
                                                         {/* <TableCell align="right">{getActions()}</TableCell> */}
                                                         <TableCell align="right">
-                                                            <IconButton><PlayArrowIcon className={classes.start} onClick={e => startAuction(row.itemID)}/></IconButton>
+                                                            <IconButton onClick={e => startAuction(row.itemID)}><PlayArrowIcon className={classes.start}/></IconButton>
                                                             <IconButton>
                                                             <Link
                                                                 className={classes.edit}
                                                                 to={{
-                                                                    pathname: '/myauctions/create-auction',
+                                                                    pathname: '/myauctions/edit-auction',
                                                                     state: {
                                                                         auction: row
                                                                     }
@@ -152,7 +152,7 @@ export default function MyAuctionsTable(props) {
                                                                 <EditIcon />
                                                             </Link>
                                                             </IconButton>
-                                                            <IconButton><DeleteIcon className={classes.delete} onClick={e => deleteAuction(row.itemID)}/></IconButton>
+                                                            <IconButton onClick={e => deleteAuction(row.itemID)}><DeleteIcon className={classes.delete}/></IconButton>
                                                         </TableCell>
                                                     </TableRow>
                                                 );

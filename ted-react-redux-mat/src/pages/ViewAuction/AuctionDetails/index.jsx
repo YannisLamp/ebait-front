@@ -3,8 +3,7 @@ import { Link } from 'react-router-dom';
 
 // Material
 import {
-    Grid, Paper, Button, Typography, CircularProgress,
-    Table, TableBody, TableRow, TableCell, Checkbox, TablePagination, Switch
+    Grid, Button, Typography, CircularProgress, TextField
 } from '@material-ui/core';
 
 import { CheckBox as CheckBoxIcon, CheckBoxOutlineBlank as CheckBoxBlankIcon } from '@material-ui/icons';
@@ -12,84 +11,92 @@ import { CheckBox as CheckBoxIcon, CheckBoxOutlineBlank as CheckBoxBlankIcon } f
 import PaperTitle from '../../../sharedComp/PaperTitle';
 
 
-import { withStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 
-import { usersApi } from '../../../services'
+import { auctionsApi } from '../../../services'
 
 
-const styles = theme => ({
+const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
         height: 'inherit',
     },
-    table: {
-        minWidth: 750,
-    },
-    tableWrapper: {
+    marginFromTitle: {
         marginTop: theme.spacing(4),
-        overflowX: 'auto',
     },
     notDecorated: {
         textDecoration: 'none',
         cursor: 'pointer',
     },
-    visuallyHidden: {
-        border: 0,
-        clip: 'rect(0 0 0 0)',
-        height: 1,
-        margin: -1,
-        overflow: 'hidden',
-        padding: 0,
-        position: 'absolute',
-        top: 20,
-        width: 1,
+    grid: {
+        height: '100%',
     },
-    pagination: {
-        color: theme.palette.text.primary,
+    bidButton: {
+        margin: theme.spacing(1),
     }
-});
+}));
 
 
-class UserTable extends Component {
-    constructor(props) {
-        super(props);
+export default function AuctionDetails(props) {
+
+    const { name, description, currentBid, firstBid, bid, isBidding, isBuying, } = props;
+    const { placeBid, handleChange } = props;
 
 
-    }
-    
-    render() {
-        const { users, order, orderBy, pageSize, isLoading, currPage, totalUsers } = this.props;
-        const { changeUser, handleRequestSort, handleChangePage, handleChangeRowsPerPage} = this.props;
+    const classes = useStyles();
+    return (
+        <div className={classes.root}>
+            <Grid
+                className={classes.grid}
+                container
+                direction="column"
+                justify="space-between"
+            >
+                <Grid item>
+                    <PaperTitle
+                        title={name}
+                    //suggestion={'Auction Details'}
+                    />
+
+                    <div className={classes.marginFromTitle}>
+                        <Typography >
+                            {description}
+                        </Typography>
+
+                    </div>
+                </Grid>
 
 
-        const { classes } = this.props;
-        return (
-            <div className={classes.root}>
-                <PaperTitle
-                    title=''
-                    suggestion={''}
-                />
+                <Grid item>
+                    <Typography >
+                        {'Current Bid: ' + firstBid}
+                    </Typography>
 
-                <div className={classes.tableWrapper}>
-                    {isLoading ? (
-                        // <CircularProgress className={classes.progress} />
-                        ''
-                    ) : (
-                        <>
-                            
-                            
-                           
-                        </>
-                    )
-                    }
+                    <Grid container justify="flex-end">
+                        <TextField
+                            name="bid"
+                            value={bid}
+                            label="bid"
+                            type="text"
+                            variant="outlined"
+                            onChange={handleChange}
+                        />
+                        <Button
+                            className={classes.bidButton}
+                            color="primary"
+                            type="submit"
+                            onClick={placeBid}
+                            size="large"
+                            variant="contained"
+                        >
+                            Place Bid
+                        </Button>
+                    </Grid>
+                </Grid>
 
-                </div>
+            </Grid>
 
-            </div>
-        );
-    }
+        </div>
+    );
 
 }
-
-
-export default withStyles(styles)(UserTable);

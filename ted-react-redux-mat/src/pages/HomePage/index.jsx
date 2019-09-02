@@ -66,7 +66,8 @@ function HomePage(props) {
                                         title="My Auctions" 
                                         bodyText="Manage and create your own auctions with just a few clicks."
                                         to="/myauctions" 
-                                        backgroundColor="#5fba43"
+                                        //backgroundColor="#5fba43"
+                                        backgroundColor="#29aa9f"
                                         disabled={!hasPriv}
                                     />
                                 </Grid>
@@ -76,7 +77,8 @@ function HomePage(props) {
                                         title="Messages" 
                                         bodyText="Contact sellers or auction winners with extreme ease with our messaging system." 
                                         to="/messages" 
-                                        backgroundColor="#863a81" 
+                                        // backgroundColor="#863a81"
+                                        backgroundColor="#FDD835" 
                                         disabled={!hasPriv}
                                     />
                                 </Grid>
@@ -100,7 +102,7 @@ function HomePage(props) {
                                             title="Verify Users" 
                                             bodyText="Verify new users by reviewing their account information."
                                             to="/admin" 
-                                            backgroundColor="#ea7e3e"
+                                            backgroundColor="#607D8B"
                                         />
                                     </Grid>
                                 ) :

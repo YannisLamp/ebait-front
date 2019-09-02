@@ -1,9 +1,9 @@
 import axios from 'axios';
-
-// @CrossOrigin(origins = "http://localhost:9000")
+import Qs from 'qs'
 
 const instance = axios.create({
-    baseURL: 'http://localhost:8080/api'
+    baseURL: 'http://localhost:8080/api',
+    paramsSerializer: params => Qs.stringify(params, {arrayFormat: 'repeat'})
 });
 
 instance.interceptors.request.use(function (config) {
@@ -13,7 +13,5 @@ instance.interceptors.request.use(function (config) {
     }
     return config;
 });
-
-//axios.defaults.headers.common['Authorization'] = authorizationJwt;
 
 export default instance;

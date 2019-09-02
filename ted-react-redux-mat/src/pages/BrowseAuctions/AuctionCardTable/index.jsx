@@ -68,15 +68,11 @@ export default function AuctionCardTable(props) {
                             >
                             {
                                 auctions
-                                .map((card, index) => {
-                                    const imageUrl = card.photos[0] ? card.photos[0].fileDownloadUri : '';
-                                    console.log(imageUrl);
+                                .map((auction, index) => {
                                     return (
-                                        <Grid className={classes.card} item>
+                                        <Grid className={classes.card} key={index} item>
                                             <AuctionCard
-                                                name={card.name}
-                                                description={card.description}
-                                                imageUrl={imageUrl}
+                                                auction={auction}
                                             />
                                         </Grid>
                                     );

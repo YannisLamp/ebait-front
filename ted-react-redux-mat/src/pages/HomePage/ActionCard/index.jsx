@@ -9,13 +9,11 @@ import { makeStyles } from '@material-ui/core/styles';
 
 
 const useStyles = makeStyles(theme => ({
-    root: {
-        color: "white",
-    },
     notDecorated: {
         textDecoration: 'none',
     },
     card: {
+        height: '100%',
         color: "white",
     },
     text: {
@@ -66,9 +64,9 @@ export default function ActionCard(props) {
     }
     else {
         return (
-            <Card className={classes.card} >
+            <Card className={classes.card} style={{ backgroundColor }}>
                 <CardActionArea component={Link} to={props.to} className={classes.notDecorated}>
-                    <CardContent style={{ backgroundColor }}>
+                    <CardContent>
                         {/* <Typography className={classes.title} color="textPrimary" gutterBottom>
                             Word of the Day
                         </Typography> */}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { history } from '../../utils';
+import { history } from '../../../utils';
 // Material
 import { Grid, Paper, Button, TextField, CircularProgress } from '@material-ui/core';
 
@@ -8,16 +8,16 @@ import { format, parse } from 'date-fns';
 
 // For importing my custom styles  
 import { withStyles } from '@material-ui/core/styles';
-import { pageStyles } from '../pageStyles';
+import { pageStyles } from '../../pageStyles';
 
-import Sidebar from '../../sharedComp/Sidebar';
-import AuctionLocationForm from './AuctionLocationForm';
-import AuctionDetailsForm from './AuctionDetailsForm';
-import CreateAuctionMap from './CreateAuctionMap';
-import AuctionPhotoUpload from './AuctionPhotoUpload';
+import Sidebar from '../../../sharedComp/Sidebar';
+import AuctionLocationForm from '../AuctionLocationForm';
+import AuctionDetailsForm from '../AuctionDetailsForm';
+import CreateAuctionMap from '../AuctionMap';
+import AuctionPhotoUpload from '../AuctionPhotoUpload';
 
-import { nominatimApi } from '../../services';
-import { auctionsApi } from '../../services';
+import { nominatimApi } from '../../../services';
+import { auctionsApi } from '../../../services';
 
 
 const styles = theme => ({
@@ -68,49 +68,64 @@ const styles = theme => ({
         marginRight: theme.spacing(3),
     },
     circularProgress: {
-        //display: 'block',
-        marginTop: theme.spacing(2),
         marginRight: theme.spacing(3),
     },
 });
 
-class CreateAuction extends Component {
+class EditAuction extends Component {
 
     constructor(props) {
         super(props);
-        const auction = this.props.location.state ? this.props.location.state.auction : null;
-        this.state = {
-            name: auction ? auction.name : '',
-            description: auction ? auction.description : '',
-            ends: auction ? parse(auction.ends, 'MMM-dd-yy HH:mm:ss', new Date()) : null,
-            firstBid: auction ? auction.firstBid : '',
-            buyout: auction ? auction.buyout : '',
-            categoryFields: [{
+
+        const auction = this.props.location.state.auction;
+        const { categories } = auction;
+        let emptyFields = [];
+        for (const category of categories) {
+            emptyFields.push({
                 selectedIndex: '',
-                selectedValue: '',
+                selectedValue: category.name,
                 allCategories: [],
-            }],
+            })
+        }
+        // One last push for the empty field
+        emptyFields.push({
+            selectedIndex: '',
+            selectedValue: '',
+            allCategories: [],
+        })
 
-            testo: 'aaa',
+        this.state = {
+            itemID: auction.itemID ? auction.itemID : '', 
+            name: auction.name ? auction.name : '',
+            description: auction.description ? auction.description : '',
+            ends: auction.ends ? parse(auction.ends, 'MMM-dd-yy HH:mm:ss', new Date()) : null,
+            firstBid: auction.firstBid ? auction.firstBid : '',
+            buyout: auction.buyPrice ? auction.buyPrice : '',
 
-            photos: [],
-            shownPhoto: '',
+            categoryFields: emptyFields,
 
+            photos: auction.photos ? auction.photos : [],
+            deletedPhotos: [],
+            shownPhoto: auction.photos ? 0 : '',
 
-            country: auction ? auction.country : this.props.user.country,
-            address: auction ? auction.address : this.props.user.address,
-            locationDescription: auction ? auction.locationDescription : '',
+            country: auction.country ? auction.country : '',
+            // No address is returned, only location coords and text
+            address: '',
+            locationDescription: auction.location.text ? auction.location.text : '',
 
-            locationQuery: this.props.user.address + ', ' + this.props.user.country,
-            startingLat: null,
-            startingLng: null,
-            selectedLat: null,
-            selectedLng: null,
-            hasLocation: false,
+            locationQuery: auction.location.text ? auction.location.text : '',
+            startingLat: auction.location.latitude ? auction.location.latitude : '',
+            startingLng: auction.location.longitude ? auction.location.longitude : '',
+            selectedLat: auction.location.latitude ? auction.location.latitude : '',
+            selectedLng: auction.location.longitude ? auction.location.longitude : '',
+            hasLocation: auction.location.latitude && auction.location.longitude ? true : false,
 
             isLoading: false,
             currentStep: 1,
         };
+
+        this.setInitCategoryState = this.setInitCategoryState.bind(this);
+        this.setInitLocationState = this.setInitLocationState.bind(this);
 
         this.handleDateChange = this.handleDateChange.bind(this);
 
@@ -134,28 +149,55 @@ class CreateAuction extends Component {
     }
 
 
-    componentDidMount() {
-        // If categoryFields has more than one object, 
-        // then we have to fetch the allCategories for each field level
-        if (this.state.categoryFields.length > 1) {
-
+    setInitCategoryState() {
+        function findCategoryIndex(data, searchCategory) {
+            for (const [index, inCategory] of data.entries()) {
+                if (inCategory.name === searchCategory)
+                    return index;
+            }
+            return -1;
         }
-        else {
-            auctionsApi.getRootCategories()
-                .then(data => {
-                    this.setState((prevState, props) => {
-                        return {
-                            categoryFields: [{
-                                selectedIndex: prevState.categoryFields[0].selectedIndex,
-                                selectedValue: prevState.categoryFields[0].selectedValue,
-                                allCategories: data,
-                            }],
+
+        // We have to fetch the allCategories for each field level (category)
+        // auctionsApi.getRootCategories()
+        let axiosReqs = [auctionsApi.getRootCategories()];
+        for (const category of this.props.location.state.auction.categories) {
+            axiosReqs.push(auctionsApi.getChildrenCategories(category.id))
+        }
+
+        auctionsApi.getAllCats(axiosReqs)
+            .then(allResp => {
+                // Once we get all responses
+                this.setState((prevState, props) => {
+                    const { categoryFields } = prevState;
+
+                    for (let index = 0; index < categoryFields.length; index++) {
+                        if (categoryFields[index].selectedValue === '') {
+                            categoryFields[index] = {
+                                selectedIndex: '',
+                                selectedValue: '',
+                                allCategories: allResp[index],
+                            }
                         }
-                    });
-                });
-        }
+                        else {
+                            categoryFields[index] = {
+                                selectedIndex: findCategoryIndex(allResp[index], categoryFields[index].selectedValue),
+                                selectedValue: categoryFields[index].selectedValue,
+                                allCategories: allResp[index],
+                            }
+                        }
+                    }
 
-        nominatimApi.getGeoLocation(this.state.locationQuery)
+                    return {
+                        categoryFields: categoryFields
+                    }
+                });
+            });
+    }
+
+
+    setInitLocationState() {
+        nominatimApi.getGeoLocation(this.state.locationDescription)
             .then(data => {
                 const coords = data.features[0].geometry.coordinates;
                 // Coordinates are given in reverse order from API
@@ -166,13 +208,18 @@ class CreateAuction extends Component {
                     }
                 });
             })
-
-        auctionsApi.getUserAuctions('active')
-            .then(data => {
-                this.setState((prevState, props) => { return { auctions: data } });
-            })
     }
 
+
+    componentDidMount() {
+        // Set initial category state from given auction
+        this.setInitCategoryState();
+
+        // Set initial location state from given auction if there is no previous location picked
+        if (!this.state.hasLocation) {
+            this.setInitLocationState();
+        }
+    }
 
     handleChange(e) {
         const { name, value } = e.target;
@@ -268,15 +315,15 @@ class CreateAuction extends Component {
     onPhotoAddition(event) {
         event.persist();
         console.log(event);
-        this.setState((prevState, props) => { 
+        this.setState((prevState, props) => {
             const { photos } = prevState;
             for (const photo of event.target.files) {
                 photos.push(photo);
             }
-            return { 
+            return {
                 photos: photos,
-                shownPhoto: photos.length-1,
-            } 
+                shownPhoto: photos.length - 1,
+            }
         });
     }
 
@@ -285,18 +332,25 @@ class CreateAuction extends Component {
     }
 
     onPhotoDelete(index) {
-        this.setState((prevState, props) => { 
-            const { photos, shownPhoto } = prevState;
-            photos.splice(index, 1);
+        this.setState((prevState, props) => {
+            const { photos, deletedPhotos, shownPhoto } = prevState;
 
+            // If deleted photo has been uploaded (has an id)
+            // then it must be deleted by request
+            if (photos[index].photoId) {
+                deletedPhotos.push(photos[index]);
+            }
+
+            photos.splice(index, 1);
             // Don't let the shown photo index become -1
             let newShownPhoto = shownPhoto - 1;
             if (newShownPhoto < 0) {
-                newShownPhoto = 0 
+                newShownPhoto = 0
             }
 
-            return { 
+            return {
                 photos: photos,
+                deletedPhotos: deletedPhotos,
                 shownPhoto: newShownPhoto,
             }
         });
@@ -308,8 +362,8 @@ class CreateAuction extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        const { name, description, ends, firstBid, buyout, categoryFields,
-            country, locationDescription, selectedLat, selectedLng, photos } = this.state;
+        const { itemID, name, description, ends, firstBid, buyout, categoryFields,
+            country, locationDescription, selectedLat, selectedLng, photos, deletedPhotos } = this.state;
 
         // Convert category fields to categories for API
         let categories = [];
@@ -322,10 +376,15 @@ class CreateAuction extends Component {
         // Convert Date object to proper format
         const convertedends = format(ends, 'MMM-dd-yy HH:mm:ss');
 
+        // Remove any photos that have been uploaded from photos
+        const onlyNewPhotos = photos.filter((value, index, arr) => {
+            return !value.photoId;
+        });
+
         this.setState((prevState, props) => { return { isLoading: true, } });
-        auctionsApi.createAuction(name, description, convertedends,
-                firstBid, buyout, categories, country, locationDescription,
-                selectedLat, selectedLng, photos)
+        auctionsApi.editAuction(itemID, name, description, convertedends,
+            firstBid, buyout, categories, country, locationDescription,
+            selectedLat, selectedLng, onlyNewPhotos, deletedPhotos)
             .then(data => {
                 this.setState((prevState, props) => { return { isLoading: false, } });
                 this.redirectToMyAuctions();
@@ -423,7 +482,7 @@ class CreateAuction extends Component {
                                                         size="large"
                                                         variant="contained"
                                                     >
-                                                        Create
+                                                        Edit Auction
                                                     </Button>
                                                 )
                                             }
@@ -448,8 +507,6 @@ class CreateAuction extends Component {
                                                 firstBid={firstBid}
                                                 buyout={buyout}
                                                 categoryFields={categoryFields}
-                                                testo={this.state.testo}
-
 
                                                 handleChange={this.handleChange}
                                                 handleDateChange={this.handleDateChange}
@@ -472,13 +529,12 @@ class CreateAuction extends Component {
                                                 onPhotoAddition={this.onPhotoAddition}
                                                 selectShownPhoto={this.selectShownPhoto}
                                                 onPhotoDelete={this.onPhotoDelete}
-
                                             />
 
                                             <div className={classes.progressButtons}>
                                                 <Button
                                                     className={classes.buttonMargin}
-                                                    style={{color: 'white', backgroundColor: 'rgb(220, 0, 78)'}}
+                                                    style={{ color: 'white', backgroundColor: 'rgb(220, 0, 78)' }}
                                                     onClick={this.redirectToMyAuctions}
                                                     size="large"
                                                     variant="contained"
@@ -501,25 +557,6 @@ class CreateAuction extends Component {
 
                             )}
 
-                        {/* <Grid
-                            className={classes.buttonWrapper}
-                            item
-                            lg={10}
-                        > */}
-                        {/* <Paper className={classes.buttonPaper}> */}
-                        {/* <div className={classes.buttonPaper}>
-                                    <CreateAuctionProgress 
-                                        currentStep={currentStep}
-                                        //canSubmit={canSubmit}
-
-                                        prevStep={this.prevStep}
-                                        nextStep={this.nextStep}
-                                        handleSubmit={this.handleSubmit}
-                                    />
-                            </div> */}
-                        {/* </Paper> */}
-                        {/* </Grid> */}
-
                     </Grid>
                 </div>
             </Sidebar>
@@ -536,10 +573,6 @@ function mapStateToProps(state) {
     };
 }
 
-const connectedCreateAuction = connect(mapStateToProps)(CreateAuction);
-const styledCreateAuction = withStyles(styles)(connectedCreateAuction);
-export default styledCreateAuction;
-
-
-
-
+const connectedEditAuction = connect(mapStateToProps)(EditAuction);
+const styledEditAuction = withStyles(styles)(connectedEditAuction);
+export default styledEditAuction;

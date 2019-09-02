@@ -14,7 +14,8 @@ import AdminPage from './pages/AdminPage';
 import ProfilePage from './pages/ProfilePage';
 import BrowseAuctions from './pages/BrowseAuctions';
 import MyAuctions from './pages/MyAuctions';
-import CreateAuction from './pages/CreateAuction';
+import CreateAuction from './pages/AuctionOperations/CreateAuction';
+import EditAuction from './pages/AuctionOperations/EditAuction';
 import ViewAuction from './pages/ViewAuction';
 import Messages from './pages/Messages';
 
@@ -23,24 +24,14 @@ import { AdminRoute } from './routes';
 import { VerifiedRoute } from './routes';
 import { UserRoute } from './routes';
 
+import 'react-image-lightbox/style.css'; // This only needs to be imported once in your app
+import 'react-awesome-slider/dist/styles.css';
+
 // Styles
 import useStyles from './styles';
 
 
-//{!this.state.user && <Redirect to='/login' />}
-
-/*const MainLayout = props => (
-    <div>
-      <h1>Main</h1>
-      {props.children}
-    </div>
-  )
-  
-  <AppRoute exact path="/foo" layout={MainLayout} component={Foo} />
-  
-  
-  */
-
+{/* <AppRoute exact path="/foo" layout={MainLayout} component={Foo} />
 function LayoutWithSidebar(props) {
     const { classes } = useStyles();
     console.log('layoutttt');
@@ -53,8 +44,7 @@ function LayoutWithSidebar(props) {
         </Sidebar>
     );
 }
-
-
+ */}
 
 export default function App(props) {
     //const { classes } = props;
@@ -64,7 +54,6 @@ export default function App(props) {
             <MyNavbar />
             {/*<header className="App-header">*/}
             <Switch>
-                {/*<PrivateRoute exact path="/login/aaa paradeigma gia exact path" component={HomePage} />*/}
                 <Route exact path="/" component={HomePage} />
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/register" component={Register} />
@@ -78,11 +67,11 @@ export default function App(props) {
 
                 <VerifiedRoute exact path="/myauctions" component={MyAuctions} />
                 <VerifiedRoute exact path="/myauctions/create-auction" component={CreateAuction} />
+                <VerifiedRoute exact path="/myauctions/edit-auction" component={EditAuction} />
                 <VerifiedRoute exact path="/messages" component={Messages} />
 
                 <AdminRoute path="/admin" component={AdminPage}/>
 
-                {/* <AuthAndVerRoute render={() => <Redirect to="/" />} /> */}
                 <Route render={() => <Redirect to="/" />} />
             </Switch>
             {/*</header>*/}

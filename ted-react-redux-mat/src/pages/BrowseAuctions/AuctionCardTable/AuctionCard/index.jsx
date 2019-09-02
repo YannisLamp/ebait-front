@@ -7,6 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
     card: {
@@ -22,23 +23,32 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function MediaCard(props) {
-    const { name, description, imageUrl, currentBid, category } = props;
-    console.log(imageUrl);
+    const { auction, currentBid, category } = props;
+    const imageUrl = auction.photos[0] ? auction.photos[0].fileDownloadUri : '';
+
     const classes = useStyles();
     return (
         <Card className={classes.card}>
-            <CardActionArea>
+            <CardActionArea 
+                component={Link} 
+                to={{
+                    pathname: '/viewauction',
+                    state: {
+                        auction: auction
+                    }
+                }}
+            >
                 <CardMedia
                     className={classes.media}
                     image={imageUrl}
-                    title={name}
+                    title={auction.name}
                 />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
-                        {name}
+                        {auction.name}
                     </Typography>
                     <Typography variant="body2" color="textPrimary" component="p">
-                        {description}
+                        {auction.description}
                     </Typography>
                 </CardContent>
             </CardActionArea>

@@ -5,7 +5,7 @@ import { history } from '../../../utils';
 import PaperTitle from '../../../sharedComp/PaperTitle';
 
 // Material
-import { IconButton, CircularProgress, TextField, Typography } from '@material-ui/core';
+import { IconButton, CircularProgress, TextField, Typography, Button } from '@material-ui/core';
 
 // For importing my custom styles  
 import { makeStyles } from '@material-ui/core';
@@ -28,9 +28,8 @@ const useStyles = makeStyles(theme => ({
 
 
 export default function AuctionFilters(props) {
-
-    const { country, address, locationDescription } = props;
-    const { handleCountryChange, handleAddressChange, handleChange, updateMap } = props;
+    const { country, description, lowestPrice, highestPrice, location } = props;
+    const { handleChange, loadAuctions } = props;
 
     const classes = useStyles();
     return (
@@ -42,7 +41,7 @@ export default function AuctionFilters(props) {
 
 
             {/* <div className={classes.fields}> */}
-                <TextField
+            {/* <TextField
                     className={classes.textField}
                     label="Country"
                     name="country"
@@ -51,28 +50,57 @@ export default function AuctionFilters(props) {
                     variant="outlined"
                     onChange={handleCountryChange}
                     onBlur={updateMap}
-                />
-                <TextField
-                    className={classes.textField}
-                    label="Address"
-                    name="address"
-                    value={address}
-                    type="text"
-                    variant="outlined"
-                    onChange={handleAddressChange}
-                    onBlur={updateMap}
-                />
-                <TextField
-                    className={classes.textField}
-                    label="Location Description"
-                    name="locationDescription"
-                    value={locationDescription}
-                    type="text"
-                    variant="outlined"
-                    onChange={handleChange}
-                />
+                /> */}
+            <TextField
+                className={classes.textField}
+                label="Item Description"
+                name="description"
+                value={description}
+                type="text"
+                variant="outlined"
+                onChange={handleChange}
+            //onBlur
+            />
+            <TextField
+                className={classes.textField}
+                label="Lowest Price"
+                name="lowestPrice"
+                value={lowestPrice}
+                type="text"
+                variant="outlined"
+                onChange={handleChange}
+            //onBlur
+            />
+            <TextField
+                className={classes.textField}
+                label="Highest Price"
+                name="highestPrice"
+                value={highestPrice}
+                type="text"
+                variant="outlined"
+                onChange={handleChange}
+            //onBlur
+            />
+            <TextField
+                className={classes.textField}
+                label="Location"
+                name="location"
+                value={location}
+                type="text"
+                variant="outlined"
+                onChange={handleChange}
+            />
 
-
+            <Button
+                className={classes.bottomButton}
+                color="primary"
+                type="submit"
+                onClick={loadAuctions}
+                size="large"
+                variant="contained"
+            >
+                Make query
+            </Button>
         </div>
     );
 }

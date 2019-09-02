@@ -2,12 +2,18 @@ import axios from './axiosConfig';
 
 export const auctionsApi = {
     createAuction,
+    editAuction,
     getUserAuctions,
+    getActiveAuctions,
+    getAllAuctions,
     startAuction,
     deleteAuction,
 
+    bidAuction,
+
     getRootCategories,
-    getChildrenCategories
+    getChildrenCategories,
+    getAllCats,
 };
 
 
@@ -39,18 +45,96 @@ function createAuction(name, description, ends,
 
                 // After the auction is created, make a request to append all the photos
                 // the user has uploaded
-                const auctionId = response.data.itemID;
-                uploadMultiplePhotos(auctionId, photos)
+                const itemID = response.data.itemID;
+                uploadMultiplePhotos(itemID, photos)
                     .then(response => {
                         return response.data;
                     },
                         error => {
-            
+
                         }
                     );
             },
             error => {
 
+
+            }
+        );
+}
+
+
+function editAuction(itemID, name, description, ends,
+    firstBid, buyout, categories, country, locationDescription,
+    selectedLat, selectedLng, photos, deletedPhotos) {
+
+    const jsonRequest = {
+        name: name,
+        description: description,
+        ends: ends,
+        firstBid: firstBid,
+        buyPrice: buyout,
+        country: country,
+
+        categories: categories,
+
+        location: {
+            latitude: selectedLat,
+            longitude: selectedLng,
+            text: locationDescription
+        },
+    }
+
+    for (const photo of deletedPhotos) {
+        deleteAuctionPhoto(photo.photoId);
+    }
+
+    return axios.put('/auctions/' + itemID, jsonRequest)
+        .then(
+            response => {
+                console.log(response.data);
+
+                // After the auction is edited, make a request to append all the new photos
+                // the user has uploaded
+                uploadMultiplePhotos(itemID, photos);
+
+                // Then delete all the photos that the iser has deleted in the UI
+                for (const photo of deletedPhotos) {
+                    deleteAuctionPhoto(photo.photoId);
+                }
+            },
+            error => {
+
+
+            }
+        );
+}
+
+
+function getAllAuctions(categories, description, lowestPrice, highestPrice, location,
+    order, orderBy, currPage, pageSize) {
+
+    const jsonRequest = {
+        params: {
+
+            categories: categories,
+            description: description,
+            lowestPrice: lowestPrice,
+            highestPrice: highestPrice,
+            location: location,
+
+            //order: orderBy,
+            //orderBy: order,
+
+            pageNo: currPage,
+            pageSize: pageSize,
+        }
+    }
+
+    return axios.get('/search/auctions/filters', jsonRequest)
+        .then(response => {
+            return response.data;
+        },
+            error => {
 
             }
         );
@@ -69,7 +153,6 @@ function getActiveAuctions() {
             // abovePrice:
 
             // location: location.text
-
 
             // orderBy: orderBy,
             // pageNo: currPage,
@@ -98,8 +181,19 @@ function buyoutAuction(id) {
         );
 }
 
+function bidAuction(id, amount) {
+    return axios.put('/auctions/add_bid/' + id)
+        .then(response => {
+            return response.data;
+        },
+            error => {
+
+            }
+        );
+}
+
 function deleteAuctionPhoto(photoId) {
-    return axios.get('/auctions/delete_photo/id', {
+    return axios.delete('/auctions/delete_photo/' + photoId, {
 
     })
         .then(response => {
@@ -112,25 +206,18 @@ function deleteAuctionPhoto(photoId) {
 }
 
 function uploadMultiplePhotos(auctionId, photos) {
-    // const json = JSON.stringify(jsonRequest);
-    // const blob = new Blob([json], {
-    //     type: 'application/json'
-    // });
 
     const formData = new FormData();
-    //formData.append('item', blob);
 
     for (const photo of photos) {
         formData.append('imageFile', photo);
     }
-    // formData.append('imageFile', imageFile);
-    // formData.append('imageFile', imageFile);
 
     return axios.post('/auctions/' + auctionId + '/upload_multiple_photos', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        })
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    })
         .then(
             response => {
                 return response.data;
@@ -201,4 +288,15 @@ function getChildrenCategories(parentId) {
 
             }
         );
+}
+
+
+function getAllCats(reqs) {
+    return Promise.all(reqs)
+        .then(allResp => {
+            return allResp;
+        },
+            error => {
+
+            });
 }

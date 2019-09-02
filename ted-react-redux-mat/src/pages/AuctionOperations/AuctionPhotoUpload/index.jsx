@@ -22,11 +22,30 @@ const useStyles = makeStyles(theme => ({
     mapTitle: {
         marginTop: theme.spacing(2),
     },
+    image: {
+        marginTop: theme.spacing(1),
+        
+        width: 'auto',
+        maxWidth: '100%', 
+        //maxHeight: '40vh'
+        height: theme.spacing(40),
+        objectFit: 'contain',
+    },
+    // photoList: {
+    //     marginTop: theme.spacing(50),
+    // },
     button: {
         margin: theme.spacing(1),
     },
+    onlyButton: {
+        margin: theme.spacing(1),
+        marginTop: theme.spacing(10),
+    },
     input: {
         display: 'none',
+    },
+    delete: {
+        color: 'rgb(220, 0, 78)',
     },
 }));
 
@@ -35,9 +54,6 @@ export default function AuctionPhotoUpload(props) {
 
     const { photos, shownPhoto } = props;
     const { onPhotoAddition, selectShownPhoto, onPhotoDelete } = props;
-    const style = { height: '400px' };
-
-    //console.log(photos[shownPhoto]);
 
     const classes = useStyles();
     return (
@@ -45,18 +61,27 @@ export default function AuctionPhotoUpload(props) {
 
             <PaperTitle
                 title='Upload Photos'
-                suggestion={'optionally upload a maximum of two photos of your item'}
+                suggestion={'optionally upload photos of your item'}
             />
 
             <Grid container direction="column" justify="space-between">
                 {/* <Grid item> */}
                     {
-                        photos.length > 0 ? (<img style={{ maxWidth: '100%', maxHeight: '40vh' }} src={URL.createObjectURL(photos[shownPhoto])} />) : ''
+                        photos.length > 0 ?
+                            photos[shownPhoto].fileDownloadUri ? (
+                                <img className={classes.image} src={photos[shownPhoto].fileDownloadUri} />
+                            ) : (
+                                <img className={classes.image} src={URL.createObjectURL(photos[shownPhoto])} />
+                            )
+                        : ''
                     }
                 {/* </Grid> */}
 
                 {/* <Grid item> */}
-                <List dense>
+                <List
+                    //className={classes.photoList}
+                    dense
+                >
                     {
                         photos.map((photo, index) => {
                             console.log(photo);
@@ -73,12 +98,12 @@ export default function AuctionPhotoUpload(props) {
                                         </Avatar>
                                     </ListItemAvatar>
                                     <ListItemText
-                                        primary={photo.name}
+                                        primary={photo.fileName ? photo.fileName : photo.name}
                                         //secondary={secondary ? 'Secondary text' : null}
                                     />
                                     <ListItemSecondaryAction>
                                         <IconButton edge="end" aria-label="delete" onClick={e => {onPhotoDelete(index)}}>
-                                            <DeleteIcon />
+                                            <DeleteIcon className={classes.delete} />
                                         </IconButton>
                                     </ListItemSecondaryAction>
                                 </ListItem>
@@ -88,9 +113,9 @@ export default function AuctionPhotoUpload(props) {
                 </List>
 
 
-                <Grid container justify="flex-end">
+                <Grid container justify="center">
                     <input
-                        //accept="image/*"
+                        accept="image/*"
                         className={classes.input}
                         id="contained-button-file"
                         multiple
@@ -98,7 +123,7 @@ export default function AuctionPhotoUpload(props) {
                         onChange={onPhotoAddition}
                     />
                     <label htmlFor="contained-button-file">
-                        <Button variant="contained" component="span" className={classes.button} >
+                        <Button variant="contained" component="span" className={photos.length > 0 ? classes.button : classes.onlyButton} >
                             Upload
                         </Button>
                     </label>

@@ -58,12 +58,20 @@ class BrowseAuctions extends Component {
             }],
 
             auctions: [],
-            showFilters: false,
 
-            pageSize: 10,
+            showFilters: false,
+            description: '',
+            lowestPrice: null,
+            highestPrice: null,
+            location: '',
+
+            pageSize: 5,
             currPage: 0,
 
-            totalPages: null,
+            order: 'asc',
+            orderBy: '',
+
+            //totalPages: null,
             totalAuctions: null,
             isLoading: false,
         };
@@ -73,6 +81,7 @@ class BrowseAuctions extends Component {
         this.changeFilterVisibility = this.changeFilterVisibility.bind(this);
         this.handleChangePage = this.handleChangePage.bind(this);
         this.handleChangeItemsPerPage = this.handleChangeItemsPerPage.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     componentDidMount() {
@@ -93,13 +102,22 @@ class BrowseAuctions extends Component {
     }
 
     loadAuctions() {
-        auctionsApi.getUserAuctions()
+        const { categoryFields, description, lowestPrice, highestPrice, 
+            location, order, orderBy, currPage, pageSize } = this.state;
+
+        let categories = []
+        for (const category of categoryFields.slice(0, categoryFields.length-1)) {
+            categories.push(category.selectedValue);
+        }
+
+        auctionsApi.getAllAuctions(categories, description, lowestPrice, highestPrice, location,
+                order, orderBy, currPage, pageSize)
             .then(data => {
                 console.log(data);
                 this.setState((prevState, props) => {
                     return {
-                        auctions: data,
-                        totalAuctions: data.length,
+                        auctions: data.auctions,
+                        totalAuctions: data.totalFilteredAuctions,
                         isLoading: false,
                     }
                 });
@@ -169,17 +187,16 @@ class BrowseAuctions extends Component {
 
     }
 
-
-
-    changeUser(user) {
-        this.setState((prevState, props) => { return { userToVerify: user } });
+    handleChange(e) {
+        const { name, value } = e.target;
+        this.setState((prevState, props) => { return { [name]: value } });
     }
-
 
     render() {
 
         const { auctions, showFilters, pageSize, currPage, totalPages,
-            totalAuctions, isLoading, categoryFields } = this.state;
+            totalAuctions, isLoading, categoryFields, description, lowestPrice,
+            highestPrice, location, } = this.state;
 
         const { classes } = this.props;
         return (
@@ -202,8 +219,13 @@ class BrowseAuctions extends Component {
                             >
                                 <Paper className={classes.paper}>
                                     <AuctionFilters
+                                        description={description}
+                                        lowestPrice={lowestPrice}
+                                        highestPrice={highestPrice}
+                                        location={location}
 
-
+                                        handleChange={this.handleChange}
+                                        loadAuctions={this.loadAuctions}
                                     />
                                 </Paper>
                             </Grid>
@@ -234,12 +256,10 @@ class BrowseAuctions extends Component {
                                     pageSize={pageSize}
                                     currPage={currPage}
 
-                                    totalPages={totalPages}
+                                    //totalPages={totalPages}
                                     totalAuctions={totalAuctions}
                                     isLoading={isLoading}
 
-                                    changeUser={this.changeUser}
-                                    handleRequestSort={this.handleRequestSort}
                                     handleChangePage={this.handleChangePage}
                                     handleChangeItemsPerPage={this.handleChangeItemsPerPage}
                                 />
@@ -273,12 +293,10 @@ class BrowseAuctions extends Component {
                                     pageSize={pageSize}
                                     currPage={currPage}
 
-                                    totalPages={totalPages}
+                                    //totalPages={totalPages}
                                     totalAuctions={totalAuctions}
                                     isLoading={isLoading}
 
-                                    changeUser={this.changeUser}
-                                    handleRequestSort={this.handleRequestSort}
                                     handleChangePage={this.handleChangePage}
                                     handleChangeItemsPerPage={this.handleChangeItemsPerPage}
                                 />

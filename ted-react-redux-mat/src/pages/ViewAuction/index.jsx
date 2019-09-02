@@ -8,7 +8,9 @@ import { withStyles } from '@material-ui/core';
 import { pageStyles } from '../pageStyles';
 
 import Sidebar from '../../sharedComp/Sidebar';
-import UserTable from './AuctionDetails';
+import AuctionDetails from './AuctionDetails';
+import AuctionCarousel from './AuctionCarousel';
+import ViewAuctionMap from './ViewAuctionMap';
 
 import { usersApi } from '../../services';
 import { nominatimApi } from '../../services';
@@ -22,8 +24,9 @@ const styles = theme => ({
         paddingLeft: theme.spacing(3),
         paddingRight: theme.spacing(3),
         paddingBottom: theme.spacing(4),
-        marginBottom: theme.spacing(2),
+        marginBottom: theme.spacing(3),
         minHeight: '80vh',
+        height: '100%',
     },
     prevPaper: {
         width: '100%',
@@ -31,6 +34,8 @@ const styles = theme => ({
         paddingLeft: theme.spacing(3),
         paddingRight: theme.spacing(3),
         marginBottom: theme.spacing(1),
+        //maxHeight: '40vh',
+        //height: '50%',
         minHeight: '40vh',
     },
     prevWrapper: {
@@ -45,20 +50,31 @@ class ViewAuction extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            auction: this.props.auction,
-            
-            isLoading: true,
+            auction: this.props.location.state.auction,
+
+            bid: '',
+            isBidding: false,
+            isBuying: false,
+
+            isFullscreenPhotos: false,
+            fullscreenIndex: 0,
         };
 
         this.queryAuctionLocation = this.queryAuctionLocation.bind(this);
         
+        this.setFullscreenIndex = this.setFullscreenIndex.bind(this);
+        this.changeFullscreenPhotos = this.changeFullscreenPhotos.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+
     }
 
     componentDidMount() {
-        //const { 
-        //this.queryAuctionLocation(query);
+        const { auction } = this.state;
+        if (!auction.location.latitude || auction.location.longitude) {
+            const { text } = auction.location;
+            this.queryAuctionLocation(text);
+        }
     }
-
 
     queryAuctionLocation(query) {
         nominatimApi.getGeoLocation(query)
@@ -67,7 +83,8 @@ class ViewAuction extends Component {
                 // Coordinates are given in reverse order from API
                 this.setState((prevState, props) => {
                     let { auction } = prevState;
-                    //auction.
+                    auction.location.latitude = coords[1];
+                    auction.location.longitude = coords[0];
                     return {
                         auction
                     }
@@ -75,11 +92,26 @@ class ViewAuction extends Component {
             })
     }
 
+    changeFullscreenPhotos() {
+        console.log('FULLSCREEEEEN');
+        this.setState((prevState, props) => { return { isFullscreenPhotos: !prevState.isFullscreenPhotos } });
+    }
+
+    setFullscreenIndex(index) {
+        this.setState((prevState, props) => { return { fullscreenIndex: index } });
+    }
+
+    handleChange(e) {
+        const { name, value } = e.target;
+        this.setState((prevState, props) => { return { [name]: value } });
+    }
 
     render() {
-        const { users, order, orderBy, pageSize, currPage, totalPages,
-            totalUsers, isLoading, userToVerify, isVerifying } = this.state;
-        
+        const { auction, isFullscreenPhotos, fullscreenIndex, bid } = this.state;
+
+        console.log('AUCTIONNNNN');
+        console.log(auction);
+
         const { classes } = this.props;
         return (
             <Sidebar>
@@ -96,25 +128,32 @@ class ViewAuction extends Component {
                             lg={4}
                         >
                             <Grid
-                                style={{height: '100%'}}
+                                style={{ height: '100%' }}
                                 container
                                 direction="column"
                                 justify="flex-start"
                             >
 
-                                <Paper className={classes.prevPaper}>
-                                   
-                                </Paper>
+                                {/* <Grid item> */}
+                                    <Paper className={classes.prevPaper}>
+                                        <AuctionCarousel 
+                                            photos={auction.photos}
+                                            isFullscreenPhotos={isFullscreenPhotos}
+                                            fullscreenIndex={fullscreenIndex}
+                                            
+                                            changeFullscreenPhotos={this.changeFullscreenPhotos}
+                                            setFullscreenIndex={this.setFullscreenIndex}
+                                        />
+                                    </Paper>
+                                {/* </Grid> */}
 
-
-                                <Paper className={classes.prevPaper}>
-                                   
-                                </Paper>
-
+                                {/* <Grid item> */}
+                                    <Paper className={classes.prevPaper}>
+                                        <ViewAuctionMap lat={auction.location.latitude} lng={auction.location.longitude} />
+                                    </Paper>
+                                {/* </Grid> */}
 
                             </Grid>
-
-
 
                         </Grid>
 
@@ -129,20 +168,28 @@ class ViewAuction extends Component {
                         >
 
                             <Grid
-                                style={{height: '100%'}}
+                                style={{ height: '100%' }}
                                 container
                                 direction="column"
                                 justify="flex-start"
                             >
 
-                            <Paper className={classes.paper}>
-                                
-                            </Paper>
-                            
+                                <Paper className={classes.paper}>
+                                    <AuctionDetails
+                                        name={auction.name}
+                                        description={auction.description}
+                                        currentBid={auction.currentBid}
+                                        firstBid={auction.firstBid}
+
+                                        bid={bid}
+
+                                        handleChange={this.handleChange}
+                                    />
+                                </Paper>
+
                             </Grid>
 
                         </Grid>
-
 
                     </Grid>
                 </div>

@@ -9,8 +9,11 @@ import PaperTitle from '../../../sharedComp/PaperTitle';
 
 const useStyles = makeStyles(theme => ({
     map: {
-        marginTop: theme.spacing(2),
-        marginBottom: theme.spacing(2),
+        //marginTop: theme.spacing(2),
+        //marginBottom: theme.spacing(2),
+    },
+    mapHeight: {
+        height: theme.spacing(45),
     }
 }));
 
@@ -18,29 +21,32 @@ const useStyles = makeStyles(theme => ({
 export default function CreateAuctionMap(props) {
 
     const { lat, lng } = props;
-    const style = { height: '200px' };
+    console.log('LATATAT');
+    console.log(lat);
+    //const style = { height: '200px' };
 
     const classes = useStyles();
     return (
         <div>
-            <PaperTitle
+            {/* <PaperTitle
                 title='Auction Location'
             // suggestion={'or search for it'}
-            />
+            /> */}
 
             {lat && lng ? (
                 <div className={classes.map}>
                     <Map
                         center={{ lat: lat, lng: lng }}
                         zoom={15}
-                        style={style}
+                        //style={style}
+                        className={classes.mapHeight}
                     >
                         <TileLayer
                             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                             url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
                         />
 
-                        <Marker position={{ lat: selectedLat, lng: selectedLng }}>
+                        <Marker position={{ lat: lat, lng: lng }}>
                             <Popup>Auction Location</Popup>
                         </Marker>
                     </Map>

@@ -2,3 +2,14 @@ body {
   margin: 0;
   height: '100%';
 }
+
+.carousel-container {
+    position: relative;
+    max-width: 432px;
+    max-height: 289px;
+}
+
+.carousel-container .carousel .slide img {
+    height: 100%;
+    width: auto;
+}

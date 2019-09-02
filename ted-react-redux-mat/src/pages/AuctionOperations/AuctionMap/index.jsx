@@ -21,11 +21,21 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-export default function CreateAuctionMap(props) {
+export default function AuctionMap(props) {
 
     const { locationQuery, startingLat, startingLng, selectedLat, selectedLng, hasLocation } = props;
     const { handleChange, handleMapClick, updateMap } = props;
     const style = { height: '450px' }; 
+
+    console.log('HASLOC');
+    console.log(hasLocation);
+
+    console.log('LAT');
+    console.log(startingLat);
+
+    console.log('LNG');
+    console.log(selectedLng);
+
 
     const classes = useStyles();
 
