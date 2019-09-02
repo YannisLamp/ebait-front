@@ -9,7 +9,7 @@ export const auctionsApi = {
     startAuction,
     deleteAuction,
 
-    bidAuction,
+    placeBid,
 
     getRootCategories,
     getChildrenCategories,
@@ -175,7 +175,7 @@ function buyoutAuction(id) {
         );
 }
 
-function bidAuction(id, amount) {
+function placeBid(id, amount) {
     const jsonRequest = {
         amount: amount
     }
