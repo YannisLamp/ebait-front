@@ -1,8 +1,10 @@
 import React from 'react';
 import AwesomeSlider from 'react-awesome-slider';
 import Lightbox from 'react-image-lightbox';
+import OpenWithIcon from '@material-ui/icons/OpenWith';
 
-import { Grid, Button } from '@material-ui/core';
+
+import { Grid, Button, IconButton } from '@material-ui/core';
 //import AwsSliderStyles from 'react-awesome-slider/src/styles';
 //import 'react-awesome-slider/dist/styles.css';
 
@@ -10,20 +12,25 @@ import { makeStyles } from '@material-ui/core/styles';
 
 
 const useStyles = makeStyles(theme => ({
-    image: {
-        marginTop: theme.spacing(1),
-
+    carouselContainer: {
+        position: 'relative'
+    },
+    slider: {
         width: 'auto',
         maxWidth: '100%',
         //maxHeight: '40vh'
-        height: theme.spacing(20),
+        height: theme.spacing(43),
+        //height: 'auto',
+        marginBottom: theme.spacing(6),
         objectFit: 'contain',
     },
-    slider: {
-        marginBottom: theme.spacing(6),
+    shit: {
+        position: 'absolute',
+        top: '10px',
+        left: '10px',
+        zIndex:1100,
     }
 }));
-
 
 export default function AuctionCarousel(props) {
     const { photos, isFullscreenPhotos, fullscreenIndex } = props;
@@ -32,19 +39,20 @@ export default function AuctionCarousel(props) {
     const classes = useStyles();
     return (
         <>
-            <Button onClick={changeFullscreenPhotos}>LALALALAL</Button>
-            <AwesomeSlider
-                className={classes.slider}
-            //cssModule={AwsSliderStyles}
-            >
-                {
-                    photos.map((photo, index) => {
-                        return (
-                            <div key={index} data-src={photo.fileDownloadUri} />
-                        );
-                    })
-                }
-            </AwesomeSlider>
+            <div className={classes.carouselContainer}>
+                <AwesomeSlider
+                    className={classes.slider}
+                >
+                    {
+                        photos.map((photo, index) => {
+                            return (
+                                <div key={index} data-src={photo.fileDownloadUri} onClick={changeFullscreenPhotos} />
+                            );
+                        })
+                    }
+                </AwesomeSlider>
+                <IconButton className={classes.shit} onClick={changeFullscreenPhotos}><OpenWithIcon /></IconButton>
+            </div>
 
             {
                 isFullscreenPhotos && (
@@ -55,7 +63,7 @@ export default function AuctionCarousel(props) {
                         onCloseRequest={changeFullscreenPhotos}
                         onMovePrevRequest={() => setFullscreenIndex((fullscreenIndex + photos.length - 1) % photos.length)}
                         onMoveNextRequest={() => setFullscreenIndex((fullscreenIndex + 1) % photos.length)}
-                        reactModalStyle={{overlay: {zIndex: 1500}}}
+                        reactModalStyle={{ overlay: { zIndex: 1500 } }}
                     />
                 )
             }

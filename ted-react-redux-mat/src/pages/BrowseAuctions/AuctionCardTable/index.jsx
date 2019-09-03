@@ -18,7 +18,7 @@ import { makeStyles } from '@material-ui/core';
 const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
-        height: '100%',
+        //height: '100%',
     },
     tableWrapper: {
         marginTop: theme.spacing(4),

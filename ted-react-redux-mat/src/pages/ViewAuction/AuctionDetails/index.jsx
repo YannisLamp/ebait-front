@@ -2,18 +2,13 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 // Material
-import {
-    Grid, Button, Typography, CircularProgress, TextField
-} from '@material-ui/core';
-
-import { CheckBox as CheckBoxIcon, CheckBoxOutlineBlank as CheckBoxBlankIcon } from '@material-ui/icons';
+import { Grid, Button, Typography, CircularProgress, TextField } from '@material-ui/core';
+import { connect } from 'react-redux';
 
 import PaperTitle from '../../../sharedComp/PaperTitle';
 
 
 import { makeStyles } from '@material-ui/core';
-
-import { auctionsApi } from '../../../services'
 
 
 const useStyles = makeStyles(theme => ({
@@ -37,11 +32,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-export default function AuctionDetails(props) {
+function AuctionDetails(props) {
 
-    const { name, description, currentBid, firstBid, myBid, isBidding, isBuying, } = props;
-    const { handleChange, placeBid } = props;
-
+    const { user, auction, myBid, isBidding, isBuying, } = props;
+    const { handleChange, placeBid, buyoutAuction } = props;
+    const hasPriv = !user || (user.userRole === 'USER' && user.verified === false) ? false : true;
 
     const classes = useStyles();
     return (
@@ -54,24 +49,43 @@ export default function AuctionDetails(props) {
             >
                 <Grid item>
                     <PaperTitle
-                        title={name}
+                        title={auction.name}
                     //suggestion={'Auction Details'}
                     />
 
                     <div className={classes.marginFromTitle}>
                         <Typography >
-                            {description}
+                            {'Description: ' + auction.description}
                         </Typography>
 
                     </div>
+
+                    <Typography >
+                        {'Ends On: ' + auction.ends}
+                    </Typography>
                 </Grid>
 
 
                 <Grid item>
                     <Typography >
-                        {'Current Bid: ' + firstBid}
+                        {'Current Bid: ' + auction.currently}
+                        {auction.bids.length > 0 ? 'From: ' : ' '}
+                    </Typography>
+                    <Typography >
+                        {'Started From: ' + auction.firstBid}
                     </Typography>
 
+                    <Button
+                        className={classes.bidButton}
+                        color="primary"
+                        type="submit"
+                        onClick={buyoutAuction}
+                        size="large"
+                        variant="contained"
+                        disabled={auction.eventFinished || !hasPriv}
+                    >
+                        Buyout
+                    </Button>
                     <Grid container justify="flex-end">
                         <TextField
                             name="myBid"
@@ -80,6 +94,7 @@ export default function AuctionDetails(props) {
                             type="text"
                             variant="outlined"
                             onChange={handleChange}
+                            disabled={auction.eventFinished || !hasPriv}
                         />
                         <Button
                             className={classes.bidButton}
@@ -88,6 +103,7 @@ export default function AuctionDetails(props) {
                             onClick={placeBid}
                             size="large"
                             variant="contained"
+                            disabled={auction.eventFinished || !hasPriv}
                         >
                             Place Bid
                         </Button>
@@ -100,3 +116,15 @@ export default function AuctionDetails(props) {
     );
 
 }
+
+function mapStateToProps(state) {
+    const { userStore } = state;
+    const { user } = userStore;
+    return {
+        user,
+    };
+}
+
+
+const connectedAuctionDetails = connect(mapStateToProps)(AuctionDetails);
+export default connectedAuctionDetails;

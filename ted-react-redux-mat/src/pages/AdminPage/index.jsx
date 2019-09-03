@@ -15,6 +15,7 @@ import { usersApi } from '../../services';
 
 
 const styles = theme => ({
+    ...pageStyles(theme),
     pageWrapper: {
         marginTop: theme.spacing(12),
     },

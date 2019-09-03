@@ -14,14 +14,6 @@ import { withStyles } from '@material-ui/core';
 
 
 const styles = theme => ({
-    root: {
-        height: '80vh',
-        width: '100%',
-
-    },
-    grid: {
-        height: '100%',
-    },
     description: {
         paddingTop: theme.spacing(4),
         paddingBottom: theme.spacing(1),

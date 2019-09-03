@@ -10,9 +10,6 @@ const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
     },
-    grid: {
-        height: '100%',
-    },
     textField: {
         marginTop: theme.spacing(2),
         marginLeft: theme.spacing(1),

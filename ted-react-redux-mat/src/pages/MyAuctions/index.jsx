@@ -47,8 +47,10 @@ class MyAuctions extends Component {
             auctions: [],
             totalAuctions: '',
 
-            isLoading: true,
+            order: '',
+            orderBy: '',
 
+            isLoading: true,
         };
 
         this.loadAuctions = this.loadAuctions.bind(this);
@@ -60,6 +62,7 @@ class MyAuctions extends Component {
         this.deleteAuction = this.deleteAuction.bind(this);
         this.handleChangePage = this.handleChangePage.bind(this);
         this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
+        this.handleRequestSort = this.handleRequestSort.bind(this);
     }
 
     componentDidMount() {
@@ -108,6 +111,10 @@ class MyAuctions extends Component {
         });
     }
 
+    handleRequestSort() {
+
+    }
+
     startAuction(itemID) {
         auctionsApi.startAuction(itemID)
             .then(data => {
@@ -123,7 +130,7 @@ class MyAuctions extends Component {
     }
 
     render() {
-        const { pageSize, currPage, auctions, totalAuctions, isLoading } = this.state;
+        const { pageSize, currPage, auctions, totalAuctions, order, orderBy, isLoading } = this.state;
 
         const { classes } = this.props;
         return (
@@ -144,8 +151,8 @@ class MyAuctions extends Component {
 
                                 <MyAuctionsTable
 
-                                    // order={order}
-                                    // orderBy={orderBy}
+                                    order={order}
+                                    orderBy={orderBy}
                                     pageSize={pageSize}
                                     currPage={currPage}
 
@@ -156,7 +163,7 @@ class MyAuctions extends Component {
 
                                     startAuction={this.startAuction}
                                     deleteAuction={this.deleteAuction}
-                                    // handleRequestSort={this.handleRequestSort}
+                                    handleRequestSort={this.handleRequestSort}
                                     handleChangePage={this.handleChangePage}
                                     handleChangeRowsPerPage={this.handleChangeRowsPerPage}
 

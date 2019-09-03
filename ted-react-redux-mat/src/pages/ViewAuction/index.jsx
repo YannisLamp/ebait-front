@@ -24,17 +24,28 @@ const styles = theme => ({
         paddingTop: theme.spacing(3),
         paddingLeft: theme.spacing(3),
         paddingRight: theme.spacing(3),
-        paddingBottom: theme.spacing(4),
+        paddingBottom: theme.spacing(3),
         marginBottom: theme.spacing(3),
         minHeight: '80vh',
         height: '100%',
     },
-    prevPaper: {
+    carouselPaper: {
         width: '100%',
         paddingTop: theme.spacing(3),
         paddingLeft: theme.spacing(3),
         paddingRight: theme.spacing(3),
         marginBottom: theme.spacing(1),
+        //maxHeight: '40vh',
+        //height: '45%',
+        minHeight: '40vh',
+    },
+    mapPaper: {
+        width: '100%',
+        paddingTop: theme.spacing(3),
+        paddingLeft: theme.spacing(3),
+        paddingRight: theme.spacing(3),
+        paddingBottom: theme.spacing(2),
+        marginBottom: theme.spacing(3),
         //maxHeight: '40vh',
         //height: '50%',
         minHeight: '40vh',
@@ -68,6 +79,7 @@ class ViewAuction extends Component {
         this.queryAuctionLocation = this.queryAuctionLocation.bind(this);
         
         this.placeBid = this.placeBid.bind(this);
+        this.buyoutAuction = this.buyoutAuction.bind(this);
 
         this.setFullscreenIndex = this.setFullscreenIndex.bind(this);
         this.changeFullscreenPhotos = this.changeFullscreenPhotos.bind(this);
@@ -102,15 +114,27 @@ class ViewAuction extends Component {
 
     placeBid() {
         const { auction, myBid } = this.state;
+        const itemID = auction.itemID;
+        this.setState((prevState, props) => { return { isBidding: true } });
 
-        auctionsApi.placeBid(auction.itemID, myBid)
+        auctionsApi.placeBid(itemID, myBid)
             .then(response => {
-                console.log('egine bid');
+                this.setState((prevState, props) => { return { isBidding: false } });
+            })
+    }
+
+    buyoutAuction() {
+        const { auction } = this.state;
+        const itemID = auction.itemID;
+        this.setState((prevState, props) => { return { isBuying: true } });
+
+        auctionsApi.buyoutAuction(itemID)
+            .then(response => {
+                this.setState((prevState, props) => { return { isBuying: false } });
             })
     }
 
     changeFullscreenPhotos() {
-        console.log('FULLSCREEEEEN');
         this.setState((prevState, props) => { return { isFullscreenPhotos: !prevState.isFullscreenPhotos } });
     }
 
@@ -159,7 +183,7 @@ class ViewAuction extends Component {
                             >
 
                                 {/* <Grid item> */}
-                                    <Paper className={classes.prevPaper}>
+                                    <Paper className={classes.carouselPaper}>
                                         <AuctionCarousel 
                                             photos={photos}
                                             isFullscreenPhotos={isFullscreenPhotos}
@@ -172,7 +196,7 @@ class ViewAuction extends Component {
                                 {/* </Grid> */}
 
                                 {/* <Grid item> */}
-                                    <Paper className={classes.prevPaper}>
+                                    <Paper className={classes.mapPaper}>
                                         <ViewAuctionMap lat={auction.location.latitude} lng={auction.location.longitude} />
                                     </Paper>
                                 {/* </Grid> */}
@@ -180,10 +204,6 @@ class ViewAuction extends Component {
                             </Grid>
 
                         </Grid>
-
-
-
-
 
                         <Grid
                             className={classes.rightWrapper}
@@ -200,15 +220,13 @@ class ViewAuction extends Component {
 
                                 <Paper className={classes.paper}>
                                     <AuctionDetails
-                                        name={auction.name}
-                                        description={auction.description}
-                                        currentBid={auction.currentBid}
-                                        firstBid={auction.firstBid}
+                                        auction={auction}
 
                                         myBid={myBid}
 
                                         handleChange={this.handleChange}
                                         placeBid={this.placeBid}
+                                        buyoutAuction={this.buyoutAuction}
                                     />
                                 </Paper>
 

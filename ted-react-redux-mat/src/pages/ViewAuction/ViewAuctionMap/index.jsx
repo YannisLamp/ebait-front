@@ -9,11 +9,11 @@ import PaperTitle from '../../../sharedComp/PaperTitle';
 
 const useStyles = makeStyles(theme => ({
     map: {
-        //marginTop: theme.spacing(2),
-        //marginBottom: theme.spacing(2),
+        // marginTop: theme.spacing(2),
+        // marginBottom: theme.spacing(2),
     },
     mapHeight: {
-        height: theme.spacing(45),
+        height: theme.spacing(47),
     }
 }));
 

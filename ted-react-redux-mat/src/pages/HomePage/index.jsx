@@ -112,10 +112,7 @@ function HomePage(props) {
                                 ) :
                                     ''
                                 }
-
                             </Grid>
-
-
                         </Grid>
                     </Grid>
                 </Grid>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 // Material
-import { Grid, Paper, IconButton } from '@material-ui/core';
+import { Grid, Paper, IconButton, FormControlLabel, Switch, Collapse } from '@material-ui/core';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
 // For importing my custom styles  
@@ -53,9 +53,12 @@ const styles = theme => ({
         marginRight: theme.spacing(10),
     },
     rightWrapper: {
-        marginTop: theme.spacing(14),
+        marginTop: theme.spacing(12),
         marginRight: theme.spacing(4),
     },
+    container: {
+        marginBottom: theme.spacing(1),
+    }
 });
 
 
@@ -178,6 +181,11 @@ class BrowseAuctions extends Component {
                         prevCategories.splice(cat.level + 1);
                     }
 
+                    const { description, lowestPrice, highestPrice,
+                        location, order, orderBy, currPage, pageSize } = prevState;
+                    this.loadAuctions(prevCategories, description, lowestPrice, highestPrice,
+                        location, order, orderBy, currPage, pageSize);
+
                     return {
                         prevCategories,
                     }
@@ -260,7 +268,7 @@ class BrowseAuctions extends Component {
                         <Grid
                             className={classes.rightWrapper}
                             item
-                            lg={10}
+                            lg={11}
                         >
                             <Paper className={classes.titlePaper}>
                                 <PaperTitle
@@ -268,10 +276,14 @@ class BrowseAuctions extends Component {
                                     title='Browse Auctions'
                                     suggestion={''}
                                 />
-                                <FilterListIcon onClick={this.changeFilterVisibility} />
+                                {/* <FilterListIcon onClick={this.changeFilterVisibility} /> */}
 
-                                {showFilters ? (
-                                    <>
+                                <FormControlLabel
+                                    control={<Switch checked={showFilters} color="primary" onChange={this.changeFilterVisibility} />}
+                                    label="Show Filters"
+                                />
+                                <div className={classes.container}>
+                                    <Collapse in={showFilters}>
                                         <AuctionFilters
                                             description={description}
                                             lowestPrice={lowestPrice}
@@ -286,9 +298,8 @@ class BrowseAuctions extends Component {
                                             categoryFields={categoryFields}
                                             handleCategoryPick={this.handleCategoryPick}
                                         />
-                                    </>
-                                ) : ''}
-
+                                    </Collapse>
+                                </div>
                             </Paper>
 
                             {isLoading ? '' : (
