@@ -10,6 +10,7 @@ export const auctionsApi = {
     deleteAuction,
 
     placeBid,
+    buyoutAuction,
 
     getRootCategories,
     getChildrenCategories,
@@ -165,7 +166,7 @@ function getActiveAuctions() {
 }
 
 function buyoutAuction(id) {
-    return axios.put('/auctions/buyout' + id)
+    return axios.put('/auctions/buyout/' + id)
         .then(response => {
             return response.data;
         },

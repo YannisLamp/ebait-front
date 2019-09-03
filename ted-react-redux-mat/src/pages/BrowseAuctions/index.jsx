@@ -20,7 +20,6 @@ import CategoryList from '../../sharedComp/CategoryList';
 
 const styles = theme => ({
     ...pageStyles(theme),
-
     paper: {
         width: '100%',
         paddingTop: theme.spacing(3),
