@@ -132,6 +132,7 @@ class EditAuction extends Component {
         this.handleDateChange = this.handleDateChange.bind(this);
 
         this.handleCountryChange = this.handleCountryChange.bind(this);
+        this.handleLocationChange = this.handleLocationChange.bind(this);
         this.handleCategoryPick = this.handleCategoryPick.bind(this);
         this.deleteCategory = this.deleteCategory.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -238,6 +239,17 @@ class EditAuction extends Component {
             const query = prevState.locationDescription + ', ' + value;
             return {
                 country: value,
+                locationQuery: query
+            }
+        });
+    }
+
+    handleLocationChange(e) {
+        const { value } = e.target;
+        this.setState((prevState, props) => {
+            const query = value + ', ' + prevState.country;
+            return {
+                locationDescription: value,
                 locationQuery: query
             }
         });
@@ -431,7 +443,7 @@ class EditAuction extends Component {
 
                         {currentStep === 2 ? (
                             <>
-                                <Grid
+                                {/* <Grid
                                     className={classes.locationWrapper}
                                     item
                                     lg={3}
@@ -447,15 +459,17 @@ class EditAuction extends Component {
                                         />
 
                                     </Paper>
-                                </Grid>
+                                </Grid> */}
 
                                 <Grid
                                     className={classes.rightWrapper}
                                     item
-                                    lg={7}
+                                    lg={10}
                                 >
                                     <Paper className={classes.paper}>
                                         <CreateAuctionMap
+                                            country={country}
+                                            locationDescription={locationDescription}
                                             locationQuery={locationQuery}
                                             startingLat={startingLat}
                                             startingLng={startingLng}
@@ -463,6 +477,8 @@ class EditAuction extends Component {
                                             selectedLng={selectedLng}
                                             hasLocation={hasLocation}
 
+                                            handleCountryChange={this.handleCountryChange}
+                                            handleLocationChange={this.handleLocationChange}
                                             handleChange={this.handleChange}
                                             handleMapClick={this.handleMapClick}
                                             updateMap={this.updateMap}

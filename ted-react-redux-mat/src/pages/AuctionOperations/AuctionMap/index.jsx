@@ -12,7 +12,12 @@ import PaperTitle from '../../../sharedComp/PaperTitle';
 
 const useStyles = makeStyles(theme => ({
     textField: {
-        width: '50%',
+        width: theme.spacing(50),
+    },
+    locationField: {
+        marginRight: theme.spacing(2),
+        marginTop: theme.spacing(2),
+        width: theme.spacing(35),
     },
     map: {
         marginTop: theme.spacing(2),
@@ -23,18 +28,19 @@ const useStyles = makeStyles(theme => ({
 
 export default function AuctionMap(props) {
 
-    const { locationQuery, startingLat, startingLng, selectedLat, selectedLng, hasLocation } = props;
-    const { handleChange, handleMapClick, updateMap } = props;
-    const style = { height: '450px' }; 
+    const { country, locationDescription, locationQuery, startingLat, startingLng, 
+        selectedLat, selectedLng, hasLocation } = props;
+    const { handleCountryChange, handleLocationChange, handleChange, handleMapClick, updateMap } = props;
+    const style = { height: '450px' };
 
-    console.log('HASLOC');
-    console.log(hasLocation);
+    // console.log('HASLOC');
+    // console.log(hasLocation);
 
-    console.log('LAT');
-    console.log(startingLat);
+    // console.log('LAT');
+    // console.log(startingLat);
 
-    console.log('LNG');
-    console.log(selectedLng);
+    // console.log('LNG');
+    // console.log(selectedLng);
 
 
     const classes = useStyles();
@@ -53,21 +59,32 @@ export default function AuctionMap(props) {
         <div>
 
             <PaperTitle
-                title='Choose your Location'
-                suggestion={'or search for it'}
+                title='Your Location'
+                suggestion={'fill in your location details or search for it'}
             />
+
 
             <TextField
-                className={classes.textField + ' ' + classes.map}
-                label="Location"
-                name="locationQuery"
-                value={locationQuery}
+                className={classes.locationField}
+                label="Country"
+                name="country"
+                value={country}
                 type="text"
                 variant="outlined"
-                onChange={handleChange}
+                onChange={handleCountryChange}
                 onBlur={updateMap}
             />
-
+            
+            <TextField
+                className={classes.locationField}
+                label="Location"
+                name="locationDescription"
+                value={locationDescription}
+                type="text"
+                variant="outlined"
+                onChange={handleLocationChange}
+                onBlur={updateMap}
+            />
 
             {startingLat && startingLng ? (
                 <div className={classes.map}>
@@ -90,6 +107,17 @@ export default function AuctionMap(props) {
                     </Map>
                 </div>
             ) : null}
+
+            <TextField
+                className={classes.textField}
+                label="Search Location"
+                name="locationQuery"
+                value={locationQuery}
+                type="text"
+                variant="outlined"
+                onChange={handleChange}
+                onBlur={updateMap}
+            />
 
         </div>
     );
