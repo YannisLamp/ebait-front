@@ -49,6 +49,9 @@ const useStyles = makeStyles(theme => ({
     pagination: {
         color: theme.palette.text.primary,
     },
+    actions: {
+        display: 'inline-block',
+    },
     start: {
         color: theme.palette.primary.main,
     },
@@ -140,28 +143,31 @@ export default function MyAuctionsTable(props) {
                                                             <TableCell align="right">{row.ends}</TableCell>
                                                             <TableCell align="right">{row.eventStarted ? <CheckBoxIcon /> : <CheckBoxBlankIcon />}</TableCell>
                                                             <TableCell align="right">
-                                                                {row.eventStarted ?
-                                                                    '' :
-                                                                    (<IconButton onClick={e => startAuction(row.itemID)}><PlayArrowIcon className={classes.start} /></IconButton>)
-                                                                }
-                                                                {row.eventStarted && row.bids.length > 0 ? ''
-                                                                    : (
-                                                                        <IconButton>
-                                                                            <Link
-                                                                                className={classes.edit}
-                                                                                to={{
-                                                                                    pathname: '/myauctions/edit-auction',
-                                                                                    state: {
-                                                                                        auction: row
-                                                                                    }
-                                                                                }}
-                                                                            >
-                                                                                <EditIcon />
-                                                                            </Link>
-                                                                        </IconButton>
-                                                                    )
-                                                                }
-                                                                <IconButton onClick={e => deleteAuction(row.itemID)}><DeleteIcon className={classes.delete} /></IconButton>
+                                                                    {row.eventStarted ?
+                                                                        '' :
+                                                                        (<IconButton onClick={e => startAuction(row.itemID)}><PlayArrowIcon className={classes.start} /></IconButton>)
+                                                                    }
+                                                                    {row.eventStarted && row.bids.length > 0 ? ''
+                                                                        : (<>
+                                                                            <IconButton>
+                                                                                <Link
+                                                                                    className={classes.edit}
+                                                                                    to={{
+                                                                                        pathname: '/myauctions/edit-auction',
+                                                                                        state: {
+                                                                                            auction: row
+                                                                                        }
+                                                                                    }}
+                                                                                >
+                                                                                    <EditIcon />
+                                                                                </Link>
+                                                                            </IconButton>
+
+                                                                            <IconButton onClick={e => deleteAuction(row.itemID)}>
+                                                                                <DeleteIcon className={classes.delete} />
+                                                                            </IconButton>
+                                                                        </>)
+                                                                    }
                                                             </TableCell>
                                                         </TableRow>
                                                     );
