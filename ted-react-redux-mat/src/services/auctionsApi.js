@@ -42,13 +42,15 @@ function createAuction(name, description, ends,
     return axios.post('/auctions', jsonRequest)
         .then(
             response => {
-                console.log(response.data);
+                console.log('AUCTIONID');
+                console.log(response);
 
                 // After the auction is created, make a request to append all the photos
                 // the user has uploaded
                 const itemID = response.data.itemID;
                 uploadMultiplePhotos(itemID, photos)
                     .then(response => {
+                        
                         return response.data;
                     },
                         error => {
@@ -205,7 +207,6 @@ function deleteAuctionPhoto(photoId) {
 }
 
 function uploadMultiplePhotos(auctionId, photos) {
-
     const formData = new FormData();
 
     for (const photo of photos) {
@@ -222,7 +223,6 @@ function uploadMultiplePhotos(auctionId, photos) {
                 return response.data;
             },
             error => {
-
 
             }
         );

@@ -115,8 +115,8 @@ function changeUserPassword(currPassword, newPassword) {
 function verifyUser(userId) {
     return axios.put('/admin/verify/' + userId, {data:{}})
         .then(response => {
-            console.log('response');
-            console.log(response);
+            //console.log('response');
+            //console.log(response);
             return response.data;
         }
         //error => {

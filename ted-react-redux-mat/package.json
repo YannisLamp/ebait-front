@@ -34,7 +34,8 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "typeface-roboto": "0.0.75",
-    "typescript": "^3.5.3"
+    "typescript": "^3.5.3",
+    "xml-js": "^1.6.11"
   },
   "scripts": {
     "start": "react-scripts start",

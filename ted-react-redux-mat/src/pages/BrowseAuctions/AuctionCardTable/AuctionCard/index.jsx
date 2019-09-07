@@ -6,7 +6,8 @@ import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
     card: {
-        minWidth: 270,
+        //width: 270,
+        width: 320,
         minHeight: 380,
         height: '100%',
     },

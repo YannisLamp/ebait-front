@@ -19,6 +19,8 @@ import EditAuction from './pages/AuctionOperations/EditAuction';
 import ViewAuction from './pages/ViewAuction';
 import Messages from './pages/Messages';
 
+import ImportPage from './pages/ImportPage';
+
 // import NotYetAccepted from './pages/NotYetAccepted';
 import { AdminRoute } from './routes';
 import { VerifiedRoute } from './routes';
@@ -71,6 +73,7 @@ export default function App(props) {
                 <VerifiedRoute exact path="/messages" component={Messages} />
 
                 <AdminRoute path="/admin" component={AdminPage}/>
+                <AdminRoute path="/import" component={ImportPage}/>
 
                 <Route render={() => <Redirect to="/" />} />
             </Switch>

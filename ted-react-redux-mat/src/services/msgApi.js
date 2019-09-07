@@ -1,7 +1,17 @@
 
+'/messages/allcontacts'
+
+POST /messages  {
+    userId: string
+    message: string
+}
+
+GET '/messages/inbox/{userId}'
 
 
-/messages/received/userId
+GET '/messages/sent/{userId}'
+
+DELETE 
 
 
-/messages/sent/userId
+

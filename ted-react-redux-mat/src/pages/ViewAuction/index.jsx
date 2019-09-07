@@ -99,16 +99,18 @@ class ViewAuction extends Component {
     queryAuctionLocation(query) {
         nominatimApi.getGeoLocation(query)
             .then(data => {
-                const coords = data.features[0].geometry.coordinates;
-                // Coordinates are given in reverse order from API
-                this.setState((prevState, props) => {
-                    let { auction } = prevState;
-                    auction.location.latitude = coords[1];
-                    auction.location.longitude = coords[0];
-                    return {
-                        auction
-                    }
-                });
+                if (data.features.length > 0) {
+                    const coords = data.features[0].geometry.coordinates;
+                    // Coordinates are given in reverse order from API
+                    this.setState((prevState, props) => {
+                        let { auction } = prevState;
+                        auction.location.latitude = coords[1];
+                        auction.location.longitude = coords[0];
+                        return {
+                            auction
+                        }
+                    });
+                }
             })
     }
 
