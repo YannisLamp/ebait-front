@@ -1,6 +1,6 @@
 import store from '../store';
 import { alertActions } from '../store/ducks/alertStore';
-import { usersApi } from './usersApi';
+import { history } from '../utils';
 
 export default function handleError(error) {
     if (error.response) {
@@ -14,7 +14,7 @@ export default function handleError(error) {
         // Auto logout 
         if (error.response.status === 403) {
             store.dispatch(alertActions.error('Forbidden, Logging out'));
-            store.dispatch(usersApi.logoutThunk);
+            history.push('/login');
         }
     }
     else if (error.request) {

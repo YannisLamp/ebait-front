@@ -58,7 +58,7 @@ function loginThunk(username, password) {
                         //dispatch(alertActions.error(error.response.message));
                         //if (error.response.status === 401) {
                             // auto logout if 401 response returned from api
-                            //dispatch(logoutThunk);
+                            //dispatch(logoutThunk());
                         //}
                         if (error.response.status === 403) {
                             dispatch(alertActions.error('Incorrect username or password'));
