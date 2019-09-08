@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 function VerifiedRoute({ component: Component, user: user, ...rest }) {
     return (
         <Route {...rest} render={props => (
-            (user.userRole === 'USER' && user.verified === true) || user.userRole === 'ADMIN'
+            (user && ( (user.userRole === 'USER' && user.verified === true) || user.userRole === 'ADMIN') )
                 ? <Component {...props} />
                 : <Redirect to='/' />
         )} />
