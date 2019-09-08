@@ -1,4 +1,5 @@
 import axios from 'axios';
+import handleError from './handleError';
 
 
 export const nominatimApi = {
@@ -13,16 +14,8 @@ function getGeoLocation(query) {
             }
             })
             .then(response => {
-
                     return response.data;
-                },
-                error => {
-
-                    if (error.response.status === 401) {
-                        // auto logout if 401 response returned from api
-                        // dispatch(logoutThunk);
-                        //window.location.reload(true);
-                    }
-                }
-            );
+            })
+            // May need to remove handle error here (no need for logout) 
+            .catch(error => {handleError(error)});
 }

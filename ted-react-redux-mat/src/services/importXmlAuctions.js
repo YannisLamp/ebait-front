@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { usersApi } from './usersApi';
+import handleError from './handleError';
 
 var convert = require('xml-js');
 
@@ -92,18 +93,12 @@ const createUsersFromArray = async (userArray) => {
                         jwtMap.set(key, res[0]);
                         userIdMap.set(key, res[1]);
                         //console.log(res);
-                    });
+                    })
+                    .catch(error => {handleError(error)});
             });
 
         await Promise.all(requests)
-            .then(allResp => {
-                //console.log(allResp);
-                //return allResp;
-            },
-                error => {
-                    console.log('ERROR IN PROMISE ALL FAKE USER CREATION');
-                }
-            );
+            .catch(error => {handleError(error)});
     }
     
     //console.log(jwtMap);
@@ -141,17 +136,10 @@ function createFakeUser(username, country, location) {
                             const userId = response.headers.userid;
                             const authorizationJwt = response.headers.authorization;
                             return [authorizationJwt, userId];
-                        },
-                        error => {
-                            //console.log(error);
-                        }
-                    );
-            },
-            error => {
-                //console.log('');
-                //console.log(error.config);
+                        });
             }
-        );
+        )
+        .catch(error => {handleError(error)});
 }
 
 
@@ -165,14 +153,7 @@ const verifyUsersFromIdMap = async (userIdMap) => {
             });
 
         await Promise.all(requests)
-            .then(allResp => {
-                //console.log(allResp);
-                //return allResp;
-            },
-                error => {
-                    console.log('ERROR IN PROMISE ALL FAKE VERIFICATION');
-                }
-            );
+            .catch(error => {handleError(error)});
     }
 }
 
@@ -188,14 +169,7 @@ const createAuctionsFromParsed = async (auctionObjects, jwtMap) => {
                 });
         })
         await Promise.all(requests)
-            .then(allResp => {
-                    //console.log(allResp);
-                    //return allResp;
-            },
-                error => {
-                    console.log('ERROR IN PROMISE ALL FAKE AUCTION CREATION');
-                }
-            );
+            .catch(error => {handleError(error)});
     }
 
     // for (let i = 0; i < auctions.length; i++) {
@@ -208,10 +182,8 @@ const createAuctionsFromParsed = async (auctionObjects, jwtMap) => {
     //                 console.log('EDW EINAI TO THEMA');
     //                 console.log(res);
     //             }
-    //         }, 
-    //             error => {
-
-    //         });
+    //         })
+    //         .catch(error => {handleError(error)});
     // }
 
     return itemIDToDesc;
@@ -281,10 +253,8 @@ function createFakeAuction(auction, jwtMap) {
                 }
                 return [itemID, auctionDesc];
             },
-            error => {
-                return error;
-            }
-        );
+        )
+        .catch(error => {handleError(error)});
 }
 
 
@@ -297,14 +267,7 @@ const startAuctionsFromitemIDToDesc = async (itemIDToDesc) => {
             return importInstance.put('/auctions/start/' + item[0], null, { headers: {"Authorization" : item[1].creatorJwt} });
         })
         await Promise.all(requests)
-            .then(allResp => {
-                    //console.log(allResp);
-                    //return allResp;
-            },
-                error => {
-                    console.log('ERROR IN PROMISE ALL FAKE AUCTION CREATION');
-                }
-            );
+            .catch(error => {handleError(error)});
     }
     const itemIDArray2 = Array.from(itemIDToDesc);
     if (itemIDArray2.length != itemIDArray.length) {
@@ -319,7 +282,7 @@ const placeBidsFromitemIDToDesc = async (itemIDToDesc) => {
             //console.log(itemIDArray[i][1].bids);
             for (const bid of itemIDArray[i][1].bids) {
                 await importInstance.put('/auctions/add_bid/' + itemIDArray[i][0], {amount: bid.amount}, { headers: {"Authorization" : bid.bidderJwt} })
-                    .catch(error => {});
+                    .catch(error => {handleError(error)});
             }
         }
     }

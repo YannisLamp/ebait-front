@@ -1,4 +1,5 @@
 import axios from './axiosConfig';
+import handleError from './handleError';
 
 export const auctionsApi = {
     createAuction,
@@ -48,21 +49,12 @@ function createAuction(name, description, ends,
                 // After the auction is created, make a request to append all the photos
                 // the user has uploaded
                 const itemID = response.data.itemID;
-                uploadMultiplePhotos(itemID, photos)
-                    .then(response => {
-                        
+                return uploadMultiplePhotos(itemID, photos)
+                    .then(response => {   
                         return response.data;
-                    },
-                        error => {
-
-                        }
-                    );
-            },
-            error => {
-
-
-            }
-        );
+                    });
+            })
+        .catch(error => {handleError(error)});
 }
 
 
@@ -92,18 +84,16 @@ function editAuction(itemID, name, description, ends,
             response => {
                 // Then delete all the photos that the iser has deleted in the UI
                 for (const photo of deletedPhotos) {
-                    deleteAuctionPhoto(photo.photoId);
+                    deleteAuctionPhoto(photo.photoId)
+                        .catch(error => {handleError(error)});;
                 }
 
                 // After the auction is edited, make a request to append all the new photos
                 // the user has uploaded
                 return uploadMultiplePhotos(itemID, photos);
             },
-            error => {
-
-
-            }
-        );
+        )
+        .catch(error => {handleError(error)});
 }
 
 
@@ -130,11 +120,8 @@ function getAllAuctions(categories, description, lowestPrice, highestPrice, loca
     return axios.get('/search/auctions/filters', jsonRequest)
         .then(response => {
             return response.data;
-        },
-            error => {
-
-            }
-        );
+        })
+        .catch(error => {handleError(error)});
 }
 
 
@@ -160,22 +147,16 @@ function getActiveAuctions() {
     })
         .then(response => {
             return response.data;
-        },
-            error => {
-
-            }
-        );
+        })
+        .catch(error => {handleError(error)});
 }
 
 function buyoutAuction(id) {
     return axios.put('/auctions/buyout/' + id)
         .then(response => {
             return response.data;
-        },
-            error => {
-
-            }
-        );
+        })
+        .catch(error => {handleError(error)});
 }
 
 function placeBid(id, amount) {
@@ -186,11 +167,8 @@ function placeBid(id, amount) {
     return axios.put('/auctions/add_bid/' + id, jsonRequest)
         .then(response => {
             return response.data;
-        },
-            error => {
-
-            }
-        );
+        })
+        .catch(error => {handleError(error)});
 }
 
 function deleteAuctionPhoto(photoId) {
@@ -199,11 +177,8 @@ function deleteAuctionPhoto(photoId) {
     })
         .then(response => {
             return response.data;
-        },
-            error => {
-
-            }
-        );
+        })
+        .catch(error => {handleError(error)});
 }
 
 function uploadMultiplePhotos(auctionId, photos) {
@@ -214,67 +189,53 @@ function uploadMultiplePhotos(auctionId, photos) {
     }
 
     return axios.post('/auctions/' + auctionId + '/upload_multiple_photos', formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        }
-    })
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
         .then(
             response => {
                 return response.data;
-            },
-            error => {
-
             }
-        );
+        )
+        .catch(error => {handleError(error)});
 }
 
 function getUserAuctions(type) {
     return axios.get('/auctions', {
         //'created', 'started', 'finished'
-        params: {
-            type,
-        }
-    })
+            params: {
+                type,
+            }
+        })
         .then(response => {
             return response.data;
-        },
-            error => {
-
-            }
-        );
+        })
+        .catch(error => {handleError(error)});
 }
 
 function startAuction(itemID) {
     return axios.put('/auctions/start/' + itemID)
         .then(response => {
             return response.data;
-        },
-            error => {
-
-            }
-        );
+        })
+        .catch(error => {handleError(error)});
 }
 
 function deleteAuction(itemID) {
     return axios.delete('/auctions/' + itemID)
         .then(response => {
             return response.data;
-        },
-            error => {
-
-            }
-        );
+        })
+        .catch(error => {handleError(error)});
 }
 
 function getRootCategories() {
     return axios.get('/categories/root')
         .then(response => {
             return response.data;
-        },
-            error => {
-
-            }
-        );
+        })
+        .catch(error => {handleError(error)});
 }
 
 
@@ -282,11 +243,8 @@ function getChildrenCategories(parentId) {
     return axios.get('/categories/children/' + parentId)
         .then(response => {
             return response.data;
-        },
-            error => {
-
-            }
-        );
+        })
+        .catch(error => {handleError(error)});
 }
 
 
@@ -294,8 +252,6 @@ function getAllCats(reqs) {
     return Promise.all(reqs)
         .then(allResp => {
             return allResp;
-        },
-            error => {
-
-            });
+        })
+        .catch(error => {handleError(error)});
 }

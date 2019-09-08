@@ -5,6 +5,7 @@ import { userActions } from '../store/ducks/userStore';
 import { alertActions } from '../store/ducks/alertStore';
 
 import { usersApi } from './usersApi';
+import handleError from './handleError';
 
 // response.headers
 
@@ -55,12 +56,11 @@ function loginThunk(username, password) {
                     dispatch(userActions.loginFailure(error));
                     if (error.response) {
                         //dispatch(alertActions.error(error.response.message));
-                        if (error.response.status === 401) {
+                        //if (error.response.status === 401) {
                             // auto logout if 401 response returned from api
-                            // dispatch(logoutThunk);
-                            //window.location.reload(true);
-                        }
-                        else if (error.response.status === 403) {
+                            //dispatch(logoutThunk);
+                        //}
+                        if (error.response.status === 403) {
                             dispatch(alertActions.error('Incorrect username or password'));
                         }
                     }
@@ -83,8 +83,8 @@ function refreshUserThunk(userId) {
                 dispatch(userActions.refreshUser(user))
                 // Also overwrite retrieved information locally so that they persist
                 localStorage.setItem('user', JSON.stringify(user));
-            }
-            );
+            })
+            .catch(error => {handleError(error)});
     }
 }
 
