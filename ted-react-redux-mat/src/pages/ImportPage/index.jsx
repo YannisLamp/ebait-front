@@ -8,6 +8,7 @@ import { withStyles } from '@material-ui/core';
 import { pageStyles } from '../pageStyles';
 
 import Sidebar from '../../sharedComp/Sidebar';
+import PaperTitle from '../../sharedComp/PaperTitle';
 
 //import { usersApi } from '../../services';
 import { importXmlAuctionsApi } from '../../services';
@@ -30,6 +31,9 @@ const styles = theme => ({
     input: {
         display: 'none',
     },
+    paperGrid: {
+        minHeight: '60vh',
+    }
 });
 
 
@@ -48,6 +52,9 @@ class ImportPage extends Component {
 
             isLoadingAuctions: false,
             auctionsCreatedNum: 0,
+
+            isLoading: false,
+            stage: 0,
         };
 
         this.hasNewXml = this.hasNewXml.bind(this);
@@ -120,8 +127,19 @@ class ImportPage extends Component {
                             lg={10}
                         >
                             <Paper className={classes.paper}>
-                                <Grid container justify="center" alignItems="center">
-                                    <Grid item xs={6}>
+                                <PaperTitle
+                                    title='My Auctions'
+                                    suggestion={''}
+                                />
+                                <Grid className={classes.paperGrid} container direction="column" justify="space-between">
+                                    <Grid item>
+                                        Step 0
+
+
+                                    </Grid>
+
+
+                                    <Grid item alignContent="center">
                                         <input
                                             accept="*.xml"
                                             className={classes.input}
@@ -133,28 +151,24 @@ class ImportPage extends Component {
                                         <label htmlFor="contained-button-file">
                                             <Button variant="contained" component="span">
                                                 Upload Xml
-                                            </Button>
+                                                </Button>
                                         </label>
-                                        <br />
 
                                         <Button
-                                            //className={classes.bottomButton}
                                             color="primary"
                                             type="submit"
                                             onClick={this.parse}
-                                            size="large"
+                                            //size="large"
                                             variant="contained"
                                         >
                                             Parse xml
-                                        </Button>
+                                            </Button>
                                     </Grid>
-
-                                        
 
                                 </Grid>
 
-
                             </Paper>
+
                         </Grid>
 
                     </Grid>

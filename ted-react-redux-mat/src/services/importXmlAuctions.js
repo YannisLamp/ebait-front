@@ -11,7 +11,7 @@ const importInstance = axios.create({
 
 function parseXml(inputXml) {
     const options = { ignoreComment: true, alwaysChildren: false, compact:true };
-    const result = convert.xml2js(inputXml, options); // or convert.xml2json(xml, options)
+    const result = convert.xml2js(inputXml, options);
     return result;
 }
 
@@ -23,14 +23,12 @@ function getUsersFromAuctions(auctionObjects) {
     //console.log(auctionObjects);
     for (const auction of auctionObjects.Items.Item) {
         const creator = auction.Seller._attributes;
-        //userID, Rating
         const key = creator.UserID;
         const value = {
             rating: creator.Rating,
             country: auction.Country ? auction.Country._text : 'unknown',
             location: auction.Location ? auction.Location._text : 'unknown',
         }
-        //console.log(value);
         if (!map.has(key)) {
             map.set(key, value);
         }
@@ -57,7 +55,7 @@ function getUsersFromAuctions(auctionObjects) {
                 }
             }
             else {
-                console.log('LONELY BID');
+                //console.log('LONELY BID');
                 const bid = auction.Bids.Bid;
                 const bidder = bid.Bidder;
                     const bidderKey = bidder._attributes.UserID;
@@ -108,8 +106,7 @@ const createUsersFromArray = async (userArray) => {
             );
     }
     
-
-    console.log(jwtMap);
+    //console.log(jwtMap);
     return [jwtMap, userIdMap];
     
 }
@@ -146,13 +143,13 @@ function createFakeUser(username, country, location) {
                             return [authorizationJwt, userId];
                         },
                         error => {
-                            console.log(error);
+                            //console.log(error);
                         }
                     );
             },
             error => {
-                console.log('');
-                console.log(error.config);
+                //console.log('');
+                //console.log(error.config);
             }
         );
 }
@@ -183,40 +180,39 @@ const createAuctionsFromParsed = async (auctionObjects, jwtMap) => {
     let itemIDToDesc = new Map();
 
     const auctions = auctionObjects.Items.Item;
-    // for (let i = 0; i < auctions.length; i += 40) {
-    //     const requests = auctions.slice(i, i + 40).map(auction => {
-    //         return createFakeAuction(auction, jwtMap)
-    //             .then(res => {
-    //                 itemIDToDesc.set(res[0], res[1]);
-    //             });
-    //     })
-    //     await Promise.all(requests)
-    //         .then(allResp => {
-    //                 //console.log(allResp);
-    //                 //return allResp;
-    //         },
-    //             error => {
-    //                 console.log('ERROR IN PROMISE ALL FAKE AUCTION CREATION');
-    //             }
-    //         );
-    // }
-
-    for (let i = 0; i < auctions.length; i++) {
-        await createFakeAuction(auctions[i], jwtMap)
-            .then(res => {
-                if (res[0] && res[1]) {
+    for (let i = 0; i < auctions.length; i += 40) {
+        const requests = auctions.slice(i, i + 40).map(auction => {
+            return createFakeAuction(auction, jwtMap)
+                .then(res => {
                     itemIDToDesc.set(res[0], res[1]);
-                }
-                else {
-                    console.log('EDW EINAI TO THEMA');
-                    console.log(res);
-                }
-            }, 
+                });
+        })
+        await Promise.all(requests)
+            .then(allResp => {
+                    //console.log(allResp);
+                    //return allResp;
+            },
                 error => {
-
-
-            });
+                    console.log('ERROR IN PROMISE ALL FAKE AUCTION CREATION');
+                }
+            );
     }
+
+    // for (let i = 0; i < auctions.length; i++) {
+    //     await createFakeAuction(auctions[i], jwtMap)
+    //         .then(res => {
+    //             if (res[0] && res[1]) {
+    //                 itemIDToDesc.set(res[0], res[1]);
+    //             }
+    //             else {
+    //                 console.log('EDW EINAI TO THEMA');
+    //                 console.log(res);
+    //             }
+    //         }, 
+    //             error => {
+
+    //         });
+    // }
 
     return itemIDToDesc;
 }
@@ -255,12 +251,11 @@ function createFakeAuction(auction, jwtMap) {
                 //const xmlitemID = auction._attributes.ItemID;
                 //return [xmlitemID, itemID]; 
                 
-                
                 let bids = [];
                 if (auction.Bids.Bid) {
                     
                     if (Array.isArray(auction.Bids.Bid)) {
-                        console.log('ARRAYBIDS' + itemID);
+                        //console.log('ARRAYBIDS' + itemID);
                         for (const bid of auction.Bids.Bid) {
                             const bidder = bid.Bidder._attributes.UserID;
                             const bidderJwt = jwtMap.get(bidder);
@@ -269,7 +264,7 @@ function createFakeAuction(auction, jwtMap) {
                         }
                     }
                     else {
-                        console.log('NORMALBIDS' + itemID);
+                        //console.log('NORMALBIDS' + itemID);
                         const bid = auction.Bids.Bid;
                         const bidder = bid.Bidder._attributes.UserID;
                         const bidderJwt = jwtMap.get(bidder);
@@ -279,50 +274,15 @@ function createFakeAuction(auction, jwtMap) {
                     }
                     
                 }
+
                 const auctionDesc = {
                     creatorJwt: creatorJwt,
                     bids: bids,
                 }
-                
                 return [itemID, auctionDesc];
-
-                // First the auction must be started
-                //importInstance.put('/auctions/start/' + itemID, { headers: {"Authorization" : creatorJwt} })
-                    // .then(response => {
-                    
-                    //     if (auction.Bids.Bid) {
-                    //         if (Array.isArray(auction.Bids.Bid)) {
-                    //             console.log('AUCTIONID');
-                    //             console.log(response);
-            
-                    //             for (const bid of auction.Bids.Bid) {
-                    //                 const bidder = bid.Bidder_attributes.UserID;
-                    //                 const bidderJwt = jwtMap.get(bidder);
-                    //                 const jsonRequest = {
-                    //                     amount: bid.Amount._text.slice(1)
-                    //                 }
-                    //                 importInstance.put('/auctions/add_bid/' + itemID, jsonRequest, { headers: {"Authorization" : bidderJwt} });
-                    //             }
-                    //         }
-                    //         else {
-                    //             console.log('AUCTIONID');
-                    //             console.log(response);
-        
-                    //             const bid = auction.Bids.Bid;
-                    //             const bidder = bid.Bidder._attributes.UserID;
-                    //             const bidderJwt = jwtMap.get(bidder);
-                    //             const jsonRequest = {
-                    //                 amount: bid.Amount._text.slice(1)
-                    //             }
-                    //             importInstance.put('/auctions/add_bid/' + itemID, jsonRequest, { headers: {"Authorization" : bidderJwt} });
-                    //         }
-                    //     }
-                    // });
-
             },
             error => {
                 return error;
-
             }
         );
 }
@@ -330,7 +290,7 @@ function createFakeAuction(auction, jwtMap) {
 
 const startAuctionsFromitemIDToDesc = async (itemIDToDesc) => {
     const itemIDArray = Array.from(itemIDToDesc);
-    console.log(itemIDArray);
+    //console.log(itemIDArray);
     
     for (let i = 0; i < itemIDArray.length; i += 50) {
         const requests = itemIDArray.slice(i, i + 50).map(item => {
@@ -347,31 +307,20 @@ const startAuctionsFromitemIDToDesc = async (itemIDToDesc) => {
             );
     }
     const itemIDArray2 = Array.from(itemIDToDesc);
-    console.log('CHANGED??');
-    console.log(itemIDArray2);
+    if (itemIDArray2.length != itemIDArray.length) {
+        console.log('ERROR: itemIDToDesc was not ready on call time');
+    }
 }
 
 const placeBidsFromitemIDToDesc = async (itemIDToDesc) => {
     const itemIDArray = Array.from(itemIDToDesc);
     for (let i = 0; i < itemIDArray.length; i += 1) {
         if (itemIDArray[i][1].bids.length > 0) {
-            console.log(itemIDArray[i][1].bids);
+            //console.log(itemIDArray[i][1].bids);
             for (const bid of itemIDArray[i][1].bids) {
                 await importInstance.put('/auctions/add_bid/' + itemIDArray[i][0], {amount: bid.amount}, { headers: {"Authorization" : bid.bidderJwt} })
                     .catch(error => {});
             }
-            // const requests = itemIDArray[i][1].bids.map(bid => {
-            //     return importInstance.put('/auctions/add_bid/' + itemIDArray[i][0], {amount: bid.amount}, { headers: {"Authorization" : bid.bidderJwt} });
-            // });
-            
-            // await Promise.all(requests)
-            //     .then(allResp => {
-                        
-            //     },
-            //         error => {
-            //             console.log('ERROR IN PROMISE ALL FAKE AUCTION CREATION');
-            //         }
-            //     );
         }
     }
 
