@@ -43,9 +43,6 @@ function createAuction(name, description, ends,
     return axios.post('/auctions', jsonRequest)
         .then(
             response => {
-                console.log('AUCTIONID');
-                console.log(response);
-
                 // After the auction is created, make a request to append all the photos
                 // the user has uploaded
                 const itemID = response.data.itemID;
