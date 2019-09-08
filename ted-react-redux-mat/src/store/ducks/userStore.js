@@ -87,7 +87,7 @@ export default function reducer(state = initialState, action) {
     case userTypes.REGISTER_SUCCESS:
         return {
             registered: true,
-            user: action.user
+            registeredUser: action.user
         };
     case userTypes.REGISTER_FAILURE:
         return {};
