@@ -6,13 +6,7 @@ import { userActions } from '../store/ducks/userStore';
 
 import handleError from './handleError';
 
-export const registerApi = {
-    registerThunk,
-    checkUsernameExists
-};
-
-function registerThunk(username, password, firstName,
-    lastName, email, phoneNumber, country, address, afm) {
+const registerThunk = (username, password, firstName, lastName, email, phoneNumber, country, address, afm) => {
     return dispatch => {
         dispatch(userActions.registerRequest({ username }));
 
@@ -59,13 +53,17 @@ function registerThunk(username, password, firstName,
 }
 
 
-function checkUsernameExists(username) {
+const checkUsernameExists = (username) => {
     return axios.post('/exists', { username })
         .then(
             response => {
-                //console.log(response.headers);
                 return response.data;
             }
         )
         .catch(error => {handleError(error)});
 }
+
+export const registerApi = {
+    registerThunk,
+    checkUsernameExists
+};

@@ -1,27 +1,7 @@
 import axios from './axiosConfig';
 import handleError from './handleError';
 
-export const auctionsApi = {
-    createAuction,
-    editAuction,
-    getUserAuctions,
-    getActiveAuctions,
-    getAllAuctions,
-    startAuction,
-    deleteAuction,
-
-    placeBid,
-    buyoutAuction,
-
-    getRootCategories,
-    getChildrenCategories,
-    getAllCats,
-};
-
-
-function createAuction(name, description, ends,
-    firstBid, buyout, categories, country, locationDescription,
-    selectedLat, selectedLng, photos) {
+const createAuction = async (name, description, ends, firstBid, buyout, categories, country, locationDescription, selectedLat, selectedLng, photos) => {
 
     const jsonRequest = {
         name: name,
@@ -55,9 +35,7 @@ function createAuction(name, description, ends,
 }
 
 
-function editAuction(itemID, name, description, ends,
-    firstBid, buyout, categories, country, locationDescription,
-    selectedLat, selectedLng, photos, deletedPhotos) {
+const editAuction = async (itemID, name, description, ends, firstBid, buyout, categories, country, locationDescription, selectedLat, selectedLng, photos, deletedPhotos) => {
 
     const jsonRequest = {
         name: name,
@@ -94,8 +72,7 @@ function editAuction(itemID, name, description, ends,
 }
 
 
-function getAllAuctions(categories, description, lowestPrice, highestPrice, location,
-    order, orderBy, currPage, pageSize) {
+const getAllAuctions = (categories, description, lowestPrice, highestPrice, location, order, orderBy, currPage, pageSize) => {
 
     const jsonRequest = {
         params: {
@@ -148,7 +125,7 @@ function getActiveAuctions() {
         .catch(error => {handleError(error)});
 }
 
-function buyoutAuction(id) {
+const buyoutAuction = async (id) => {
     return axios.put('/auctions/buyout/' + id)
         .then(response => {
             return response.data;
@@ -156,7 +133,7 @@ function buyoutAuction(id) {
         .catch(error => {handleError(error)});
 }
 
-function placeBid(id, amount) {
+const placeBid = async (id, amount) => {
     const jsonRequest = {
         amount: amount
     }
@@ -168,7 +145,7 @@ function placeBid(id, amount) {
         .catch(error => {handleError(error)});
 }
 
-function deleteAuctionPhoto(photoId) {
+const deleteAuctionPhoto = async (photoId) => {
     return axios.delete('/auctions/delete_photo/' + photoId, {
 
     })
@@ -178,7 +155,7 @@ function deleteAuctionPhoto(photoId) {
         .catch(error => {handleError(error)});
 }
 
-function uploadMultiplePhotos(auctionId, photos) {
+const uploadMultiplePhotos = async (auctionId, photos) => {
     const formData = new FormData();
 
     for (const photo of photos) {
@@ -198,7 +175,7 @@ function uploadMultiplePhotos(auctionId, photos) {
         .catch(error => {handleError(error)});
 }
 
-function getUserAuctions(type) {
+const getUserAuctions = async (type) => {
     return axios.get('/auctions', {
         //'created', 'started', 'finished'
             params: {
@@ -211,7 +188,7 @@ function getUserAuctions(type) {
         .catch(error => {handleError(error)});
 }
 
-function startAuction(itemID) {
+const startAuction = async (itemID) => {
     return axios.put('/auctions/start/' + itemID)
         .then(response => {
             return response.data;
@@ -219,7 +196,7 @@ function startAuction(itemID) {
         .catch(error => {handleError(error)});
 }
 
-function deleteAuction(itemID) {
+const deleteAuction = async (itemID) => {
     return axios.delete('/auctions/' + itemID)
         .then(response => {
             return response.data;
@@ -227,7 +204,7 @@ function deleteAuction(itemID) {
         .catch(error => {handleError(error)});
 }
 
-function getRootCategories() {
+const getRootCategories = async () => {
     return axios.get('/categories/root')
         .then(response => {
             return response.data;
@@ -236,7 +213,7 @@ function getRootCategories() {
 }
 
 
-function getChildrenCategories(parentId) {
+const getChildrenCategories = async (parentId) => {
     return axios.get('/categories/children/' + parentId)
         .then(response => {
             return response.data;
@@ -245,10 +222,28 @@ function getChildrenCategories(parentId) {
 }
 
 
-function getAllCats(reqs) {
+const getAllCats = async (reqs) => {
     return Promise.all(reqs)
         .then(allResp => {
             return allResp;
         })
         .catch(error => {handleError(error)});
 }
+
+
+export const auctionsApi = {
+    createAuction,
+    editAuction,
+    getUserAuctions,
+    getActiveAuctions,
+    getAllAuctions,
+    startAuction,
+    deleteAuction,
+
+    placeBid,
+    buyoutAuction,
+
+    getRootCategories,
+    getChildrenCategories,
+    getAllCats,
+};

@@ -10,7 +10,7 @@ const importInstance = axios.create({
 });
 
 
-function parseXml(inputXml) {
+const parseXml = (inputXml) => {
     const options = { ignoreComment: true, alwaysChildren: false, compact:true };
     const result = convert.xml2js(inputXml, options);
     return result;
@@ -19,7 +19,7 @@ function parseXml(inputXml) {
 
 // From an array of auction js objects transformed from xml,
 // find all unique users and return their name and
-function getUsersFromAuctions(auctionObjects) {
+const getUsersFromAuctions = (auctionObjects) => {
     let map = new Map();
     //console.log(auctionObjects);
     for (const auction of auctionObjects.Items.Item) {
@@ -109,7 +109,7 @@ const createUsersFromArray = async (userArray) => {
 
 
 
-function createFakeUser(username, country, location) {
+const createFakeUser = async (username, country, location) => {
     const jsonRequest = {
         username: username,
         password: '12341234',
@@ -190,7 +190,7 @@ const createAuctionsFromParsed = async (auctionObjects, jwtMap) => {
 }
 
 
-function createFakeAuction(auction, jwtMap) {
+const createFakeAuction = async (auction, jwtMap) => {
     let categories = []
     for (const cat of auction.Category) {
         categories.push({name: cat._text});

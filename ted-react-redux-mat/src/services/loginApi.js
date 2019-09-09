@@ -9,13 +9,9 @@ import handleError from './handleError';
 
 // response.headers
 
-export const loginApi = {
-    loginThunk,
-    logoutThunk,
-    refreshUserThunk,
-};
 
-function loginThunk(username, password) {
+
+const loginThunk = (username, password) => {
     return dispatch => {
         dispatch(userActions.loginRequest({ username }));
 
@@ -74,7 +70,7 @@ function loginThunk(username, password) {
     }
 }
 
-function refreshUserThunk(userId) {
+const refreshUserThunk = (userId) => {
     return dispatch => {
         usersApi.getUserInfo(userId)
             .then(data => {
@@ -88,11 +84,16 @@ function refreshUserThunk(userId) {
     }
 }
 
-function logoutThunk() {
+const logoutThunk = () => {
     // Clean up local storage
     localStorage.removeItem('user');
     localStorage.removeItem('jwt');
     return dispatch => dispatch(userActions.logoutAction());
 }
 
+export const loginApi = {
+    loginThunk,
+    logoutThunk,
+    refreshUserThunk,
+};
 

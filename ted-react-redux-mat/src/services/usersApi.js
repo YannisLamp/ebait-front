@@ -1,17 +1,7 @@
 import axios from './axiosConfig';
-
 import handleError from './handleError';
 
-export const usersApi = {
-    getUsers,
-    getNotVerifiedUsers,
-    getUserInfo,
-    verifyUser,
-    editUserInfo,
-    changeUserPassword,
-};
-
-function getUsers(orderBy, order, pageSize, currPage) {
+const getUsers = async (orderBy, order, pageSize, currPage) => {
     return axios.get('/admin/users', {
         params: {
             orderBy: orderBy,
@@ -29,7 +19,7 @@ function getUsers(orderBy, order, pageSize, currPage) {
 }
 
 
-function getNotVerifiedUsers(orderBy, order, pageSize, currPage) {
+const getNotVerifiedUsers = async (orderBy, order, pageSize, currPage) => {
     return axios.get('/admin/not_verified_users', {
         params: {
             orderBy: orderBy,
@@ -48,7 +38,7 @@ function getNotVerifiedUsers(orderBy, order, pageSize, currPage) {
 }
 
 
-function getUserInfo(userId) {
+const getUserInfo = async (userId) => {
     return axios.get('/users/' + userId, { data: {} })
         .then(
             response => {
@@ -59,9 +49,7 @@ function getUserInfo(userId) {
 }
 
 
-
-function editUserInfo(userId, firstName, lastName, email,
-    phoneNumber, country, address, afm) {
+const editUserInfo = async (userId, firstName, lastName, email, phoneNumber, country, address, afm) => {
     const editUserData = {
         firstName, lastName, email,
         phoneNumber, country, address, afm
@@ -75,7 +63,7 @@ function editUserInfo(userId, firstName, lastName, email,
 }
 
 
-function changeUserPassword(currPassword, newPassword) {
+const changeUserPassword = async (currPassword, newPassword) => {
     const changePasswordData = { currPassword, newPassword };
 
     return axios.put('/users/change_password/', changePasswordData)
@@ -86,7 +74,7 @@ function changeUserPassword(currPassword, newPassword) {
 }
 
 
-function verifyUser(userId) {
+const verifyUser = async (userId) => {
     return axios.put('/admin/verify/' + userId, { data: {} })
         .then(response => {
             return response.data;
@@ -94,7 +82,7 @@ function verifyUser(userId) {
         .catch(error => {handleError(error)});
 }
 
-function verifyAll(userId) {
+const verifyAll = async (userId) => {
     return axios.put('/admin/verify/', { data: {} })
         .then(response => {
             return response.data;
@@ -103,4 +91,11 @@ function verifyAll(userId) {
 }
 
 
-
+export const usersApi = {
+    getUsers,
+    getNotVerifiedUsers,
+    getUserInfo,
+    verifyUser,
+    editUserInfo,
+    changeUserPassword,
+};

@@ -41,39 +41,28 @@ const styles = theme => ({
 
 class AdminPage extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            order: 'asc',
-            orderBy: 'username',
-            pageSize: 10,
-            currPage: 0,
-            
-            users: [],
-            totalPages: null,
-            totalUsers: null,
-            isLoading: true,
+    state = {
+        order: 'asc',
+        orderBy: 'username',
+        pageSize: 10,
+        currPage: 0,
+        
+        users: [],
+        totalPages: null,
+        totalUsers: null,
+        isLoading: true,
 
-            userToVerify: null,
-            isVerifying: false,
-        };
+        userToVerify: null,
+        isVerifying: false,
+    };
 
-        this.queryTableData = this.queryTableData.bind(this);
-        this.handleChangePage = this.handleChangePage.bind(this);
-        this.handleRequestSort = this.handleRequestSort.bind(this);
-        this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
-        this.changeUser = this.changeUser.bind(this);
-
-        this.verifyUser = this.verifyUser.bind(this);
-    }
-
-    componentDidMount() {
+    componentDidMount = () => {
         const { orderBy, order, pageSize, currPage } = this.state;
         this.queryTableData(orderBy, order, pageSize, currPage);
     }
 
 
-    queryTableData(orderBy, order, pageSize, currPage) {
+    queryTableData = (orderBy, order, pageSize, currPage) => {
         // Start Loading
         this.setState((prevState, props) => {
             return { isLoading: true }
@@ -101,7 +90,7 @@ class AdminPage extends Component {
             });
     }
 
-    handleRequestSort(event, property) {
+    handleRequestSort = (event, property) => {
         this.setState((prevState, props) => {
             const { order, orderBy, pageSize } = prevState;
             const isDesc = orderBy === property && order === 'desc';
@@ -117,7 +106,7 @@ class AdminPage extends Component {
         });
     }
 
-    handleChangePage(event, newPage) {
+    handleChangePage = (event, newPage) => {
         this.setState((prevState, props) => {
             const { order, orderBy, pageSize } = prevState;
 
@@ -128,7 +117,7 @@ class AdminPage extends Component {
         });
     }
 
-    handleChangeRowsPerPage(event) {
+    handleChangeRowsPerPage = (event) => {
         this.setState((prevState, props) => {
             const { order, orderBy } = prevState;
             const newPageSize = +event.target.value;
@@ -142,7 +131,7 @@ class AdminPage extends Component {
 
     }
 
-    verifyUser() {
+    verifyUser = () => {
         const { userId } = this.state.userToVerify;
         this.setState((prevState, props) => { return { isVerifying: true } });
         usersApi.verifyUser(userId)
@@ -153,12 +142,12 @@ class AdminPage extends Component {
             });
     }
 
-    changeUser(user) {
+    changeUser = (user) => {
         this.setState((prevState, props) => { return { userToVerify: user } });
     }
 
 
-    render() {
+    render = () => {
         const { users, order, orderBy, pageSize, currPage, totalPages,
             totalUsers, isLoading, userToVerify, isVerifying } = this.state;
         

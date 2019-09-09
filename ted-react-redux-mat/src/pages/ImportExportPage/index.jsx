@@ -41,27 +41,21 @@ const styles = theme => ({
 
 class ImportExportPage extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            xmls: [],
+    state = {
+        xmls: [],
 
-            isGettingUsers: false,
-            usersGottenNum: 0,
+        isGettingUsers: false,
+        usersGottenNum: 0,
 
-            isCreatingUsers: false,
-            usersCreatedNum: 0,
+        isCreatingUsers: false,
+        usersCreatedNum: 0,
 
-            isLoadingAuctions: false,
-            auctionsCreatedNum: 0,
+        isLoadingAuctions: false,
+        auctionsCreatedNum: 0,
 
-            isLoading: false,
-            stage: 0,
-        };
-
-
-    }
-
+        isLoading: false,
+        stage: 0,
+    };
 
     hasNewXml = (event) => {
         event.persist();
@@ -108,14 +102,19 @@ class ImportExportPage extends Component {
     }
 
     export = (type) => {
-        const down = exportAuctionsApi.downloadAuctions(type)
-            .blob().then(blob => {
-                console.log(blob);
-                const url = window.URL.createObjectURL(blob);
-	            let a = document.createElement('a');
-	            a.href = url;
-	            a.download = 'employees.json';
-	            a.click();
+        exportAuctionsApi.downloadAuctions(type)
+            .then(response => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                if (type === 'json') {
+                    link.setAttribute('download', 'auctions.json');
+                }
+                else if (type === 'xml') {
+                    link.setAttribute('download', 'auctions.xml');
+                }
+                document.body.appendChild(link);
+                link.click();
             })
     }
 
@@ -143,8 +142,8 @@ class ImportExportPage extends Component {
                                 <Grid className={classes.paperGrid} container direction="column" justify="space-between">
                                     <Grid item>
                                         Step 0
-        
-        
+
+
                                     </Grid>
 
 
@@ -194,7 +193,7 @@ class ImportExportPage extends Component {
                                     <Button
                                         color="primary"
                                         type="submit"
-                                        onClick={e => {this.export("xml")}}
+                                        onClick={e => { this.export("xml") }}
                                         //size="large"
                                         variant="contained"
                                     >
@@ -204,7 +203,7 @@ class ImportExportPage extends Component {
                                     <Button
                                         color="primary"
                                         type="submit"
-                                        onClick={e => {this.export("json")}}
+                                        onClick={e => { this.export("json") }}
                                         //size="large"
                                         variant="contained"
                                     >

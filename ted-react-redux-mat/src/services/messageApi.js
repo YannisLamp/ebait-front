@@ -1,18 +1,8 @@
 import axios from './axiosConfig';
 import handleError from './handleError';
 
-export const messageApi = {
-    getAllContacts,
 
-    sendMessage,
-    getInboxFrom,
-    getSentTo,
-
-    deleteMessage,
-};
-
-
-function getAllContacts() {
+const getAllContacts = async () => {
     return axios.get('/messages/allcontacts')
         .then(response => {
             return response.data;
@@ -21,8 +11,7 @@ function getAllContacts() {
 }
 
 
-function sendMessage(userId, message) {
-
+const sendMessage = async (userId, message) => {
     const jsonRequest = {
         userId,
         message
@@ -33,7 +22,7 @@ function sendMessage(userId, message) {
 }
 
 
-function getInboxFrom(userId) {
+const getInboxFrom = async (userId) => {
     return axios.get('/messages/inbox/' + userId)
         .then(
             response => {
@@ -44,7 +33,7 @@ function getInboxFrom(userId) {
 }
 
 
-function getSentTo(userId) {
+const getSentTo = async (userId) => {
     return axios.get('/messages/sent/' + userId)
         .then(
             response => {
@@ -52,11 +41,10 @@ function getSentTo(userId) {
             }
         )
         .catch(error => { handleError(error) });
-
 }
 
 
-function deleteMessage(messageId) {
+const deleteMessage = async (messageId) => {
     return axios.delete('/messages/' + messageId, {})
         .then(
             response => {
@@ -66,3 +54,12 @@ function deleteMessage(messageId) {
         .catch(error => { handleError(error) });
 }
 
+export const messageApi = {
+    getAllContacts,
+
+    sendMessage,
+    getInboxFrom,
+    getSentTo,
+
+    deleteMessage,
+};
