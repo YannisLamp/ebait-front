@@ -42,6 +42,9 @@ const styles = theme => ({
         marginTop: theme.spacing(12),
         marginRight: theme.spacing(4),
     },
+    tabBar: {
+        marginTop: theme.spacing(1),
+    },
     tabLabel: {
         color: theme.palette.text.primary,
     }
@@ -202,7 +205,7 @@ class Messages extends Component {
                                         title='Messages'
                                         suggestion={''}
                                     />
-                                    <AppBar position="static" color="default">
+                                    <AppBar className={classes.tabBar} position="static" color="default">
                                         <Tabs
                                             value={tabValue}
                                             onChange={this.handleChange}
