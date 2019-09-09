@@ -28,8 +28,8 @@ function HomePage(props) {
     const classes = useStyles();
     return (
         <div className={classes.root}>
-        <Sidebar>
-            
+            <Sidebar>
+
                 <Grid
                     container
                     justify="center"
@@ -44,32 +44,32 @@ function HomePage(props) {
                             direction="column"
                             justify="center"
                         >
-                            <Grid container spacing={3} style={{marginTop: '55px'}}>
-                                
+                            <Grid container spacing={3} style={{ marginTop: '55px' }}>
+
                                 <Grid item xs={12}>
-                                    <WarningMsg 
+                                    <WarningMsg
                                         style={{ borderColor: 'red' }}
-                                        warningText="Warwarwar"  
+                                        warningText="Warwarwar"
                                         backgroundColor='white'
                                         borderColor='red'
                                     />
                                 </Grid>
 
                                 <Grid item xs={6}>
-                                    <ActionCard 
+                                    <ActionCard
                                         className={classes.manuCard}
-                                        title="Browse Auctions" 
-                                        bodyText="Check out auctions created from all around the world, spanning thousands of different categories." 
-                                        to="/browse" 
+                                        title="Browse Auctions"
+                                        bodyText="Check out auctions created from all around the world, spanning thousands of different categories."
+                                        to="/browse"
                                         backgroundColor="#29aa9f"
                                     />
                                 </Grid>
 
                                 <Grid item xs={6}>
-                                    <ActionCard 
-                                        title="My Auctions" 
+                                    <ActionCard
+                                        title="My Auctions"
                                         bodyText="Manage and create your own auctions with just a few clicks."
-                                        to="/myauctions" 
+                                        to="/myauctions"
                                         //backgroundColor="#5fba43"
                                         //backgroundColor="#29aa9f"
                                         disabled={!hasPriv}
@@ -77,10 +77,10 @@ function HomePage(props) {
                                 </Grid>
 
                                 <Grid item xs={6}>
-                                    <ActionCard 
-                                        title="Messages" 
-                                        bodyText="Contact sellers or auction winners with extreme ease with our messaging system." 
-                                        to="/messages" 
+                                    <ActionCard
+                                        title="Messages"
+                                        bodyText="Contact sellers or auction winners with extreme ease with our messaging system."
+                                        to="/messages"
                                         // backgroundColor="#863a81"
                                         //backgroundColor="#FDD835" 
                                         disabled={!hasPriv}
@@ -91,24 +91,35 @@ function HomePage(props) {
                                 </Grid> */}
 
                                 <Grid item xs={6}>
-                                    <ActionCard 
-                                        title="Profile" 
+                                    <ActionCard
+                                        title="Profile"
                                         bodyText="View and edit your account information."
-                                        to="/profile" 
+                                        to="/profile"
                                         //backgroundColor="#FDD835" 
                                         disabled={!hasPriv}
                                     />
                                 </Grid>
 
-                                { user && user.userRole === 'ADMIN' ? (
-                                    <Grid item xs={12}>
-                                        <ActionCard 
-                                            title="Verify Users" 
+                                {user && user.userRole === 'ADMIN' ? (
+                                    <>
+                                    <Grid item xs={6}>
+                                        <ActionCard
+                                            title="Verify Users"
                                             bodyText="Verify new users by reviewing their account information."
-                                            to="/admin" 
-                                            //backgroundColor="#607D8B"
+                                            to="/verify"
+                                        //backgroundColor="#607D8B"
                                         />
                                     </Grid>
+
+                                    <Grid item xs={6}>
+                                        <ActionCard
+                                            title="Import / Export Auctions"
+                                            bodyText="Import Auctions from XML or export auctions to XML or JSON format."
+                                            to="/import-export"
+                                        //backgroundColor="#607D8B"
+                                        />
+                                    </Grid>
+                                    </>
                                 ) :
                                     ''
                                 }
@@ -116,7 +127,7 @@ function HomePage(props) {
                         </Grid>
                     </Grid>
                 </Grid>
-        </Sidebar>
+            </Sidebar>
         </div>
     );
 }

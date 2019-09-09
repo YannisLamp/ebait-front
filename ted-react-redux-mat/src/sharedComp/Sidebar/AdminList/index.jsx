@@ -106,7 +106,7 @@ export default function UserList(props) {
                 activeClassName={classes.activeListItem}
                 className={classes.listItem}
                 component={ForwardNavLink}
-                to="/admin"
+                to="/verify"
             >
                 <ListItemIcon className={classes.listItemIcon}>
                     <PeopleIcon />
@@ -114,6 +114,21 @@ export default function UserList(props) {
                 <ListItemText
                     classes={{ primary: classes.listItemText }}
                     primary="Verify Users"
+                />
+            </ListItem>
+
+            <ListItem
+                activeClassName={classes.activeListItem}
+                className={classes.listItem}
+                component={ForwardNavLink}
+                to="/import-export"
+            >
+                <ListItemIcon className={classes.listItemIcon}>
+                    <PeopleIcon />
+                </ListItemIcon>
+                <ListItemText
+                    classes={{ primary: classes.listItemText }}
+                    primary="Import / Export Auctions"
                 />
             </ListItem>
 

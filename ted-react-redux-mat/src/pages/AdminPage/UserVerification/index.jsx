@@ -31,8 +31,8 @@ const useStyles = makeStyles(theme => ({
     nameText: {
         marginTop: theme.spacing(1)
     },
-    bioText: { 
-        marginTop: theme.spacing(1) 
+    bioText: {
+        marginTop: theme.spacing(1)
     },
     profileDivider: {
         marginBottom: theme.spacing(2),
@@ -63,15 +63,9 @@ export default function UserVerification(props) {
             direction="column"
             justify="space-between"
         >
-
             <Grid
                 item
             >
-
-                {/* <Typography variant="h3">
-                    User Details
-                </Typography> */}
-
                 <PaperTitle
                     title='User Details'
                     suggestion={''}
@@ -82,9 +76,6 @@ export default function UserVerification(props) {
                     direction="column"
                     alignItems="center"
                 >
-
-
-
                     <Avatar className={classes.userLogo}>
                         {user.firstName.charAt(0) + user.lastName.charAt(0)}
                     </Avatar>
@@ -95,7 +86,6 @@ export default function UserVerification(props) {
                     >
                         {user.username}
                     </Typography>
-
                     <Typography
                         className={classes.nameText}
                         variant="h6"
@@ -109,7 +99,6 @@ export default function UserVerification(props) {
                         {verified + ' ' + role}
                     </Typography>
 
-                    {/* </div> */}
                 </Grid>
 
                 <Divider className={classes.profileDivider} />
@@ -145,9 +134,7 @@ export default function UserVerification(props) {
                     {user.afm}
                 </Typography>
 
-
                 <Divider className={classes.profileDivider} />
-
 
             </Grid>
 
@@ -159,7 +146,6 @@ export default function UserVerification(props) {
                     direction="column"
                     alignItems="center"
                 >
-
                     {isLoading ?
                         (
                             <CircularProgress className={classes.verify} />
@@ -173,18 +159,15 @@ export default function UserVerification(props) {
                                 variant="contained"
                                 disabled={user.verified}
                             >
-                                {user.verified ? 'Verified' : 'Verify User' }
-                        </Button>
+                                {user.verified ? 'Verified' : 'Verify User'}
+                            </Button>
                         )
                     }
                 </Grid>
 
             </Grid>
 
-
         </Grid>
-
-
     );
 
 }

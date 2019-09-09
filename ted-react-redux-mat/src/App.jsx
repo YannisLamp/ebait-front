@@ -72,7 +72,7 @@ export default function App(props) {
                 <VerifiedRoute exact path="/myauctions/edit-auction" component={EditAuction} />
                 <VerifiedRoute exact path="/messages" component={Messages} />
 
-                <AdminRoute path="/admin" component={AdminPage}/>
+                <AdminRoute path="/verify" component={AdminPage}/>
                 <AdminRoute path="/import-export" component={ImportExportPage}/>
 
                 <Route render={() => <Redirect to="/" />} />
