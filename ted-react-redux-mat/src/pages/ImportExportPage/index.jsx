@@ -12,11 +12,16 @@ import PaperTitle from '../../sharedComp/PaperTitle';
 
 //import { usersApi } from '../../services';
 import { importXmlAuctionsApi } from '../../services';
+import { exportAuctionsApi } from '../../services';
 
 
 const styles = theme => ({
     ...pageStyles(theme),
-    pageWrapper: {
+    importWrapper: {
+        marginTop: theme.spacing(12),
+        marginRight: theme.spacing(10),
+    },
+    exportWrapper: {
         marginTop: theme.spacing(12),
     },
     paper: {
@@ -31,13 +36,10 @@ const styles = theme => ({
     input: {
         display: 'none',
     },
-    paperGrid: {
-        minHeight: '60vh',
-    }
 });
 
 
-class ImportPage extends Component {
+class ImportExportPage extends Component {
 
     constructor(props) {
         super(props);
@@ -57,14 +59,11 @@ class ImportPage extends Component {
             stage: 0,
         };
 
-        this.hasNewXml = this.hasNewXml.bind(this);
-        //this.parse = this.parse.bind(this);
-
 
     }
 
 
-    hasNewXml(event) {
+    hasNewXml = (event) => {
         event.persist();
         console.log(event);
         //var reader = new FileReader();
@@ -108,6 +107,18 @@ class ImportPage extends Component {
         await importXmlAuctionsApi.placeBidsFromitemIDToDesc(itemIDToDesc);
     }
 
+    export = (type) => {
+        const down = exportAuctionsApi.downloadAuctions(type)
+            .blob().then(blob => {
+                console.log(blob);
+                const url = window.URL.createObjectURL(blob);
+	            let a = document.createElement('a');
+	            a.href = url;
+	            a.download = 'employees.json';
+	            a.click();
+            })
+    }
+
 
     render() {
 
@@ -116,26 +127,24 @@ class ImportPage extends Component {
             <Sidebar>
                 <div className={classes.root}>
                     <Grid
-                        className={classes.grid}
                         container
-                        //alignItems="center"
                         justify="center"
                     >
                         <Grid
-                            className={classes.pageWrapper}
+                            className={classes.importWrapper}
                             item
-                            lg={10}
+                            lg={5}
                         >
                             <Paper className={classes.paper}>
                                 <PaperTitle
-                                    title='My Auctions'
+                                    title='Import Auctions'
                                     suggestion={''}
                                 />
                                 <Grid className={classes.paperGrid} container direction="column" justify="space-between">
                                     <Grid item>
                                         Step 0
-
-
+        
+        
                                     </Grid>
 
 
@@ -168,9 +177,44 @@ class ImportPage extends Component {
                                 </Grid>
 
                             </Paper>
-
                         </Grid>
 
+                        <Grid
+                            className={classes.exportWrapper}
+                            item
+                            lg={5}
+                        >
+                            <Paper className={classes.paper}>
+                                <PaperTitle
+                                    title='Export Auctions'
+                                    suggestion={''}
+                                />
+                                <Grid className={classes.paperGrid} container direction="column" justify="space-between">
+
+                                    <Button
+                                        color="primary"
+                                        type="submit"
+                                        onClick={e => {this.export("xml")}}
+                                        //size="large"
+                                        variant="contained"
+                                    >
+                                        Export xml
+                                    </Button>
+
+                                    <Button
+                                        color="primary"
+                                        type="submit"
+                                        onClick={e => {this.export("json")}}
+                                        //size="large"
+                                        variant="contained"
+                                    >
+                                        Export json
+                                    </Button>
+
+                                </Grid>
+
+                            </Paper>
+                        </Grid>
                     </Grid>
                 </div>
             </Sidebar>
@@ -178,5 +222,5 @@ class ImportPage extends Component {
     }
 }
 
-const styledImportPage = withStyles(styles)(ImportPage);
+const styledImportPage = withStyles(styles)(ImportExportPage);
 export default styledImportPage;

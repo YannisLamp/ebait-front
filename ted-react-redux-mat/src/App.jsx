@@ -19,7 +19,7 @@ import EditAuction from './pages/AuctionOperations/EditAuction';
 import ViewAuction from './pages/ViewAuction';
 import Messages from './pages/Messages';
 
-import ImportPage from './pages/ImportPage';
+import ImportExportPage from './pages/ImportExportPage';
 
 // import NotYetAccepted from './pages/NotYetAccepted';
 import { AdminRoute } from './routes';
@@ -73,7 +73,7 @@ export default function App(props) {
                 <VerifiedRoute exact path="/messages" component={Messages} />
 
                 <AdminRoute path="/admin" component={AdminPage}/>
-                <AdminRoute path="/import" component={ImportPage}/>
+                <AdminRoute path="/import-export" component={ImportExportPage}/>
 
                 <Route render={() => <Redirect to="/" />} />
             </Switch>

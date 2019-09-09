@@ -5,4 +5,5 @@ export { auctionsApi } from './auctionsApi';
 export { nominatimApi } from './nominatimApi';
 export { messageApi } from './messageApi';
 
-export { importXmlAuctionsApi } from './importXmlAuctions';
+export { importXmlAuctionsApi } from './importXmlAuctionsApi';
+export { exportAuctionsApi } from './exportAuctionsApi';
