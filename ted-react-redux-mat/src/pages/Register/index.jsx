@@ -32,39 +32,37 @@ export default function Register(props) {
 
     const classes = useStyles();
     return (
-        <Sidebar>
-            <div className={classes.root}>
+        <div className={classes.root}>
+            <Grid
+                className={classes.grid}
+                container
+            >
                 <Grid
-                    className={classes.grid}
+                    item
+                    lg={4}
+                    xs={2}
+                />
+                <Grid
                     container
+                    justify="center"
                 >
                     <Grid
+                        className={classes.content}
                         item
                         lg={4}
-                        xs={2}
-                    />
-                    <Grid
-                        container
-                        justify="center"
+                        xs={8}
                     >
-                        <Grid
-                            className={classes.content}
-                            item
-                            lg={4}
-                            xs={8}
-                        >
-                            <Paper className={classes.registerPaper}>
-                                <RegisterForm />
-                            </Paper>
-                        </Grid>
+                        <Paper className={classes.registerPaper}>
+                            <RegisterForm />
+                        </Paper>
                     </Grid>
-                    <Grid
-                        item
-                        lg={4}
-                        xs={2}
-                    />
                 </Grid>
-            </div>
-        </Sidebar>
+                <Grid
+                    item
+                    lg={4}
+                    xs={2}
+                />
+            </Grid>
+        </div>
     );
 }

@@ -256,73 +256,71 @@ class BrowseAuctions extends Component {
 
         const { classes } = this.props;
         return (
-            <Sidebar>
-                <div className={classes.root}>
+            <div className={classes.root}>
+                <Grid
+                    className={classes.grid}
+                    container
+                    //alignItems="center"
+                    justify="center"
+                >
                     <Grid
-                        className={classes.grid}
-                        container
-                        //alignItems="center"
-                        justify="center"
+                        className={classes.rightWrapper}
+                        item
+                        lg={11}
                     >
-                        <Grid
-                            className={classes.rightWrapper}
-                            item
-                            lg={11}
-                        >
-                            <Paper className={classes.titlePaper}>
-                                <PaperTitle
-                                    className={classes.bareTitle}
-                                    title='Browse Auctions'
-                                    suggestion={''}
-                                />
-                                {/* <FilterListIcon onClick={this.changeFilterVisibility} /> */}
+                        <Paper className={classes.titlePaper}>
+                            <PaperTitle
+                                className={classes.bareTitle}
+                                title='Browse Auctions'
+                                suggestion={''}
+                            />
+                            {/* <FilterListIcon onClick={this.changeFilterVisibility} /> */}
 
-                                <FormControlLabel
-                                    control={<Switch checked={showFilters} color="primary" onChange={this.changeFilterVisibility} />}
-                                    label="Show Filters"
-                                />
-                                <div className={classes.container}>
-                                    <Collapse in={showFilters}>
-                                        <AuctionFilters
-                                            description={description}
-                                            lowestPrice={lowestPrice}
-                                            highestPrice={highestPrice}
-                                            location={location}
+                            <FormControlLabel
+                                control={<Switch checked={showFilters} color="primary" onChange={this.changeFilterVisibility} />}
+                                label="Show Filters"
+                            />
+                            <div className={classes.container}>
+                                <Collapse in={showFilters}>
+                                    <AuctionFilters
+                                        description={description}
+                                        lowestPrice={lowestPrice}
+                                        highestPrice={highestPrice}
+                                        location={location}
 
-                                            handleChange={this.handleChange}
-                                            refreshAuctions={this.refreshAuctions}
-                                        />
+                                        handleChange={this.handleChange}
+                                        refreshAuctions={this.refreshAuctions}
+                                    />
 
-                                        <CategoryList
-                                            categoryFields={categoryFields}
-                                            handleCategoryPick={this.handleCategoryPick}
-                                        />
-                                    </Collapse>
-                                </div>
-                            </Paper>
+                                    <CategoryList
+                                        categoryFields={categoryFields}
+                                        handleCategoryPick={this.handleCategoryPick}
+                                    />
+                                </Collapse>
+                            </div>
+                        </Paper>
 
-                            {isLoading ? '' : (
-                                <AuctionCardTable
-                                    auctions={auctions}
+                        {isLoading ? '' : (
+                            <AuctionCardTable
+                                auctions={auctions}
 
-                                    pageSize={pageSize}
-                                    currPage={currPage}
+                                pageSize={pageSize}
+                                currPage={currPage}
 
-                                    //totalPages={totalPages}
-                                    totalAuctions={totalAuctions}
-                                    isLoading={isLoading}
+                                //totalPages={totalPages}
+                                totalAuctions={totalAuctions}
+                                isLoading={isLoading}
 
-                                    handleChangePage={this.handleChangePage}
-                                    handleChangeItemsPerPage={this.handleChangeItemsPerPage}
-                                />
-                            )}
-
-                        </Grid>
+                                handleChangePage={this.handleChangePage}
+                                handleChangeItemsPerPage={this.handleChangeItemsPerPage}
+                            />
                         )}
 
                     </Grid>
-                </div>
-            </Sidebar>
+                    )}
+
+                    </Grid>
+            </div>
         );
     }
 }

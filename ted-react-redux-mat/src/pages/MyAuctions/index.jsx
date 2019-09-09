@@ -134,64 +134,62 @@ class MyAuctions extends Component {
 
         const { classes } = this.props;
         return (
-            <Sidebar>
-                <div className={classes.root}>
+            <div className={classes.root}>
+                <Grid
+                    className={classes.grid}
+                    container
+                    //alignItems="center"
+                    justify="center"
+                >
                     <Grid
-                        className={classes.grid}
-                        container
-                        //alignItems="center"
-                        justify="center"
+                        className={classes.tableWrapper}
+                        item
+                        lg={10}
                     >
-                        <Grid
-                            className={classes.tableWrapper}
-                            item
-                            lg={10}
-                        >
-                            <Paper className={classes.paper}>
+                        <Paper className={classes.paper}>
 
-                                <MyAuctionsTable
+                            <MyAuctionsTable
 
-                                    order={order}
-                                    orderBy={orderBy}
-                                    pageSize={pageSize}
-                                    currPage={currPage}
+                                order={order}
+                                orderBy={orderBy}
+                                pageSize={pageSize}
+                                currPage={currPage}
 
-                                    auctions={auctions}
-                                    // totalPages={totalPages}
-                                    totalAuctions={totalAuctions}
-                                    isLoading={isLoading}
+                                auctions={auctions}
+                                // totalPages={totalPages}
+                                totalAuctions={totalAuctions}
+                                isLoading={isLoading}
 
-                                    startAuction={this.startAuction}
-                                    deleteAuction={this.deleteAuction}
-                                    handleRequestSort={this.handleRequestSort}
-                                    handleChangePage={this.handleChangePage}
-                                    handleChangeRowsPerPage={this.handleChangeRowsPerPage}
+                                startAuction={this.startAuction}
+                                deleteAuction={this.deleteAuction}
+                                handleRequestSort={this.handleRequestSort}
+                                handleChangePage={this.handleChangePage}
+                                handleChangeRowsPerPage={this.handleChangeRowsPerPage}
 
-                                />
+                            />
 
-                                <Grid
-                                    container
-                                    justify="flex-end"
-                                >
-                                    <Link to="/myauctions/create-auction">
-                                        <Button
-                                            className={classes.auctionButton}
-                                            color="primary"
-                                            //onClick={handleSubmit}
-                                            size="large"
-                                            variant="contained"
-                                        >
-                                            Create Auction
+                            <Grid
+                                container
+                                justify="flex-end"
+                            >
+                                <Link to="/myauctions/create-auction">
+                                    <Button
+                                        className={classes.auctionButton}
+                                        color="primary"
+                                        //onClick={handleSubmit}
+                                        size="large"
+                                        variant="contained"
+                                    >
+                                        Create Auction
                                             </Button>
-                                    </Link>
-                                </Grid>
+                                </Link>
+                            </Grid>
 
-                            </Paper>
-                        </Grid>
-
+                        </Paper>
                     </Grid>
-                </div>
-            </Sidebar>
+
+                </Grid>
+            </div>
         );
 
     }

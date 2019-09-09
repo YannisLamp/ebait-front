@@ -36,7 +36,6 @@ export default function UserTableHead(props) {
     };
 
     const classes = useStyles();
-
     return (
         <TableHead>
             <TableRow>

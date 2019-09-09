@@ -215,12 +215,6 @@ function mapStateToProps(state) {
     };
 }
 
-/*function mapDispatchToProps(dispatch) {
-  return {
-    login: (username, password) => dispatch(authOperations.login(username, password))
-  };
-}*/
-
 
 const styledRegisterForm = withStyles(styles)(RegisterForm);
 const connectedRegisterForm = connect(mapStateToProps)(styledRegisterForm);

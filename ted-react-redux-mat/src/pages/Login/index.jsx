@@ -25,9 +25,9 @@ const useStyles = makeStyles(theme => ({
     //     backgroundPosition: 'center',
     // },
     quoteWrapper: {
-      [theme.breakpoints.down('md')]: {
-        display: 'none'
-      }
+        [theme.breakpoints.down('md')]: {
+            display: 'none'
+        }
     },
     signInPaper: {
         paddingTop: theme.spacing(4),
@@ -35,57 +35,55 @@ const useStyles = makeStyles(theme => ({
         marginTop: theme.spacing(9),
         marginBottom: theme.spacing(1),
     },
-  }));
+}));
 
 export default function Login(props) {
 
     const classes = useStyles();
 
     return (
-        <Sidebar>
-            <div>
-                
-                <div className={classes.root + ' ' + classes.backImg}>
+        <div>
+
+            <div className={classes.root + ' ' + classes.backImg}>
+                <Grid
+                    className={classes.grid}
+                    container
+                >
                     <Grid
-                        className={classes.grid}
-                        container
+                        item
+                        lg={1}
+                        xs={1}
+                    />
+                    <Grid
+                        className={classes.quoteWrapper}
+                        item
+                        lg={5}
+                    >
+                        <LoginQuote />
+                    </Grid>
+                    <Grid
+                        item
+                        lg={4}
+                        xs={10}
                     >
                         <Grid
-                            item
-                            lg={1}
-                            xs={1}
-                        />
-                        <Grid
-                            className={classes.quoteWrapper}
-                            item
-                            lg={5}
+                            className={classes.grid}
+                            container
+                            direction="column"
+                            justify="center"
                         >
-                            <LoginQuote />
+                            <Paper className={classes.signInPaper}>
+                                <LoginForm />
+                            </Paper>
                         </Grid>
-                        <Grid
-                            item
-                            lg={4}
-                            xs={10}
-                        >
-                            <Grid 
-                                className={classes.grid}
-                                container
-                                direction="column"
-                                justify="center"
-                            >
-                                <Paper className={classes.signInPaper}>
-                                    <LoginForm />
-                                </Paper>
-                            </Grid>
-                        </Grid>
-                        <Grid
-                            item
-                            lg={2}
-                            xs={1}
-                        />
                     </Grid>
-                </div>
+                    <Grid
+                        item
+                        lg={2}
+                        xs={1}
+                    />
+                </Grid>
             </div>
-        </Sidebar>
+        </div>
     );
 }

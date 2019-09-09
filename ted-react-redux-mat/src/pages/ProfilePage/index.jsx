@@ -32,28 +32,26 @@ export default function ProfilePage(props) {
 
     const classes = useStyles();
     return (
-        <Sidebar>
-            <div className={classes.root}>
+        <div className={classes.root}>
 
+            <Grid
+                className={classes.grid}
+                container
+                justify="center"
+            >
                 <Grid
-                    className={classes.grid}
-                    container
-                    justify="center"
+                    className={classes.profileWrapper}
+                    item
+                    xl={8}
+                    lg={10}
                 >
-                    <Grid
-                        className={classes.profileWrapper}
-                        item
-                        xl={8}
-                        lg={10}
-                    >
-                        <Paper className={classes.paper}>
-                            <EditUser />
-                        </Paper>
-                    </Grid>
+                    <Paper className={classes.paper}>
+                        <EditUser />
+                    </Paper>
                 </Grid>
+            </Grid>
 
-            </div>
-        </Sidebar>
+        </div>
     );
 }
 

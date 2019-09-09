@@ -231,8 +231,8 @@ class CreateAuction extends Component {
     deleteCategory() {
         this.setState((prevState, props) => {
             let prevCategories = prevState.categoryFields;
-            
-            if(prevCategories.length === 1) {
+
+            if (prevCategories.length === 1) {
                 prevCategories[0].selectedIndex = '';
                 prevCategories[0].selectedValue = '';
             }
@@ -360,17 +360,16 @@ class CreateAuction extends Component {
 
         const { classes } = this.props;
         return (
-            <Sidebar>
-                <div className={classes.root}>
-                    <Grid
-                        className={classes.grid}
-                        container
-                        justify="center"
-                    >
+            <div className={classes.root}>
+                <Grid
+                    className={classes.grid}
+                    container
+                    justify="center"
+                >
 
-                        {currentStep === 2 ? (
-                            <>
-                                {/* <Grid
+                    {currentStep === 2 ? (
+                        <>
+                            {/* <Grid
                                     className={classes.locationWrapper}
                                     item
                                     lg={3}
@@ -388,129 +387,128 @@ class CreateAuction extends Component {
                                     </Paper>
                                 </Grid> */}
 
+                            <Grid
+                                className={classes.rightWrapper}
+                                item
+                                lg={10}
+                            >
+                                <Paper className={classes.paper}>
+                                    <AuctionMap
+                                        country={country}
+                                        locationDescription={locationDescription}
+                                        locationQuery={locationQuery}
+                                        startingLat={startingLat}
+                                        startingLng={startingLng}
+                                        selectedLat={selectedLat}
+                                        selectedLng={selectedLng}
+                                        hasLocation={hasLocation}
+
+                                        handleCountryChange={this.handleCountryChange}
+                                        handleLocationChange={this.handleLocationChange}
+                                        handleChange={this.handleChange}
+                                        handleMapClick={this.handleMapClick}
+                                        updateMap={this.updateMap}
+                                    />
+
+
+                                    <div className={classes.progressButtons}>
+                                        <Button
+                                            className={classes.buttonMargin}
+                                            onClick={this.prevStep}
+                                            size="large"
+                                            variant="contained"
+                                        >
+                                            Back
+                                            </Button>
+
+                                        {isLoading ? (
+                                            <CircularProgress className={classes.circularProgress} />
+                                        ) : (
+                                                <Button
+                                                    color="primary"
+                                                    onClick={this.handleSubmit}
+                                                    size="large"
+                                                    variant="contained"
+                                                >
+                                                    Create
+                                                    </Button>
+                                            )
+                                        }
+                                    </div>
+                                </Paper>
+                            </Grid>
+                        </>
+                    ) : (
+
+                            <>
+
+                                <Grid
+                                    className={classes.detailsWrapper}
+                                    item
+                                    lg={5}
+                                >
+                                    <Paper className={classes.paper}>
+                                        <AuctionDetailsForm
+                                            name={name}
+                                            description={description}
+                                            ends={ends}
+                                            firstBid={firstBid}
+                                            buyout={buyout}
+                                            categoryFields={categoryFields}
+
+                                            handleChange={this.handleChange}
+                                            handleDateChange={this.handleDateChange}
+                                            handleCategoryPick={this.handleCategoryPick}
+                                            deleteCategory={this.deleteCategory}
+                                        />
+
+                                    </Paper>
+                                </Grid>
+
                                 <Grid
                                     className={classes.rightWrapper}
                                     item
-                                    lg={10}
+                                    lg={5}
                                 >
                                     <Paper className={classes.paper}>
-                                        <AuctionMap
-                                            country={country}
-                                            locationDescription={locationDescription}
-                                            locationQuery={locationQuery}
-                                            startingLat={startingLat}
-                                            startingLng={startingLng}
-                                            selectedLat={selectedLat}
-                                            selectedLng={selectedLng}
-                                            hasLocation={hasLocation}
+                                        <AuctionPhotoUpload
+                                            photos={photos}
+                                            shownPhoto={shownPhoto}
 
-                                            handleCountryChange={this.handleCountryChange}
-                                            handleLocationChange={this.handleLocationChange}
-                                            handleChange={this.handleChange}
-                                            handleMapClick={this.handleMapClick}
-                                            updateMap={this.updateMap}
+                                            onPhotoAddition={this.onPhotoAddition}
+                                            selectShownPhoto={this.selectShownPhoto}
+                                            onPhotoDelete={this.onPhotoDelete}
+
                                         />
-
 
                                         <div className={classes.progressButtons}>
                                             <Button
                                                 className={classes.buttonMargin}
-                                                onClick={this.prevStep}
+                                                style={{ color: 'white', backgroundColor: 'rgb(220, 0, 78)' }}
+                                                onClick={this.redirectToMyAuctions}
                                                 size="large"
                                                 variant="contained"
                                             >
-                                                Back
-                                            </Button>
+                                                Cancel
+                                                </Button>
 
-                                            {isLoading ? (
-                                                <CircularProgress className={classes.circularProgress} />
-                                            ) : (
-                                                    <Button
-                                                        color="primary"
-                                                        onClick={this.handleSubmit}
-                                                        size="large"
-                                                        variant="contained"
-                                                    >
-                                                        Create
-                                                    </Button>
-                                                )
-                                            }
+                                            <Button
+                                                onClick={this.nextStep}
+                                                size="large"
+                                                variant="contained"
+                                            >
+                                                Next
+                                                </Button>
                                         </div>
                                     </Paper>
                                 </Grid>
+
                             </>
-                        ) : (
 
-                                <>
+                        )}
 
-                                    <Grid
-                                        className={classes.detailsWrapper}
-                                        item
-                                        lg={5}
-                                    >
-                                        <Paper className={classes.paper}>
-                                            <AuctionDetailsForm
-                                                name={name}
-                                                description={description}
-                                                ends={ends}
-                                                firstBid={firstBid}
-                                                buyout={buyout}
-                                                categoryFields={categoryFields}
-
-                                                handleChange={this.handleChange}
-                                                handleDateChange={this.handleDateChange}
-                                                handleCategoryPick={this.handleCategoryPick}
-                                                deleteCategory={this.deleteCategory}
-                                            />
-
-                                        </Paper>
-                                    </Grid>
-
-                                    <Grid
-                                        className={classes.rightWrapper}
-                                        item
-                                        lg={5}
-                                    >
-                                        <Paper className={classes.paper}>
-                                            <AuctionPhotoUpload
-                                                photos={photos}
-                                                shownPhoto={shownPhoto}
-
-                                                onPhotoAddition={this.onPhotoAddition}
-                                                selectShownPhoto={this.selectShownPhoto}
-                                                onPhotoDelete={this.onPhotoDelete}
-
-                                            />
-
-                                            <div className={classes.progressButtons}>
-                                                <Button
-                                                    className={classes.buttonMargin}
-                                                    style={{ color: 'white', backgroundColor: 'rgb(220, 0, 78)' }}
-                                                    onClick={this.redirectToMyAuctions}
-                                                    size="large"
-                                                    variant="contained"
-                                                >
-                                                    Cancel
-                                                </Button>
-
-                                                <Button
-                                                    onClick={this.nextStep}
-                                                    size="large"
-                                                    variant="contained"
-                                                >
-                                                    Next
-                                                </Button>
-                                            </div>
-                                        </Paper>
-                                    </Grid>
-
-                                </>
-
-                            )}
-
-                    </Grid>
-                </div>
-            </Sidebar>
+                </Grid>
+            </div>
         );
     }
 }

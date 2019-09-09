@@ -46,7 +46,7 @@ class AdminPage extends Component {
         orderBy: 'username',
         pageSize: 10,
         currPage: 0,
-        
+
         users: [],
         totalPages: null,
         totalUsers: null,
@@ -71,7 +71,7 @@ class AdminPage extends Component {
         usersApi.getUsers(orderBy, order, pageSize, currPage)
             .then(data => {
                 this.setState((prevState, props) => {
-                    
+
                     // At first select the first user of the table
                     // for information display
                     let firstUser = null;
@@ -150,60 +150,58 @@ class AdminPage extends Component {
     render = () => {
         const { users, order, orderBy, pageSize, currPage, totalPages,
             totalUsers, isLoading, userToVerify, isVerifying } = this.state;
-        
+
         const { classes } = this.props;
         return (
-            <Sidebar>
-                <div className={classes.root}>
+            <div className={classes.root}>
+                <Grid
+                    className={classes.grid}
+                    container
+                    //alignItems="center"
+                    justify="center"
+                >
                     <Grid
-                        className={classes.grid}
-                        container
-                        //alignItems="center"
-                        justify="center"
+                        className={classes.tableWrapper}
+                        item
+                        lg={8}
                     >
-                        <Grid
-                            className={classes.tableWrapper}
-                            item
-                            lg={8}
-                        >
-                            <Paper className={classes.paper}>
-                                <UserTable
-                                    order={order}
-                                    orderBy={orderBy}
-                                    pageSize={pageSize}
-                                    currPage={currPage}
+                        <Paper className={classes.paper}>
+                            <UserTable
+                                order={order}
+                                orderBy={orderBy}
+                                pageSize={pageSize}
+                                currPage={currPage}
 
-                                    users={users}
-                                    totalPages={totalPages}
-                                    totalUsers={totalUsers}
-                                    isLoading={isLoading}
-                                    
-                                    changeUser={this.changeUser} 
-                                    handleRequestSort={this.handleRequestSort}
-                                    handleChangePage={this.handleChangePage}
-                                    handleChangeRowsPerPage={this.handleChangeRowsPerPage}
-                                />
-                            </Paper>
-                        </Grid>
+                                users={users}
+                                totalPages={totalPages}
+                                totalUsers={totalUsers}
+                                isLoading={isLoading}
 
-                        <Grid
-                            className={classes.rightWrapper}
-                            item
-                            lg={2}
-                        >
-                            <Paper className={classes.paper}>
-                                <UserVerification 
-                                    style={{height: '100%'}}
-                                    user={userToVerify} 
-                                    isLoading={isVerifying} 
-                                    verifyUser={this.verifyUser} 
-                                />
-                            </Paper>
-                        </Grid>
-
+                                changeUser={this.changeUser}
+                                handleRequestSort={this.handleRequestSort}
+                                handleChangePage={this.handleChangePage}
+                                handleChangeRowsPerPage={this.handleChangeRowsPerPage}
+                            />
+                        </Paper>
                     </Grid>
-                </div>
-            </Sidebar>
+
+                    <Grid
+                        className={classes.rightWrapper}
+                        item
+                        lg={2}
+                    >
+                        <Paper className={classes.paper}>
+                            <UserVerification
+                                style={{ height: '100%' }}
+                                user={userToVerify}
+                                isLoading={isVerifying}
+                                verifyUser={this.verifyUser}
+                            />
+                        </Paper>
+                    </Grid>
+
+                </Grid>
+            </div>
         );
     }
 }

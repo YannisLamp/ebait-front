@@ -32,53 +32,38 @@ import 'react-awesome-slider/dist/styles.css';
 // Styles
 import useStyles from './styles';
 
-
-{/* <AppRoute exact path="/foo" layout={MainLayout} component={Foo} />
-function LayoutWithSidebar(props) {
-    const { classes } = useStyles();
-    console.log('layoutttt');
-    
-    return (
-        <Sidebar>
-            <div className={classes.layout} >
-                {props.children}
-            </div>
-        </Sidebar>
-    );
-}
- */}
-
 export default function App(props) {
-    //const { classes } = props;
 
     return (
         <div>
             <MyNavbar />
-            {/*<header className="App-header">*/}
-            <Switch>
-                <Route exact path="/" component={HomePage} />
-                <Route exact path="/login" component={Login} />
-                <Route exact path="/register" component={Register} />
-                <Route exact path="/browse" component={BrowseAuctions} />
+            <Sidebar>
+                {/* // EDW VAZW SIDEBAR GT EINAI PANTOU */}
+                <Switch>
+                    <Route exact path="/" component={HomePage} />
+                    <Route exact path="/login" component={Login} />
+                    <Route exact path="/register" component={Register} />
+                    <Route exact path="/browse" component={BrowseAuctions} />
 
-                <Route exact path="/viewauction" component={ViewAuction} />
+                    <Route exact path="/viewauction" component={ViewAuction} />
 
-                <Route path="/notfound" component={NotFound} />
-                
-                <UserRoute exact path="/profile" component={ProfilePage}/>
+                    <Route path="/notfound" component={NotFound} />
 
-                <VerifiedRoute exact path="/myauctions" component={MyAuctions} />
-                <VerifiedRoute exact path="/myauctions/create-auction" component={CreateAuction} />
-                <VerifiedRoute exact path="/myauctions/edit-auction" component={EditAuction} />
-                <VerifiedRoute exact path="/messages" component={Messages} />
+                    <UserRoute exact path="/profile" component={ProfilePage} />
 
-                <AdminRoute path="/verify" component={AdminPage}/>
-                <AdminRoute path="/import-export" component={ImportExportPage}/>
+                    <VerifiedRoute exact path="/myauctions" component={MyAuctions} />
+                    <VerifiedRoute exact path="/myauctions/create-auction" component={CreateAuction} />
+                    <VerifiedRoute exact path="/myauctions/edit-auction" component={EditAuction} />
+                    <VerifiedRoute exact path="/messages" component={Messages} />
 
-                <Route render={() => <Redirect to="/" />} />
-            </Switch>
-            {/*</header>*/}
-            <AlertSnackbar/>
+                    <AdminRoute path="/verify" component={AdminPage} />
+                    <AdminRoute path="/import-export" component={ImportExportPage} />
+
+                    <Route render={() => <Redirect to="/" />} />
+                </Switch>
+            </Sidebar>
+
+            <AlertSnackbar />
             <Footer />
         </div>
     );

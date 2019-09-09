@@ -2,22 +2,17 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 // Material
-import {
-    Grid, Paper, Button, Typography, CircularProgress,
-    Table, TableBody, TableRow, TableCell, Checkbox, TablePagination, Switch
-} from '@material-ui/core';
+import { Table, TableBody, TableRow, TableCell, TablePagination } from '@material-ui/core';
 
 import { CheckBox as CheckBoxIcon, CheckBoxOutlineBlank as CheckBoxBlankIcon } from '@material-ui/icons';
 
 import PaperTitle from '../../../sharedComp/PaperTitle';
 import UserTableHead from './UserTableHead';
 
-import { withStyles } from '@material-ui/core';
-
-import { usersApi } from '../../../services'
+import { makeStyles } from '@material-ui/core';
 
 
-const styles = theme => ({
+const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
         height: 'inherit',
@@ -47,57 +42,48 @@ const styles = theme => ({
     pagination: {
         color: theme.palette.text.primary,
     }
-});
+}));
 
 
-class UserTable extends Component {
-    constructor(props) {
-        super(props);
-
-        
-    }
-
-    headRows = [
+export default function UserTable(props) {
+    const headRows = [
         { id: 'username', right: false, disablePadding: true, label: 'Username' },
         { id: 'firstName', right: true, disablePadding: false, label: 'First Name' },
         { id: 'lastName', right: true, disablePadding: false, label: 'Last Name' },
         { id: 'country', right: true, disablePadding: false, label: 'Country' },
-        // { id: 'address', right: true, disablePadding: false, label: 'Address' },
         { id: 'email', right: true, disablePadding: false, label: 'Email' },
         { id: 'verified', right: true, disablePadding: false, label: 'Verified' },
     ];
 
-    render() {
-        const { users, order, orderBy, pageSize, isLoading, currPage, totalUsers } = this.props;
-        const { changeUser, handleRequestSort, handleChangePage, handleChangeRowsPerPage} = this.props;
+    const { users, order, orderBy, pageSize, isLoading, currPage, totalUsers } = props;
+    const { changeUser, handleRequestSort, handleChangePage, handleChangeRowsPerPage } = props;
 
-        //const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.users.length - page * rowsPerPage);
-        let emptyRows = pageSize;
-        if (this.props.users) {
-            emptyRows = emptyRows - this.props.users.length;
-        }
+    //const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.users.length - page * rowsPerPage);
+    let emptyRows = pageSize;
+    if (props.users) {
+        emptyRows = emptyRows - props.users.length;
+    }
 
-        const { classes } = this.props;
+    const classes = useStyles();
+    return (
+        <div className={classes.root}>
+            <PaperTitle
+                title='Registered Users'
+                suggestion={''}
+            />
 
-        return (
-            <div className={classes.root}>
-                <PaperTitle
-                    title='Registered Users'
-                    suggestion={''}
-                />
-
-                <div className={classes.tableWrapper}>
-                    {isLoading ? (
-                        // <CircularProgress className={classes.progress} />
-                        ''
-                    ) : (
+            <div className={classes.tableWrapper}>
+                {isLoading ? (
+                    // <CircularProgress className={classes.progress} />
+                    ''
+                ) : (
                         <>
                             <Table
                                 className={classes.table}
                                 aria-labelledby="Users"
                             >
                                 <UserTableHead
-                                    headRows={this.headRows}
+                                    headRows={headRows}
                                     order={order}
                                     orderBy={orderBy}
                                     onRequestSort={handleRequestSort}
@@ -119,7 +105,6 @@ class UserTable extends Component {
                                                     <TableCell align="right">{row.firstName}</TableCell>
                                                     <TableCell align="right">{row.lastName}</TableCell>
                                                     <TableCell align="right">{row.country}</TableCell>
-                                                    {/* <TableCell align="right">{row.address}</TableCell> */}
                                                     <TableCell align="right">{row.email}</TableCell>
                                                     <TableCell align="right">{row.verified ? <CheckBoxIcon /> : <CheckBoxBlankIcon />}</TableCell>
                                                 </TableRow>
@@ -133,7 +118,7 @@ class UserTable extends Component {
                                 </TableBody>
                             </Table>
 
-                            
+
                             <TablePagination
                                 className={classes.pagination}
                                 rowsPerPageOptions={[5, 10, 15]}
@@ -151,13 +136,13 @@ class UserTable extends Component {
                                 onChangeRowsPerPage={handleChangeRowsPerPage}
 
                             />
-                            </>
+                        </>
                     )
-                    }
+                }
 
-                </div>
+            </div>
 
-                {/* <Typography component="div">
+            {/* <Typography component="div">
                     <Grid component="label" container alignItems="center" spacing={1}>
                         <Grid item>Only non verified</Grid>
                         <Grid item>
@@ -172,11 +157,7 @@ class UserTable extends Component {
                 </Typography> */}
 
             {/* </Grid> */}
-            </div>
-        );
-    }
+        </div>
+    );
 
 }
-
-
-export default withStyles(styles)(UserTable);

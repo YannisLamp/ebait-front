@@ -123,100 +123,98 @@ class ImportExportPage extends Component {
 
         const { classes } = this.props;
         return (
-            <Sidebar>
-                <div className={classes.root}>
+            <div className={classes.root}>
+                <Grid
+                    container
+                    justify="center"
+                >
                     <Grid
-                        container
-                        justify="center"
+                        className={classes.importWrapper}
+                        item
+                        lg={5}
                     >
-                        <Grid
-                            className={classes.importWrapper}
-                            item
-                            lg={5}
-                        >
-                            <Paper className={classes.paper}>
-                                <PaperTitle
-                                    title='Import Auctions'
-                                    suggestion={''}
-                                />
-                                <Grid className={classes.paperGrid} container direction="column" justify="space-between">
-                                    <Grid item>
-                                        Step 0
+                        <Paper className={classes.paper}>
+                            <PaperTitle
+                                title='Import Auctions'
+                                suggestion={''}
+                            />
+                            <Grid className={classes.paperGrid} container direction="column" justify="space-between">
+                                <Grid item>
+                                    Step 0
 
 
                                     </Grid>
 
 
-                                    <Grid item alignContent="center">
-                                        <input
-                                            accept="*.xml"
-                                            className={classes.input}
-                                            id="contained-button-file"
-                                            multiple
-                                            type="file"
-                                            onChange={this.hasNewXml}
-                                        />
-                                        <label htmlFor="contained-button-file">
-                                            <Button variant="contained" component="span">
-                                                Upload Xml
+                                <Grid item alignContent="center">
+                                    <input
+                                        accept="*.xml"
+                                        className={classes.input}
+                                        id="contained-button-file"
+                                        multiple
+                                        type="file"
+                                        onChange={this.hasNewXml}
+                                    />
+                                    <label htmlFor="contained-button-file">
+                                        <Button variant="contained" component="span">
+                                            Upload Xml
                                                 </Button>
-                                        </label>
+                                    </label>
 
-                                        <Button
-                                            color="primary"
-                                            type="submit"
-                                            onClick={this.parse}
-                                            //size="large"
-                                            variant="contained"
-                                        >
-                                            Parse xml
+                                    <Button
+                                        color="primary"
+                                        type="submit"
+                                        onClick={this.parse}
+                                        //size="large"
+                                        variant="contained"
+                                    >
+                                        Parse xml
                                             </Button>
-                                    </Grid>
-
                                 </Grid>
 
-                            </Paper>
-                        </Grid>
+                            </Grid>
 
-                        <Grid
-                            className={classes.exportWrapper}
-                            item
-                            lg={5}
-                        >
-                            <Paper className={classes.paper}>
-                                <PaperTitle
-                                    title='Export Auctions'
-                                    suggestion={''}
-                                />
-                                <Grid className={classes.paperGrid} container direction="column" justify="space-between">
-
-                                    <Button
-                                        color="primary"
-                                        type="submit"
-                                        onClick={e => { this.export("xml") }}
-                                        //size="large"
-                                        variant="contained"
-                                    >
-                                        Export xml
-                                    </Button>
-
-                                    <Button
-                                        color="primary"
-                                        type="submit"
-                                        onClick={e => { this.export("json") }}
-                                        //size="large"
-                                        variant="contained"
-                                    >
-                                        Export json
-                                    </Button>
-
-                                </Grid>
-
-                            </Paper>
-                        </Grid>
+                        </Paper>
                     </Grid>
-                </div>
-            </Sidebar>
+
+                    <Grid
+                        className={classes.exportWrapper}
+                        item
+                        lg={5}
+                    >
+                        <Paper className={classes.paper}>
+                            <PaperTitle
+                                title='Export Auctions'
+                                suggestion={''}
+                            />
+                            <Grid className={classes.paperGrid} container direction="column" justify="space-between">
+
+                                <Button
+                                    color="primary"
+                                    type="submit"
+                                    onClick={e => { this.export("xml") }}
+                                    //size="large"
+                                    variant="contained"
+                                >
+                                    Export xml
+                                    </Button>
+
+                                <Button
+                                    color="primary"
+                                    type="submit"
+                                    onClick={e => { this.export("json") }}
+                                    //size="large"
+                                    variant="contained"
+                                >
+                                    Export json
+                                    </Button>
+
+                            </Grid>
+
+                        </Paper>
+                    </Grid>
+                </Grid>
+            </div>
         );
     }
 }

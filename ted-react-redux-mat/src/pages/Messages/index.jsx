@@ -53,21 +53,14 @@ const styles = theme => ({
 
 class Messages extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            contacts: [],
-            isLoadingContacts: false,
+    state = {
+        contacts: [],
+        isLoadingContacts: false,
 
-            tabValue: 0,
-        };
+        tabValue: 0,
+    };
 
-        //handle change contact
-
-        //this.verifyUser = this.verifyUser.bind(this);
-    }
-
-    componentDidMount() {
+    componentDidMount = () => {
         this.getContacts();
     }
 
@@ -81,14 +74,10 @@ class Messages extends Component {
         messageApi.getAllContacts()
             .then(data => {
                 this.setState((prevState, props) => {
-                    console.log(data);
-                    // return {
-                    //     users: data.users,
-                    //     totalPages: data.totalPages,
-                    //     totalUsers: data.totalUsers,
-                    //     isLoading: false,
-                    //     userToVerify: firstUser
-                    // }
+                    return {
+                        contacts: data,
+                        isLoading: false,
+                    }
                 })
             });
     }
@@ -161,92 +150,87 @@ class Messages extends Component {
 
 
     render() {
-        const { tabValue } = this.state;
+        const { contacts, tabValue } = this.state;
 
         const { classes, theme } = this.props;
         return (
-            <Sidebar>
-                <div className={classes.root}>
+            <div className={classes.root}>
+                <Grid
+                    className={classes.grid}
+                    container
+                    //alignItems="center"
+                    justify="center"
+                >
                     <Grid
-                        className={classes.grid}
-                        container
-                        //alignItems="center"
-                        justify="center"
+                        className={classes.leftWrapper}
+                        item
+                        lg={2}
                     >
-                        <Grid
-                            className={classes.leftWrapper}
-                            item
-                            lg={2}
-                        >
-                            <Paper className={classes.leftPaper}>
-                                <ContactList />
-                            </Paper>
-                        </Grid>
+                        <Paper className={classes.leftPaper}>
+                            <ContactList contacts={contacts} />
+                        </Paper>
+                    </Grid>
 
 
-
-
+                    <Grid
+                        className={classes.rightWrapper}
+                        item
+                        lg={8}
+                    >
 
                         <Grid
-                            className={classes.rightWrapper}
-                            item
-                            lg={8}
+                            style={{ height: '100%' }}
+                            container
+                            direction="column"
+                            justify="flex-start"
                         >
 
-                            <Grid
-                                style={{ height: '100%' }}
-                                container
-                                direction="column"
-                                justify="flex-start"
-                            >
-
-                                <Paper className={classes.paper}>
-                                    <PaperTitle
-                                        title='Messages'
-                                        suggestion={''}
-                                    />
-                                    <AppBar className={classes.tabBar} position="static" color="default">
-                                        <Tabs
-                                            value={tabValue}
-                                            onChange={this.handleChange}
-                                            indicatorColor="primary"
-                                            textColor="primary"
-                                            //variant="fullWidth"
-                                            aria-label="full width tabs example"
-                                            centered
-                                        >
-                                            <Tab className={classes.tabLabel} label="Inbox" {...a11yProps(0)} />
-                                            <Tab className={classes.tabLabel} label="Sent" {...a11yProps(1)} />
-                                            <Tab className={classes.tabLabel} label="Create Message" {...a11yProps(2)} />
-                                        </Tabs>
-                                    </AppBar>
-                                    <SwipeableViews
-                                        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-                                        index={tabValue}
-                                        onChangeIndex={this.handleChangeIndex}
+                            <Paper className={classes.paper}>
+                                <PaperTitle
+                                    title='Messages'
+                                    suggestion={''}
+                                />
+                                <AppBar className={classes.tabBar} position="static" color="default">
+                                    <Tabs
+                                        value={tabValue}
+                                        onChange={this.handleChange}
+                                        indicatorColor="primary"
+                                        textColor="primary"
+                                        //variant="fullWidth"
+                                        aria-label="full width tabs example"
+                                        centered
                                     >
-                                        <TabPanel value={tabValue} index={0} dir={theme.direction}>
-                                            <MessageList />
+                                        <Tab className={classes.tabLabel} label="Inbox" {...a11yProps(0)} />
+                                        <Tab className={classes.tabLabel} label="Sent" {...a11yProps(1)} />
+                                        <Tab className={classes.tabLabel} label="Create Message" {...a11yProps(2)} />
+                                    </Tabs>
+                                </AppBar>
+                                <SwipeableViews
+                                    axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+                                    index={tabValue}
+                                    onChangeIndex={this.handleChangeIndex}
+                                >
+                                    <TabPanel value={tabValue} index={0} dir={theme.direction}>
+                                        <MessageList />
+                                    </TabPanel>
+                                    <TabPanel value={tabValue} index={1} dir={theme.direction}>
+                                        <MessageList />
+                                    </TabPanel>
+                                    <TabPanel value={tabValue} index={2} dir={theme.direction}>
+                                        Item Three
                                         </TabPanel>
-                                        <TabPanel value={tabValue} index={1} dir={theme.direction}>
-                                            Item Two
-                                        </TabPanel>
-                                        <TabPanel value={tabValue} index={2} dir={theme.direction}>
-                                            Item Three
-                                        </TabPanel>
-                                    </SwipeableViews>
+                                </SwipeableViews>
 
-                                    {/* <MessageList /> */}
-                                </Paper>
-
-                            </Grid>
+                                {/* <MessageList /> */}
+                            </Paper>
 
                         </Grid>
-
 
                     </Grid>
-                </div>
-            </Sidebar>
+
+
+                </Grid>
+            </div>
         );
     }
 }

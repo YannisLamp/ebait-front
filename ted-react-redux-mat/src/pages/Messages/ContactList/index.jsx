@@ -18,9 +18,10 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function ContactList() {
-    const classes = useStyles();
+export default function ContactList(props) {
+    const { contacts } = props;
 
+    const classes = useStyles();
     return (
         <div className={classes.root}>
             <PaperTitle
@@ -28,32 +29,39 @@ export default function ContactList() {
                 suggestion={''}
             />
             <List>
-                <ListItem alignItems="center">
-                    <ListItemAvatar>
-                        <Avatar>
-                        {/* {user.firstName.charAt(0) + user.lastName.charAt(0)} */}
-                        LALA
-                        </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                        primary="Ali Connors"
-                    //   secondary={
-                    //     <React.Fragment>
-                    //       <Typography
-                    //         component="span"
-                    //         variant="body2"
-                    //         className={classes.inline}
-                    //         color="textPrimary"
-                    //       >
-                    //         Ali Connors
-                    //       </Typography>
-                    //       {" — I'll be in your neighborhood doing errands this…"}
-                    //     </React.Fragment>
-                    //   }
-                    />
-                </ListItem>
+                {
+                    contacts.map(contact => {
+                        return (
+                            <>
+                                <ListItem alignItems="center">
+                                    <ListItemAvatar>
+                                        <Avatar>
+                                            {contact.firstName.charAt(0) + contact.lastName.charAt(0)}
+                                        </Avatar>
+                                    </ListItemAvatar>
+                                    <ListItemText
+                                        primary={contact.firstName + contact.lastName}
+                                    //   secondary={
+                                    //     <React.Fragment>
+                                    //       <Typography
+                                    //         component="span"
+                                    //         variant="body2"
+                                    //         className={classes.inline}
+                                    //         color="textPrimary"
+                                    //       >
+                                    //         Ali Connors
+                                    //       </Typography>
+                                    //       {" — I'll be in your neighborhood doing errands this…"}
+                                    //     </React.Fragment>
+                                    //   }
+                                    />
+                                </ListItem>
 
-                <Divider variant="inset" component="li" />
+                                <Divider variant="inset" component="li" />
+                            </>
+                        );
+                    })
+                }
 
             </List>
         </div>
