@@ -5,10 +5,10 @@ export const messageApi = {
     getAllContacts,
 
     sendMessage,
-    //getInboxMessages,
-    //getSentMessages,
+    getInboxFrom,
+    getSentTo,
 
-    //deleteMessage,
+    deleteMessage,
 };
 
 
@@ -17,7 +17,7 @@ function getAllContacts() {
         .then(response => {
             return response.data;
         })
-        .catch(error => {handleError(error)});
+        .catch(error => { handleError(error) });
 }
 
 
@@ -29,24 +29,40 @@ function sendMessage(userId, message) {
     }
 
     return axios.post('/messages', jsonRequest)
-        .catch(error => {handleError(error)});
+        .catch(error => { handleError(error) });
 }
 
 
-
-//GET '/messages/inbox/{userId}'
-
-
-//GET '/messages/sent/{userId}'
-
-//DELETE
-function deleteAuctionPhoto(photoId) {
-    return axios.delete('/auctions/delete_photo/' + photoId, {
-
-    })
-        .then(response => {
-            return response.data;
-        })
-        .catch(error => {handleError(error)});
+function getInboxFrom(userId) {
+    return axios.get('/messages/inbox/' + userId)
+        .then(
+            response => {
+                return response.data;
+            }
+        )
+        .catch(error => { handleError(error) });
 }
- 
+
+
+function getSentTo(userId) {
+    return axios.get('/messages/sent/' + userId)
+        .then(
+            response => {
+                return response.data;
+            }
+        )
+        .catch(error => { handleError(error) });
+
+}
+
+
+function deleteMessage(messageId) {
+    return axios.delete('/messages/' + messageId, {})
+        .then(
+            response => {
+                return response.data;
+            }
+        )
+        .catch(error => { handleError(error) });
+}
+

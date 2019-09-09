@@ -147,7 +147,7 @@ export default function MyAuctionsTable(props) {
                                                                         '' :
                                                                         (<IconButton onClick={e => startAuction(row.itemID)}><PlayArrowIcon className={classes.start} /></IconButton>)
                                                                     }
-                                                                    {row.eventStarted && row.bids.length > 0 ? ''
+                                                                    {((row.eventStarted && row.bids.length > 0) || row.eventFinished ) ? ''
                                                                         : (<>
                                                                             <IconButton>
                                                                                 <Link

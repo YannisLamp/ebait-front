@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
-
+import SwipeableViews from 'react-swipeable-views';
 // Material
-import { Grid, Paper } from '@material-ui/core';
+import { Grid, Paper, AppBar, Tabs, Tab, Box, Typography } from '@material-ui/core';
 
 // For importing my custom styles  
-import { withStyles } from '@material-ui/core';
+import { withStyles, withTheme } from '@material-ui/core';
 import { pageStyles } from '../pageStyles';
 
 import Sidebar from '../../sharedComp/Sidebar';
-import UserTable from './UserTable';
+import PaperTitle from '../../sharedComp/PaperTitle';
+import MessageList from './MessageList';
+import ContactList from './ContactList';
 
-import { usersApi } from '../../services';
+import { messageApi } from '../../services';
 
 
 const styles = theme => ({
@@ -23,7 +25,7 @@ const styles = theme => ({
         marginBottom: theme.spacing(2),
         height: '80vh',
     },
-    prevPaper: {
+    leftPaper: {
         width: '100%',
         paddingTop: theme.spacing(3),
         paddingLeft: theme.spacing(3),
@@ -32,7 +34,7 @@ const styles = theme => ({
         minHeight: '80vh',
         //height: '75vh',
     },
-    prevWrapper: {
+    leftWrapper: {
         marginTop: theme.spacing(12),
         marginRight: theme.spacing(10),
     },
@@ -40,6 +42,9 @@ const styles = theme => ({
         marginTop: theme.spacing(12),
         marginRight: theme.spacing(4),
     },
+    tabLabel: {
+        color: theme.palette.text.primary,
+    }
 });
 
 
@@ -48,125 +53,114 @@ class Messages extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            order: 'asc',
-            orderBy: 'username',
-            pageSize: 10,
-            currPage: 0,
-            
-            users: [],
-            totalPages: null,
-            totalUsers: null,
-            isLoading: true,
+            contacts: [],
+            isLoadingContacts: false,
 
-            userToVerify: null,
-            isVerifying: false,
+            tabValue: 0,
         };
 
-        this.queryTableData = this.queryTableData.bind(this);
-        this.handleChangePage = this.handleChangePage.bind(this);
-        this.handleRequestSort = this.handleRequestSort.bind(this);
-        this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
-        this.changeUser = this.changeUser.bind(this);
+        //handle change contact
 
-        this.verifyUser = this.verifyUser.bind(this);
+        //this.verifyUser = this.verifyUser.bind(this);
     }
 
     componentDidMount() {
-        const { orderBy, order, pageSize, currPage } = this.state;
-        this.queryTableData(orderBy, order, pageSize, currPage);
+        this.getContacts();
     }
 
 
-    queryTableData(orderBy, order, pageSize, currPage) {
+    getContacts = () => {
         // Start Loading
         this.setState((prevState, props) => {
-            return { isLoading: true }
+            return { isLoadingContacts: true }
         })
 
-        usersApi.getUsers(orderBy, order, pageSize, currPage)
+        messageApi.getAllContacts()
             .then(data => {
                 this.setState((prevState, props) => {
-                    
-                    // At first select the first user of the table
-                    // for information display
-                    let firstUser = null;
-                    if (data.users.length > 0) {
-                        firstUser = data.users[0];
-                    }
-
-                    return {
-                        users: data.users,
-                        totalPages: data.totalPages,
-                        totalUsers: data.totalUsers,
-                        isLoading: false,
-                        userToVerify: firstUser
-                    }
+                    console.log(data);
+                    // return {
+                    //     users: data.users,
+                    //     totalPages: data.totalPages,
+                    //     totalUsers: data.totalUsers,
+                    //     isLoading: false,
+                    //     userToVerify: firstUser
+                    // }
                 })
             });
     }
 
-    handleRequestSort(event, property) {
-        this.setState((prevState, props) => {
-            const { order, orderBy, pageSize } = prevState;
-            const isDesc = orderBy === property && order === 'desc';
-            const newOrder = isDesc ? 'asc' : 'desc';
+    // handleRequestSort(event, property) {
+    //     this.setState((prevState, props) => {
+    //         const { order, orderBy, pageSize } = prevState;
+    //         const isDesc = orderBy === property && order === 'desc';
+    //         const newOrder = isDesc ? 'asc' : 'desc';
 
-            // Also alters State and needs to know the new state
-            this.queryTableData(property, newOrder, pageSize, 0);
-            return {
-                order: newOrder,
-                orderBy: property,
-                currPage: 0,
-            }
-        });
+    //         // Also alters State and needs to know the new state
+    //         this.queryTableData(property, newOrder, pageSize, 0);
+    //         return {
+    //             order: newOrder,
+    //             orderBy: property,
+    //             currPage: 0,
+    //         }
+    //     });
+    // }
+
+    // handleChangePage(event, newPage) {
+    //     this.setState((prevState, props) => {
+    //         const { order, orderBy, pageSize } = prevState;
+
+    //         this.queryTableData(orderBy, order, pageSize, newPage);
+    //         return {
+    //             currPage: newPage
+    //         }
+    //     });
+    // }
+
+    // handleChangeRowsPerPage(event) {
+    //     this.setState((prevState, props) => {
+    //         const { order, orderBy } = prevState;
+    //         const newPageSize = +event.target.value;
+
+    //         this.queryTableData(orderBy, order, newPageSize, 0);
+    //         return {
+    //             currPage: 0,
+    //             pageSize: newPageSize,
+    //         }
+    //     });
+
+    // }
+
+    // verifyUser() {
+    //     const { userId } = this.state.userToVerify;
+    //     this.setState((prevState, props) => { return { isVerifying: true } });
+    //     usersApi.verifyUser(userId)
+    //         .then(data => {
+    //             const { order, orderBy, currPage, pageSize } = this.state;
+    //             this.queryTableData(orderBy, order, pageSize, currPage);
+    //             this.setState((prevState, props) => { return { isVerifying: false } });
+    //         });
+    // }
+
+    // changeUser(user) {
+    //     this.setState((prevState, props) => { return { userToVerify: user } });
+    // }
+
+    handleChange = (e, newValue) => {
+        //const { name, value } = e.target;
+        this.setState((prevState, props) => { return { tabValue: newValue } });
     }
 
-    handleChangePage(event, newPage) {
-        this.setState((prevState, props) => {
-            const { order, orderBy, pageSize } = prevState;
-
-            this.queryTableData(orderBy, order, pageSize, newPage);
-            return {
-                currPage: newPage
-            }
-        });
-    }
-
-    handleChangeRowsPerPage(event) {
-        this.setState((prevState, props) => {
-            const { order, orderBy } = prevState;
-            const newPageSize = +event.target.value;
-
-            this.queryTableData(orderBy, order, newPageSize, 0);
-            return {
-                currPage: 0,
-                pageSize: newPageSize,
-            }
-        });
-
-    }
-
-    verifyUser() {
-        const { userId } = this.state.userToVerify;
-        this.setState((prevState, props) => { return { isVerifying: true } });
-        usersApi.verifyUser(userId)
-            .then(data => {
-                const { order, orderBy, currPage, pageSize } = this.state;
-                this.queryTableData(orderBy, order, pageSize, currPage);
-                this.setState((prevState, props) => { return { isVerifying: false } });
-            });
-    }
-
-    changeUser(user) {
-        this.setState((prevState, props) => { return { userToVerify: user } });
+    handleChangeIndex = (newValue) => {
+        //const { name, value } = e.target;
+        this.setState((prevState, props) => { return { tabValue: newValue } });
     }
 
 
     render() {
-        const { users, order, orderBy, pageSize, currPage, totalPages,
-            totalUsers, isLoading, userToVerify, isVerifying } = this.state;
-        
-        const { classes } = this.props;
+        const { tabValue } = this.state;
+
+        const { classes, theme } = this.props;
         return (
             <Sidebar>
                 <div className={classes.root}>
@@ -177,23 +171,13 @@ class Messages extends Component {
                         justify="center"
                     >
                         <Grid
-                            className={classes.prevWrapper}
+                            className={classes.leftWrapper}
                             item
                             lg={2}
                         >
-                            
-
-                                <Paper className={classes.prevPaper}>
-                                    {/* <UserVerification 
-                                        style={{height: '100%'}}
-                                        user={userToVerify} 
-                                        isLoading={isVerifying} 
-                                        verifyUser={this.verifyUser} 
-                                    /> */}
-                                </Paper>
-
-
-
+                            <Paper className={classes.leftPaper}>
+                                <ContactList />
+                            </Paper>
                         </Grid>
 
 
@@ -207,31 +191,51 @@ class Messages extends Component {
                         >
 
                             <Grid
-                                style={{height: '100%'}}
+                                style={{ height: '100%' }}
                                 container
                                 direction="column"
                                 justify="flex-start"
                             >
 
-                            <Paper className={classes.paper}>
-                                <UserTable
-                                    order={order}
-                                    orderBy={orderBy}
-                                    pageSize={pageSize}
-                                    currPage={currPage}
+                                <Paper className={classes.paper}>
+                                    <PaperTitle
+                                        title='Messages'
+                                        suggestion={''}
+                                    />
+                                    <AppBar position="static" color="default">
+                                        <Tabs
+                                            value={tabValue}
+                                            onChange={this.handleChange}
+                                            indicatorColor="primary"
+                                            textColor="primary"
+                                            //variant="fullWidth"
+                                            aria-label="full width tabs example"
+                                            centered
+                                        >
+                                            <Tab className={classes.tabLabel} label="Inbox" {...a11yProps(0)} />
+                                            <Tab className={classes.tabLabel} label="Sent" {...a11yProps(1)} />
+                                            <Tab className={classes.tabLabel} label="Create Message" {...a11yProps(2)} />
+                                        </Tabs>
+                                    </AppBar>
+                                    <SwipeableViews
+                                        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+                                        index={tabValue}
+                                        onChangeIndex={this.handleChangeIndex}
+                                    >
+                                        <TabPanel value={tabValue} index={0} dir={theme.direction}>
+                                            <MessageList />
+                                        </TabPanel>
+                                        <TabPanel value={tabValue} index={1} dir={theme.direction}>
+                                            Item Two
+                                        </TabPanel>
+                                        <TabPanel value={tabValue} index={2} dir={theme.direction}>
+                                            Item Three
+                                        </TabPanel>
+                                    </SwipeableViews>
 
-                                    users={users}
-                                    totalPages={totalPages}
-                                    totalUsers={totalUsers}
-                                    isLoading={isLoading}
-                                    
-                                    changeUser={this.changeUser} 
-                                    handleRequestSort={this.handleRequestSort}
-                                    handleChangePage={this.handleChangePage}
-                                    handleChangeRowsPerPage={this.handleChangeRowsPerPage}
-                                />
-                            </Paper>
-                            
+                                    {/* <MessageList /> */}
+                                </Paper>
+
                             </Grid>
 
                         </Grid>
@@ -245,4 +249,52 @@ class Messages extends Component {
 }
 
 const styledMessages = withStyles(styles)(Messages);
-export default styledMessages;
+const themedMessages = withTheme(styledMessages);
+export default themedMessages;
+
+
+
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <Typography
+            component="div"
+            role="tabpanel"
+            hidden={value !== index}
+            id={`full-width-tabpanel-${index}`}
+            aria-labelledby={`full-width-tab-${index}`}
+            {...other}
+        >
+            <Box p={3}>{children}</Box>
+        </Typography>
+    );
+}
+
+
+function a11yProps(index) {
+    return {
+        id: `full-width-tab-${index}`,
+        'aria-controls': `full-width-tabpanel-${index}`,
+    };
+}
+
+// export default function FullWidthTabs() {
+//     const classes = useStyles();
+//     const theme = useTheme();
+//     const [value, setValue] = React.useState(0);
+
+//     function handleChange(event, newValue) {
+//         setValue(newValue);
+//     }
+
+//     function handleChangeIndex(index) {
+//         setValue(index);
+//     }
+
+//     return (
+//         <div className={classes.root}>
+
+//         </div>
+//     );
+// }
