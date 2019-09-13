@@ -21,15 +21,13 @@ import Messages from './pages/Messages';
 
 import ImportExportPage from './pages/ImportExportPage';
 
-// import NotYetAccepted from './pages/NotYetAccepted';
 import { AdminRoute } from './routes';
 import { VerifiedRoute } from './routes';
 import { UserRoute } from './routes';
 
-import 'react-image-lightbox/style.css'; // This only needs to be imported once in your app
+import 'react-image-lightbox/style.css'; // This only needs to be imported once
 import 'react-awesome-slider/dist/styles.css';
 
-// Styles
 import useStyles from './styles';
 
 export default function App(props) {
@@ -37,8 +35,9 @@ export default function App(props) {
     return (
         <div>
             <MyNavbar />
+            {/* Encapsulate all pages with a sidebar */}
             <Sidebar>
-                {/* // EDW VAZW SIDEBAR GT EINAI PANTOU */}
+
                 <Switch>
                     <Route exact path="/" component={HomePage} />
                     <Route exact path="/login" component={Login} />
@@ -61,6 +60,7 @@ export default function App(props) {
 
                     <Route render={() => <Redirect to="/" />} />
                 </Switch>
+
             </Sidebar>
 
             <AlertSnackbar />
