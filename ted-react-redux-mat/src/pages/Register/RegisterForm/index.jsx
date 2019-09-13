@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { history } from '../../../utils';
 import { connect } from 'react-redux';
 import { registerApi } from '../../../services';
 
-// Material
 import { IconButton, CircularProgress, TextField, Typography } from '@material-ui/core';
-
-// For importing my custom styles  
 import { withStyles } from '@material-ui/core';
-import styles from './styles';
 
 import CredentialForm from './CredentialForm';
 import BasicInfoForm from './BasicInfoForm';
@@ -17,48 +12,129 @@ import LocationForm from './LocationForm';
 
 import ProgressButtons from './ProgressButtons';
 
+const styles = theme => ({
+    content: {
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        textAlign: 'center'
+    },
+    contentHeader: {
+        display: 'flex',
+        alignItems: 'center',
+        paddingTop: theme.spacing(5),
+        paddingBottom: theme.spacing(2),
+        paddingLeft: theme.spacing(2),
+        paddingRight: theme.spacing(2),
+        [theme.breakpoints.down('lg')]: {
+            paddingTop: theme.spacing(1),
+            paddingBottom: theme.spacing(1),
+        },
+    },
+    contentBody: {
+        flexGrow: 1,
+        display: 'flex',
+        alignItems: 'flex-start',
+        [theme.breakpoints.down('lg')]: {
+            paddingTop: theme.spacing(2),
+        },
+    },
+    form: {
+        width: '100%',
+        paddingLeft: theme.spacing(15),
+        paddingRight: theme.spacing(15),
+        [theme.breakpoints.down('lg')]: {
+            paddingLeft: '80px',
+            paddingRight: '80px',
+            paddingBottom: theme.spacing(2),
+        },
+        [theme.breakpoints.down('sm')]: {
+            paddingLeft: theme.spacing(2),
+            paddingRight: theme.spacing(2),
+            paddingBottom: theme.spacing(2),
+        },
+    },
+    buttonBody:{
+        display: 'flex',
+        alignItems: 'flex-end',
+        paddingLeft: theme.spacing(15),
+        paddingRight: theme.spacing(15),
+        paddingBottom: theme.spacing(10),
+        [theme.breakpoints.down('lg')]: {
+            paddingLeft: '80px',
+            paddingRight: '80px',
+            paddingBottom: theme.spacing(8),
+        },
+    },
+    title: {
+        marginTop: theme.spacing(3)
+    },
+    subtitle: {
+        color: theme.palette.text.primary,
+        marginTop: theme.spacing(0.5)
+    },
+    sugestion: {
+        color: theme.palette.text.primary,
+        marginTop: theme.spacing(2),
+        textAlign: 'center'
+    },
+    fields: {
+        marginTop: theme.spacing(2)
+    },
+    textField: {
+        width: '100%',
+        '& + & ': {
+            marginTop: theme.spacing(2)
+        }
+    },
+    progress: {
+        display: 'block',
+        marginTop: theme.spacing(2),
+        marginLeft: 'auto',
+        marginRight: 'auto'
+    },
+
+    
+    fieldError: {
+        color: theme.palette.danger.main,
+        marginBottom: theme.spacing(2),
+        marginTop: theme.spacing(1)
+    },
+    submitError: {
+        color: theme.palette.danger.main,
+        alignText: 'center',
+        marginBottom: theme.spacing(1),
+        marginTop: theme.spacing(2)
+    },
+
+});
+
 
 class RegisterForm extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            username: '',
-            usernameTaken: false,
-            password: '',
-            confirmPassword: '',
-            passwordsMatch: true,
-            firstName: '',
-            lastName: '',
-            email: '',
-            phoneNumber: '',
-            country: '',
-            address: '',
-            afm: '',
-            currentStep: 1,
-        };
-
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-
-        this.checkPasswordMatch = this.checkPasswordMatch.bind(this);
-        this.checkUsernameExists = this.checkUsernameExists.bind(this);
-
-        this.prevStep = this.prevStep.bind(this);
-        this.nextStep = this.nextStep.bind(this);
-
-        this.redirectToLogin = this.redirectToLogin.bind(this);
-
-    }
+    state = {
+        username: '',
+        usernameTaken: false,
+        password: '',
+        confirmPassword: '',
+        passwordsMatch: true,
+        firstName: '',
+        lastName: '',
+        email: '',
+        phoneNumber: '',
+        country: '',
+        address: '',
+        afm: '',
+        currentStep: 1,
+    };
 
 
-
-    handleChange(e) {
+    handleChange = (e) => {
         const { name, value } = e.target;
         this.setState((prevState, props) => { return { [name]: value } });
     }
 
-    handleSubmit(e) {
+    handleSubmit = (e) => {
         e.preventDefault();
 
         this.setState({ submitted: true });
@@ -76,13 +152,13 @@ class RegisterForm extends Component {
     }
 
 
-    checkPasswordMatch() {
+    checkPasswordMatch = () => {
         this.setState((prevState, props) => { 
             return { 'passwordsMatch': prevState.password === prevState.confirmPassword } 
         });
     }
 
-    checkUsernameExists() {
+    checkUsernameExists = () => {
         registerApi.checkUsernameExists(this.state.username)
             .then(data => {
                 let taken = data.exists;
@@ -91,25 +167,23 @@ class RegisterForm extends Component {
             );
     }
 
-    prevStep() {
+    prevStep = () => {
         this.setState((prevState, props) => { 
             return { 'currentStep': prevState.currentStep - 1 } 
         });
     }
         
-    nextStep() {
+    nextStep = () => {
         this.setState((prevState, props) => {
             return { 'currentStep': prevState.currentStep + 1 } 
         });
     }
 
-    redirectToLogin() {
+    redirectToLogin = () => {
         history.push('/login');
     }
 
     render() {
-
-        
         const { passwordsMatch, currentStep, usernameTaken } = this.state;
         const submitted = false;
 
