@@ -39,7 +39,7 @@ const loginThunk = (username, password) => {
 
                             // And redirect
                             if (user.userRole === 'ADMIN') {
-                                history.push('/admin');
+                                history.push('/verify');
                             }
                             else {
                                 history.push('/');
