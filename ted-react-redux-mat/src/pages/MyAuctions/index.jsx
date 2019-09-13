@@ -7,8 +7,6 @@ import { Grid, Paper, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { pageStyles } from '../pageStyles';
 
-import Sidebar from '../../sharedComp/Sidebar';
-
 import MyAuctionsTable from './MyAuctionsTable';
 
 import { auctionsApi } from '../../services'
@@ -39,37 +37,23 @@ const styles = theme => ({
 
 class MyAuctions extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            pageSize: 5,
-            currPage: 0,
-            auctions: [],
-            totalAuctions: '',
+    state = {
+        pageSize: 5,
+        currPage: 0,
+        auctions: [],
+        totalAuctions: '',
 
-            order: '',
-            orderBy: '',
+        order: '',
+        orderBy: '',
 
-            isLoading: true,
-        };
-
-        this.loadAuctions = this.loadAuctions.bind(this);
-
-        this.handleChange = this.handleChange.bind(this);
-        //this.handleSubmit = this.handleSubmit.bind(this);
-
-        this.startAuction = this.startAuction.bind(this);
-        this.deleteAuction = this.deleteAuction.bind(this);
-        this.handleChangePage = this.handleChangePage.bind(this);
-        this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
-        this.handleRequestSort = this.handleRequestSort.bind(this);
-    }
+        isLoading: true,
+    };
 
     componentDidMount() {
         this.loadAuctions();
     }
 
-    loadAuctions() {
+    loadAuctions = () => {
         auctionsApi.getUserAuctions()
             .then(data => {
                 console.log(data);
@@ -83,12 +67,12 @@ class MyAuctions extends Component {
             });
     }
 
-    handleChange(e) {
+    handleChange = (e) => {
         const { name, value } = e.target;
         this.setState((prevState, props) => { return { [name]: value } });
     }
 
-    handleChangePage(event, newPage) {
+    handleChangePage = (event, newPage) => {
         this.setState((prevState, props) => {
             //const { order, orderBy, pageSize } = prevState;
             //this.queryTableData(orderBy, order, pageSize, newPage);
@@ -98,7 +82,7 @@ class MyAuctions extends Component {
         });
     }
 
-    handleChangeRowsPerPage(event) {
+    handleChangeRowsPerPage = (event) => {
         this.setState((prevState, props) => {
             //const { order, orderBy } = prevState;
             const newPageSize = +event.target.value;
@@ -115,14 +99,14 @@ class MyAuctions extends Component {
 
     }
 
-    startAuction(itemID) {
+    startAuction = (itemID) => {
         auctionsApi.startAuction(itemID)
             .then(data => {
                 this.loadAuctions();
             });
     }
 
-    deleteAuction(itemID) {
+    deleteAuction = (itemID) => {
         auctionsApi.deleteAuction(itemID)
             .then(data => {
                 this.loadAuctions();

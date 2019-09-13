@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
 
-// Material
 import { Grid, Paper } from '@material-ui/core';
-
-// For importing my custom styles  
 import { withStyles } from '@material-ui/core';
 import { pageStyles } from '../pageStyles';
 
-import Sidebar from '../../sharedComp/Sidebar';
 import UserTable from './UserTable';
 import UserVerification from './UserVerification';
 

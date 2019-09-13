@@ -118,7 +118,6 @@ class UserTable extends Component {
                                                     onClick={e => changeUser(row)}
                                                     tabIndex={-1}
                                                     key={row.username}
-                                                    //component={Button} to={"/admin/" + row.username}
                                                     className={classes.notDecorated}
                                                 >
 

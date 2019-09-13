@@ -7,12 +7,10 @@ import { Grid, Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core';
 import { pageStyles } from '../pageStyles';
 
-import Sidebar from '../../sharedComp/Sidebar';
 import AuctionDetails from './AuctionDetails';
 import AuctionCarousel from './AuctionCarousel';
 import ViewAuctionMap from './ViewAuctionMap';
 
-import { usersApi } from '../../services';
 import { auctionsApi } from '../../services';
 import { nominatimApi } from '../../services';
 
@@ -63,31 +61,18 @@ const styles = theme => ({
 
 class ViewAuction extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            auction: this.props.location.state.auction,
+    state = {
+        auction: this.props.location.state.auction,
 
-            myBid: '',
-            isBidding: false,
-            isBuying: false,
+        myBid: '',
+        isBidding: false,
+        isBuying: false,
 
-            isFullscreenPhotos: false,
-            fullscreenIndex: 0,
-        };
+        isFullscreenPhotos: false,
+        fullscreenIndex: 0,
+    };
 
-        this.queryAuctionLocation = this.queryAuctionLocation.bind(this);
-
-        this.placeBid = this.placeBid.bind(this);
-        this.buyoutAuction = this.buyoutAuction.bind(this);
-
-        this.setFullscreenIndex = this.setFullscreenIndex.bind(this);
-        this.changeFullscreenPhotos = this.changeFullscreenPhotos.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-
-    }
-
-    componentDidMount() {
+    componentDidMount = () => {
         const { auction } = this.state;
 
         if (!auction.location.latitude || auction.location.longitude) {
@@ -96,7 +81,7 @@ class ViewAuction extends Component {
         }
     }
 
-    queryAuctionLocation(query) {
+    queryAuctionLocation = (query) => {
         nominatimApi.getGeoLocation(query)
             .then(data => {
                 if (data.features.length > 0) {
@@ -114,7 +99,7 @@ class ViewAuction extends Component {
             })
     }
 
-    placeBid() {
+    placeBid = () => {
         const { auction, myBid } = this.state;
         const itemID = auction.itemID;
         this.setState((prevState, props) => { return { isBidding: true } });
@@ -125,7 +110,7 @@ class ViewAuction extends Component {
             })
     }
 
-    buyoutAuction() {
+    buyoutAuction = () => {
         const { auction } = this.state;
         const itemID = auction.itemID;
         this.setState((prevState, props) => { return { isBuying: true } });
@@ -136,15 +121,15 @@ class ViewAuction extends Component {
             })
     }
 
-    changeFullscreenPhotos() {
+    changeFullscreenPhotos = () => {
         this.setState((prevState, props) => { return { isFullscreenPhotos: !prevState.isFullscreenPhotos } });
     }
 
-    setFullscreenIndex(index) {
+    setFullscreenIndex = (index) => {
         this.setState((prevState, props) => { return { fullscreenIndex: index } });
     }
 
-    handleChange(e) {
+    handleChange = (e) => {
         const { name, value } = e.target;
         this.setState((prevState, props) => { return { [name]: value } });
     }
@@ -203,7 +188,6 @@ class ViewAuction extends Component {
                             {/* </Grid> */}
 
                         </Grid>
-
                     </Grid>
 
                     <Grid
@@ -211,14 +195,12 @@ class ViewAuction extends Component {
                         item
                         lg={6}
                     >
-
                         <Grid
                             style={{ height: '100%' }}
                             container
                             direction="column"
                             justify="flex-start"
                         >
-
                             <Paper className={classes.paper}>
                                 <AuctionDetails
                                     auction={auction}
@@ -230,11 +212,8 @@ class ViewAuction extends Component {
                                     buyoutAuction={this.buyoutAuction}
                                 />
                             </Paper>
-
                         </Grid>
-
                     </Grid>
-
                 </Grid>
             </div>
         );
