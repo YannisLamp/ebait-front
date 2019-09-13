@@ -98,6 +98,21 @@ const getAllAuctions = (categories, description, lowestPrice, highestPrice, loca
         .catch(error => {handleError(error)});
 }
 
+const getRecommendedAuctions = () => {
+    return axios.get('/search/auctions/recommend_auctions')
+        .then(response => {
+            return response.data;
+        })
+        .catch(error => {handleError(error)});
+}
+
+const getAuctionById = (auctionId) => {
+    return axios.get('/search/auctions/' + auctionId)
+        .then(response => {
+            return response.data;
+        })
+        .catch(error => {handleError(error)});
+}
 
 function getActiveAuctions() {
     return axios.get('/search/auctions/active', {
@@ -237,6 +252,8 @@ export const auctionsApi = {
     getUserAuctions,
     getActiveAuctions,
     getAllAuctions,
+    getRecommendedAuctions,
+    getAuctionById,
     startAuction,
     deleteAuction,
 
