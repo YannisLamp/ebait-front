@@ -17,7 +17,8 @@ import {
   AccountBoxOutlined as AccountBoxIcon,
   SettingsOutlined as SettingsIcon,
   MessageOutlined as MessageIcon,
-  LibraryAddOutlined as LibraryAddOutlinedIcon
+  LibraryAddOutlined as LibraryAddOutlinedIcon,
+  ImportExport as ImportExportIcon 
 } from '@material-ui/icons';
 
 // For importing my custom styles  
@@ -124,7 +125,7 @@ export default function UserList(props) {
                 to="/import-export"
             >
                 <ListItemIcon className={classes.listItemIcon}>
-                    <PeopleIcon />
+                    <ImportExportIcon />
                 </ListItemIcon>
                 <ListItemText
                     classes={{ primary: classes.listItemText }}
