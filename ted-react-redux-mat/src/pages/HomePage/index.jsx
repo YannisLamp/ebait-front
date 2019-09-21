@@ -43,15 +43,32 @@ function HomePage(props) {
                         justify="center"
                     >
                         <Grid container spacing={3} style={{ marginTop: '55px' }}>
+                            {
+                                !user ? (
+                                    <Grid item xs={12}>
+                                        <WarningMsg
+                                            style={{ borderColor: 'red' }}
+                                            warningText="Please register to get access to eBait's full functionality."
+                                            backgroundColor='white'
+                                            borderColor='red'
+                                        />
+                                    </Grid>
 
-                            <Grid item xs={12}>
-                                <WarningMsg
-                                    style={{ borderColor: 'red' }}
-                                    warningText="Warwarwar"
-                                    backgroundColor='white'
-                                    borderColor='red'
-                                />
-                            </Grid>
+                                ) : '' 
+                            }
+                            
+                            {
+                                (user && user.userRole === 'USER' && user.verified === false) ? (
+                                        <Grid item xs={12}>
+                                            <WarningMsg
+                                                style={{ borderColor: 'red' }}
+                                                warningText="Thank you for creating an account in eBait! Please be patient until your account is fully verified from one of our administrators and given access to all our features."
+                                                backgroundColor='white'
+                                                borderColor='red'
+                                            />
+                                        </Grid>
+                                ) : ''
+                            }
 
                             <Grid item xs={6}>
                                 <ActionCard
