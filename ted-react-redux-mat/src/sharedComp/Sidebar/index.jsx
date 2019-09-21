@@ -19,10 +19,6 @@ import useStyles from './styles';
 
 
 function Sidebar(props) {
-
-    //onClose={this.handleClose}
-    //variant={isMobile ? 'temporary' : 'persistent'}
-
     const classes = useStyles();
     const sidebarOpen = props.sidebarOpen;
     const user = props.user;
