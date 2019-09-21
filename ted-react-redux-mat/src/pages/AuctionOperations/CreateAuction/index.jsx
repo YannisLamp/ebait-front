@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 import { history } from '../../../utils';
-// Material
+
 import { Grid, Paper, Button, TextField, CircularProgress } from '@material-ui/core';
 
 import { connect } from 'react-redux';
-import { format, parse } from 'date-fns';
+import { format } from 'date-fns';
 
-// For importing my custom styles  
+import produce from "immer";
+
 import { withStyles } from '@material-ui/core/styles';
 import { pageStyles } from '../../pageStyles';
 
-import Sidebar from '../../../sharedComp/Sidebar';
-import AuctionLocationForm from '../AuctionLocationForm';
 import AuctionDetailsForm from '../AuctionDetailsForm';
 import AuctionMap from '../AuctionMap';
 import AuctionPhotoUpload from '../AuctionPhotoUpload';
@@ -148,18 +147,7 @@ class CreateAuction extends Component {
                 });
             });
 
-        nominatimApi.getGeoLocation(this.state.locationQuery)
-            .then(data => {
-                const coords = data.features[0].geometry.coordinates;
-                // Coordinates are given in reverse order from API
-                this.setState((prevState, props) => {
-                    return {
-                        startingLat: coords[1],
-                        startingLng: coords[0]
-                    }
-                });
-            })
-
+        this.updateMap();
     }
 
 
@@ -202,47 +190,39 @@ class CreateAuction extends Component {
         auctionsApi.getChildrenCategories(cat.id)
             .then(data => {
                 this.setState((prevState, props) => {
-                    let prevCategories = prevState.categoryFields;
+                    return produce(prevState, draft => {
+                        // Change current field value
+                        draft.categoryFields[cat.level].selectedIndex = catIndex;
+                        draft.categoryFields[cat.level].selectedValue = cat.name;
 
-                    // Change current field value
-                    prevCategories[cat.level].selectedIndex = catIndex;
-                    prevCategories[cat.level].selectedValue = cat.name;
-
-                    if (data.length > 0) {
-                        // We want an extra object to be in the list 
-                        prevCategories.splice(cat.level + 2);
-                        prevCategories[cat.level + 1] = {
-                            selectedIndex: '',
-                            selectedValue: '',
-                            allCategories: data,
+                        if (data.length > 0) {
+                            // We want an extra object to be in the list 
+                            draft.categoryFields.splice(cat.level + 2);
+                            draft.categoryFields[cat.level + 1] = {
+                                selectedIndex: '',
+                                selectedValue: '',
+                                allCategories: data,
+                            }
                         }
-                    }
-                    else {
-                        prevCategories.splice(cat.level + 1);
-                    }
-
-                    return {
-                        prevCategories,
-                    }
+                        else {
+                            draft.categoryFields.splice(cat.level + 1);
+                        }
+                    });
                 });
             });
     }
 
     deleteCategory() {
         this.setState((prevState, props) => {
-            let prevCategories = prevState.categoryFields;
-
-            if (prevCategories.length === 1) {
-                prevCategories[0].selectedIndex = '';
-                prevCategories[0].selectedValue = '';
-            }
-            else {
-                prevCategories.pop();
-            }
-
-            return {
-                categoryFields: prevCategories
-            }
+            return produce(prevState, draft => {
+                if (draft.categoryFields.length === 1) {
+                    draft.categoryFields[0].selectedIndex = '';
+                    draft.categoryFields[0].selectedValue = '';
+                }
+                else {
+                    draft.categoryFields.pop();
+                }
+            });
         });
     }
 
@@ -250,14 +230,24 @@ class CreateAuction extends Component {
         const query = this.state.locationQuery;
         nominatimApi.getGeoLocation(query)
             .then(data => {
-                const coords = data.features[0].geometry.coordinates;
-                // Coordinates are given in reverse order from API
-                this.setState((prevState, props) => {
-                    return {
-                        startingLat: coords[1],
-                        startingLng: coords[0]
-                    }
-                });
+                if (data && data.features.length > 0) {
+                    const coords = data.features[0].geometry.coordinates;
+                    // Coordinates are given in reverse order from API
+                    this.setState((prevState, props) => {
+                        return {
+                            startingLat: coords[1],
+                            startingLng: coords[0]
+                        }
+                    });
+                }
+                // else {
+                //     this.setState((prevState, props) => {
+                //         return {
+                //             startingLat: 0,
+                //             startingLng: 0
+                //         }
+                //     });
+                // }
             });
     }
 
@@ -275,14 +265,13 @@ class CreateAuction extends Component {
         event.persist();
         console.log(event);
         this.setState((prevState, props) => {
-            const { photos } = prevState;
-            for (const photo of event.target.files) {
-                photos.push(photo);
-            }
-            return {
-                photos: photos,
-                shownPhoto: photos.length - 1,
-            }
+            return produce(prevState, draft => {
+                for (const photo of event.target.files) {
+                    draft.photos.push(photo);
+                }
+
+                draft.shownPhoto = draft.photos.length - 1;
+            });
         });
     }
 
@@ -292,19 +281,15 @@ class CreateAuction extends Component {
 
     onPhotoDelete(index) {
         this.setState((prevState, props) => {
-            const { photos, shownPhoto } = prevState;
-            photos.splice(index, 1);
+            return produce(prevState, draft => {
+                draft.photos.splice(index, 1);
 
-            // Don't let the shown photo index become -1
-            let newShownPhoto = shownPhoto - 1;
-            if (newShownPhoto < 0) {
-                newShownPhoto = 0
-            }
-
-            return {
-                photos: photos,
-                shownPhoto: newShownPhoto,
-            }
+                // Don't let the shown photo index become -1
+                draft.shownPhoto = draft.shownPhoto - 1;
+                if (draft.shownPhoto < 0) {
+                    draft.shownPhoto = 0
+                }
+            });
         });
     }
 

@@ -6,14 +6,14 @@ import { Grid, Paper, Button, TextField, CircularProgress } from '@material-ui/c
 import { connect } from 'react-redux';
 import { format, parse } from 'date-fns';
 
+import produce from "immer";
+
 // For importing my custom styles  
 import { withStyles } from '@material-ui/core/styles';
 import { pageStyles } from '../../pageStyles';
 
-import Sidebar from '../../../sharedComp/Sidebar';
-import AuctionLocationForm from '../AuctionLocationForm';
 import AuctionDetailsForm from '../AuctionDetailsForm';
-import CreateAuctionMap from '../AuctionMap';
+import AuctionMap from '../AuctionMap';
 import AuctionPhotoUpload from '../AuctionPhotoUpload';
 
 import { nominatimApi } from '../../../services';
@@ -172,28 +172,25 @@ class EditAuction extends Component {
             .then(allResp => {
                 // Once we get all responses
                 this.setState((prevState, props) => {
-                    const { categoryFields } = prevState;
+                    return produce(prevState, draft => {
 
-                    for (let index = 0; index < categoryFields.length; index++) {
-                        if (categoryFields[index].selectedValue === '') {
-                            categoryFields[index] = {
-                                selectedIndex: '',
-                                selectedValue: '',
-                                allCategories: allResp[index],
+                        for (let index = 0; index < draft.categoryFields.length; index++) {
+                            if (draft.categoryFields[index].selectedValue === '') {
+                                draft.categoryFields[index] = {
+                                    selectedIndex: '',
+                                    selectedValue: '',
+                                    allCategories: allResp[index],
+                                }
+                            }
+                            else {
+                                draft.categoryFields[index] = {
+                                    selectedIndex: findCategoryIndex(allResp[index], draft.categoryFields[index].selectedValue),
+                                    selectedValue: draft.categoryFields[index].selectedValue,
+                                    allCategories: allResp[index],
+                                }
                             }
                         }
-                        else {
-                            categoryFields[index] = {
-                                selectedIndex: findCategoryIndex(allResp[index], categoryFields[index].selectedValue),
-                                selectedValue: categoryFields[index].selectedValue,
-                                allCategories: allResp[index],
-                            }
-                        }
-                    }
-
-                    return {
-                        categoryFields: categoryFields
-                    }
+                    });
                 });
             });
     }
@@ -263,47 +260,39 @@ class EditAuction extends Component {
         auctionsApi.getChildrenCategories(cat.id)
             .then(data => {
                 this.setState((prevState, props) => {
-                    let prevCategories = prevState.categoryFields;
+                    return produce(prevState, draft => {
+                        // Change current field value
+                        draft.categoryFields[cat.level].selectedIndex = catIndex;
+                        draft.categoryFields[cat.level].selectedValue = cat.name;
 
-                    // Change current field value
-                    prevCategories[cat.level].selectedIndex = catIndex;
-                    prevCategories[cat.level].selectedValue = cat.name;
-
-                    if (data.length > 0) {
-                        // We want an extra object to be in the list 
-                        prevCategories.splice(cat.level + 2);
-                        prevCategories[cat.level + 1] = {
-                            selectedIndex: '',
-                            selectedValue: '',
-                            allCategories: data,
+                        if (data.length > 0) {
+                            // We want an extra object to be in the list 
+                            draft.categoryFields.splice(cat.level + 2);
+                            draft.categoryFields[cat.level + 1] = {
+                                selectedIndex: '',
+                                selectedValue: '',
+                                allCategories: data,
+                            }
                         }
-                    }
-                    else {
-                        prevCategories.splice(cat.level + 1);
-                    }
-
-                    return {
-                        prevCategories,
-                    }
+                        else {
+                            draft.categoryFields.splice(cat.level + 1);
+                        }
+                    });
                 });
             });
     }
 
     deleteCategory() {
         this.setState((prevState, props) => {
-            let prevCategories = prevState.categoryFields;
-
-            if (prevCategories.length === 1) {
-                prevCategories[0].selectedIndex = '';
-                prevCategories[0].selectedValue = '';
-            }
-            else {
-                prevCategories.pop();
-            }
-
-            return {
-                categoryFields: prevCategories
-            }
+            return produce(prevState, draft => {
+                if (draft.categoryFields.length === 1) {
+                    draft.categoryFields[0].selectedIndex = '';
+                    draft.categoryFields[0].selectedValue = '';
+                }
+                else {
+                    draft.categoryFields.pop();
+                }
+            });
         });
     }
 
@@ -311,14 +300,16 @@ class EditAuction extends Component {
         const query = this.state.locationQuery;
         nominatimApi.getGeoLocation(query)
             .then(data => {
-                const coords = data.features[0].geometry.coordinates;
-                // Coordinates are given in reverse order from API
-                this.setState((prevState, props) => {
-                    return {
-                        startingLat: coords[1],
-                        startingLng: coords[0]
-                    }
-                });
+                if (data && data.features.length > 0) {
+                    const coords = data.features[0].geometry.coordinates;
+                    // Coordinates are given in reverse order from API
+                    this.setState((prevState, props) => {
+                        return {
+                            startingLat: coords[1],
+                            startingLng: coords[0]
+                        }
+                    });
+                }
             });
     }
 
@@ -442,31 +433,13 @@ class EditAuction extends Component {
 
                     {currentStep === 2 ? (
                         <>
-                            {/* <Grid
-                                    className={classes.locationWrapper}
-                                    item
-                                    lg={3}
-                                >
-                                    <Paper className={classes.paper}>
-                                        <AuctionLocationForm
-                                            country={country}
-                                            locationDescription={locationDescription}
-
-                                            handleCountryChange={this.handleCountryChange}
-                                            handleChange={this.handleChange}
-                                            updateMap={this.updateMap}
-                                        />
-
-                                    </Paper>
-                                </Grid> */}
-
                             <Grid
                                 className={classes.rightWrapper}
                                 item
                                 lg={10}
                             >
                                 <Paper className={classes.paper}>
-                                    <CreateAuctionMap
+                                    <AuctionMap
                                         country={country}
                                         locationDescription={locationDescription}
                                         locationQuery={locationQuery}
