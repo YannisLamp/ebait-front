@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { userActions } from '../../store/ducks/userStore';
@@ -11,10 +11,10 @@ import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 
 import MainImage from '../../static/logo_psonia_cropped.png';
 
-import { makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 
-const useStyles = makeStyles(theme => ({
+const styles = theme => ({
     menuButton: {
         marginRight: theme.spacing(2),
     },
@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
             display: 'flex',
         },
     },
-}));
+});
 
 
 function ElevationScroll(props) {
@@ -55,46 +55,62 @@ function ElevationScroll(props) {
     });
 }
 
-function Navbar(props) {
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const isMenuOpen = Boolean(anchorEl);
+class Navbar extends Component {
 
-    const user = props.user;
-    function toggleSidebar() {
-        const { dispatch } = props;
+    state = {
+        anchorEl: null,
+    }
+
+    componentDidMount() {
+        const { dispatch } = this.props;
+        dispatch(auctionsApi.getAllAuctionsThunk([], '', null, null, null, null, null, 0, 5));
+    }
+
+    toggleSidebar = () => {
+        const { dispatch } = this.props;
         dispatch(userActions.toggleSidebar());
     }
 
-
-    function handleProfileMenuOpen(event) {
-        setAnchorEl(event.currentTarget);
+    handleProfileMenuOpen = (event) => {
+        //setAnchorEl(event.currentTarget);
+        const target = event.currentTarget;
+        this.setState((prevState, props) => {
+            return {
+                anchorEl: target
+            }
+        });
     }
 
-    function handleMenuClose() {
-        setAnchorEl(null);
+    handleMenuClose = () => {
+        //setAnchorEl(null);
+        this.setState((prevState, props) => {
+            return {
+                anchorEl: null
+            }
+        });
     }
 
-    const { dispatch } = props;
-    dispatch(auctionsApi.getAllAuctionsThunk([], '', null, null, null, null, null, 0, 5,));
+    render() {
+        const { anchorEl } = this.state;
+        const isMenuOpen = Boolean(anchorEl);
 
-    const classes = useStyles();
-    return (
-        <ElevationScroll {...props}>
-            <AppBar>
-                <Toolbar>
-                    {/* <Box visibility={user ? "visible" : "hidden"}> */}
-                    <Box>
-                        <IconButton
-                            edge="start"
-                            className={classes.menuButton}
-                            color="secondary"
-                            aria-label="Menu"
-                            onClick={toggleSidebar}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                    </Box>
-                    {/* <Typography variant="caption" className={classes.title}>
+        const { classes, user } = this.props;
+        return (
+            <ElevationScroll {...this.props}>
+                <AppBar>
+                    <Toolbar>
+                        <Box>
+                            <IconButton
+                                edge="start"
+                                className={classes.menuButton}
+                                color="secondary"
+                                aria-label="Menu"
+                                onClick={this.toggleSidebar}
+                            >
+                                <MenuIcon />
+                            </IconButton>
+                        </Box>
+                        {/* <Typography variant="caption" className={classes.title}>
                         <NavLink
                             className={classes.titleLink}
                             to="/"
@@ -102,79 +118,81 @@ function Navbar(props) {
                             eBait
                         </NavLink>
                     </Typography> */}
-                    <Box className={classes.title} >
-                    <NavLink
-                        to="/"
-                    >
-                        <img src={MainImage} style={{height:'50px', width:'auto'}}/>
-                    </NavLink>
-                    </Box>
+                        <Box className={classes.title} >
+                            <NavLink
+                                to="/"
+                            >
+                                <img src={MainImage} style={{ height: '50px', width: 'auto' }} />
+                            </NavLink>
+                        </Box>
 
-                    {/* <div className={classes.grow} /> */}
-                    {user ? (
-                        <div className={classes.sectionDesktop}>
-                            <IconButton aria-label="show 4 new mails" color="inherit">
-                                <Badge badgeContent={4} color="primary">
-                                    <MailIcon />
-                                </Badge>
-                            </IconButton>
-                            {/* <IconButton aria-label="show 17 new notifications" color="inherit">
+                        {/* <div className={classes.grow} /> */}
+                        {user ? (
+                            <div className={classes.sectionDesktop}>
+                                <IconButton aria-label="show 4 new mails" color="inherit">
+                                    <Badge badgeContent={4} color="primary">
+                                        <MailIcon />
+                                    </Badge>
+                                </IconButton>
+                                {/* <IconButton aria-label="show 17 new notifications" color="inherit">
                                     <Badge badgeContent={17} color="secondary">
                                         <NotificationsIcon />
                                     </Badge>
                                 </IconButton> */}
-                            <IconButton
-                                edge="end"
-                                aria-label="account of current user"
-                                // aria-controls={menuId}
-                                aria-haspopup="true"
-                                onClick={handleProfileMenuOpen}
-                                color="inherit"
-                            >
-                                <AccountCircle />
-                            </IconButton>
-                            <Menu
-                                anchorEl={anchorEl}
-                                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                                //id={menuId}
-                                keepMounted
-                                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-                                open={isMenuOpen}
-                                onClose={handleMenuClose}
-                            >
-                                <MenuItem onClick={handleMenuClose}>
-                                    <NavLink
-                                        className={classes.noDecoration}
-                                        to="/profile"
-                                    >
-                                        Profile
-                                    </NavLink>
-                                </MenuItem>
-                                <MenuItem onClick={handleMenuClose}>
-                                    <NavLink
-                                        className={classes.noDecoration}
-                                        to="/login"
-                                    >
-                                        Log Out
-                                    </NavLink>
-                                </MenuItem>
-                            </Menu>
-
-                        </div>
-                    ) : (
-                            <NavLink
-                                className={classes.titleLink}
-                                to="/login"
-                            >
-                                <IconButton color="inherit">
-                                    <InputIcon />
+                                <IconButton
+                                    edge="end"
+                                    aria-label="account of current user"
+                                    // aria-controls={menuId}
+                                    aria-haspopup="true"
+                                    onClick={this.handleProfileMenuOpen}
+                                    color="inherit"
+                                >
+                                    <AccountCircle />
                                 </IconButton>
-                            </NavLink>
-                        )}
-                </Toolbar>
-            </AppBar>
-        </ElevationScroll>
-    );
+                                <Menu
+                                    anchorEl={anchorEl}
+                                    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                                    //id={menuId}
+                                    keepMounted
+                                    transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                                    open={isMenuOpen}
+                                    onClose={this.handleMenuClose}
+                                >
+                                    <MenuItem onClick={this.handleMenuClose}>
+                                        <NavLink
+                                            className={classes.noDecoration}
+                                            to="/profile"
+                                        >
+                                            Profile
+                                    </NavLink>
+                                    </MenuItem>
+                                    <MenuItem onClick={this.handleMenuClose}>
+                                        <NavLink
+                                            className={classes.noDecoration}
+                                            to="/login"
+                                        >
+                                            Log Out
+                                    </NavLink>
+                                    </MenuItem>
+                                </Menu>
+
+                            </div>
+                        ) : (
+                                <NavLink
+                                    className={classes.titleLink}
+                                    to="/login"
+                                >
+                                    <IconButton color="inherit">
+                                        <InputIcon />
+                                    </IconButton>
+                                </NavLink>
+                            )}
+                    </Toolbar>
+                </AppBar>
+            </ElevationScroll>
+        );
+
+    }
 }
 
 
@@ -188,4 +206,5 @@ function mapStateToProps(state) {
 
 
 const connectedNavbar = connect(mapStateToProps)(Navbar);
-export default connectedNavbar;
+const styledNavbar = withStyles(styles)(connectedNavbar);
+export default styledNavbar;
