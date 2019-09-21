@@ -1,6 +1,8 @@
 import axios from './axiosConfig';
 import handleError from './handleError';
 
+import { auctionActions } from '../store/ducks/auctionStore';
+
 const createAuction = async (name, description, ends, firstBid, buyout, categories, country, locationDescription, selectedLat, selectedLng, photos) => {
 
     const jsonRequest = {
@@ -74,6 +76,8 @@ const editAuction = async (itemID, name, description, ends, firstBid, buyout, ca
 
 const getAllAuctions = (categories, description, lowestPrice, highestPrice, location, order, orderBy, currPage, pageSize) => {
 
+    //params
+
     const jsonRequest = {
         params: {
 
@@ -96,6 +100,36 @@ const getAllAuctions = (categories, description, lowestPrice, highestPrice, loca
             return response.data;
         })
         .catch(error => {handleError(error)});
+}
+
+const getAllAuctionsThunk = (categories, description, lowestPrice, highestPrice, location, order, orderBy, currPage, pageSize) => {
+    const jsonRequest = {
+        params: {
+
+            categories: categories,
+            description: description,
+            lowestPrice: lowestPrice,
+            highestPrice: highestPrice,
+            location: location,
+
+            //order: orderBy,
+            //orderBy: order,
+
+            pageNo: currPage,
+            pageSize: pageSize,
+        }
+    }
+
+    return dispatch => {
+        dispatch(auctionActions.getAuctionsRequest());
+        axios.get('/search/auctions/filters', jsonRequest)
+            .then(response => {
+                const auctions = response.data.auctions;
+                const totalFilteredAuctions = response.data.totalFilteredAuctions;
+                dispatch(auctionActions.getAuctionsSuccess(auctions, totalFilteredAuctions));
+            })
+        .catch(error => {handleError(error)});
+    }
 }
 
 const getRecommendedAuctions = () => {
@@ -252,6 +286,7 @@ export const auctionsApi = {
     getUserAuctions,
     getActiveAuctions,
     getAllAuctions,
+    getAllAuctionsThunk,
     getRecommendedAuctions,
     getAuctionById,
     startAuction,
