@@ -3,10 +3,7 @@ import AwesomeSlider from 'react-awesome-slider';
 import Lightbox from 'react-image-lightbox';
 import OpenWithIcon from '@material-ui/icons/OpenWith';
 
-
 import { Grid, Button, IconButton } from '@material-ui/core';
-//import AwsSliderStyles from 'react-awesome-slider/src/styles';
-//import 'react-awesome-slider/dist/styles.css';
 
 import { makeStyles } from '@material-ui/core/styles';
 

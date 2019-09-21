@@ -74,6 +74,7 @@ class ViewAuction extends Component {
 
     componentDidMount = () => {
         const { auction } = this.state;
+        auctionsApi.getAuctionById(auction.itemID);
 
         if (!auction.location.latitude || auction.location.longitude) {
             const { text } = auction.location;

@@ -2,13 +2,14 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { userActions } from '../../store/ducks/userStore';
+import { auctionsApi } from '../../services/auctionsApi';
 import { AppBar, Toolbar, Typography, IconButton, TextField, MenuItem, Badge, Menu, Box } from '@material-ui/core';
 
 // Material icons
 import { Menu as MenuIcon, Input as InputIcon, Mail as MailIcon, Notifications as NotificationsIcon, AccountCircle } from '@material-ui/icons/';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 
-import Image from '../../static/logo_psonia_cropped.png';
+import MainImage from '../../static/logo_psonia_cropped.png';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -73,6 +74,8 @@ function Navbar(props) {
         setAnchorEl(null);
     }
 
+    const { dispatch } = props;
+    dispatch(auctionsApi.getAllAuctionsThunk([], '', null, null, null, null, null, 0, 5,));
 
     const classes = useStyles();
     return (
@@ -103,7 +106,7 @@ function Navbar(props) {
                     <NavLink
                         to="/"
                     >
-                        <img src={Image} style={{height:'50px', width:'auto'}}/>
+                        <img src={MainImage} style={{height:'50px', width:'auto'}}/>
                     </NavLink>
                     </Box>
 

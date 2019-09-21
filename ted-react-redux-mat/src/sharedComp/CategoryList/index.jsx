@@ -39,7 +39,8 @@ export default function CategoryList(props) {
     const { categoryFields } = props;
     const { handleCategoryPick, deleteCategory } = props;
 
-    //Some React hook magic from material ui so that the outlined stuff work
+    // Some React hooks from material ui so that the outlined stuff work 
+    // Not like the project's style, but it is more important for the component to be functional
     const inputLabel = React.useRef(null);
     const [labelWidth, setLabelWidth] = React.useState(0);
     React.useEffect(() => {

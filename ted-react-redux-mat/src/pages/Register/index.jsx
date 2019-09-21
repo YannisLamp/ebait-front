@@ -1,16 +1,11 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons'
-import { Link } from 'react-router-dom';
 
-// Material
 import { Grid, Paper } from '@material-ui/core';
-
-// For importing my custom styles  
 import { makeStyles } from '@material-ui/core/styles';
 import { pageStyles } from '../pageStyles';
 
-import Sidebar from '../../sharedComp/Sidebar';
 import RegisterForm from './RegisterForm';
 
 
