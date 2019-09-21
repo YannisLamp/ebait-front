@@ -1,8 +1,9 @@
 import React from 'react';
+import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles';
 import { Card, CardActionArea, CardActions, CardContent, CardMedia, Button, Typography, Grid } from '@material-ui/core';
 
-import { Link } from 'react-router-dom'
+
 
 const useStyles = makeStyles(theme => ({
     card: {
@@ -23,7 +24,6 @@ export default function MediaCard(props) {
     const { auction } = props;
     const imageUrl = auction.photos[0] ? auction.photos[0].fileDownloadUri : auction.defaultPhoto.fileDownloadUri;
     const lastCategory = auction.categories.length > 0 ? auction.categories[auction.categories.length - 1].name : " "
-
 
     const classes = useStyles();
     return (

@@ -1,7 +1,5 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 
-// Material
 import {
     Grid, Paper, Button, Typography, CircularProgress,
     Table, TableBody, TableRow, TableCell, Checkbox, TablePagination, Switch
@@ -45,6 +43,7 @@ export default function AuctionCardTable(props) {
     const { handleChangePage, handleChangeItemsPerPage } = props;
 
     const classes = useStyles();
+
     return (
         <div className={classes.root}>
 

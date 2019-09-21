@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-// Material
 import { Grid, Paper, Button } from '@material-ui/core';
-
 import { withStyles } from '@material-ui/core/styles';
 import { pageStyles } from '../pageStyles';
 

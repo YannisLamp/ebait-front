@@ -9,7 +9,6 @@ import { Grid, Paper, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { pageStyles } from '../pageStyles';
 
-import Sidebar from '../../sharedComp/Sidebar';
 import ActionCard from './ActionCard';
 import WarningMsg from './WarningMsg';
 

@@ -7,7 +7,6 @@ import { Grid, Paper, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core';
 import { pageStyles } from '../pageStyles';
 
-import Sidebar from '../../sharedComp/Sidebar';
 import PaperTitle from '../../sharedComp/PaperTitle';
 
 //import { usersApi } from '../../services';

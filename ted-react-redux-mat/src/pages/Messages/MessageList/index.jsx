@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-// Material
 import {
     ExpansionPanel, ExpansionPanelDetails, ExpansionPanelSummary,
     Typography, CircularProgress,

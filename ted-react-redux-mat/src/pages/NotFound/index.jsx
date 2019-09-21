@@ -1,9 +1,6 @@
 import React from 'react';
 
-// Material
 import { Grid, Typography } from '@material-ui/core';
-
-// For importing my custom styles  
 import { makeStyles } from '@material-ui/core/styles';
 import { pageStyles } from '../pageStyles';
 
