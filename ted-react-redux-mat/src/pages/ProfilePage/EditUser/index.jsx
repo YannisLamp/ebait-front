@@ -74,20 +74,14 @@ class EditUser extends Component {
             confirmPassword: '',
             passLoading: false,
         };
-
-        this.handleChange = this.handleChange.bind(this);
-        this.handleEditUser = this.handleEditUser.bind(this);
-
-        this.checkPasswordMatch = this.checkPasswordMatch.bind(this);
-        this.handleChangePassword = this.handleChangePassword.bind(this);
     }
 
-    handleChange(e) {
+    handleChange = (e) => {
         const { name, value } = e.target;
         this.setState((prevState, props) => { return { [name]: value } });
     }
 
-    handleEditUser() {
+    handleEditUser = () => {
         this.setState((prevState, props) => { return { infoLoading: true } });
         const { userId, firstName, lastName, email, phoneNumber, country, address, afm } = this.state;
         const { dispatch } = this.props;
@@ -101,13 +95,13 @@ class EditUser extends Component {
         //}
     }
 
-    checkPasswordMatch() {
+    checkPasswordMatch = () => {
         this.setState((prevState, props) => {
             return { 'passwordsMatch': prevState.password === prevState.confirmPassword }
         });
     }
 
-    handleChangePassword() {
+    handleChangePassword = () => {
         this.setState((prevState, props) => { return { passLoading: true } });
         const { userId, oldPassword, password, confirmPassword } = this.state;
         const { dispatch } = this.props;
