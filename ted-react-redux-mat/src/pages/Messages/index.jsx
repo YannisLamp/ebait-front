@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import SwipeableViews from 'react-swipeable-views';
-// Material
-import { Grid, Paper, AppBar, Tabs, Tab, Box, Typography } from '@material-ui/core';
 
-// For importing my custom styles  
+import { Grid, Paper, AppBar, Tabs, Tab, Box, Typography } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core';
 import { pageStyles } from '../pageStyles';
 
-import Sidebar from '../../sharedComp/Sidebar';
+import { connect } from 'react-redux';
+
 import PaperTitle from '../../sharedComp/PaperTitle';
 import MessageList from './MessageList';
 import ContactList from './ContactList';
@@ -51,11 +50,36 @@ const styles = theme => ({
 });
 
 
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <Typography
+            component="div"
+            role="tabpanel"
+            hidden={value !== index}
+            id={`full-width-tabpanel-${index}`}
+            aria-labelledby={`full-width-tab-${index}`}
+            {...other}
+        >
+            <Box p={3}>{children}</Box>
+        </Typography>
+    );
+}
+
+function a11yProps(index) {
+    return {
+        id: `full-width-tab-${index}`,
+        'aria-controls': `full-width-tabpanel-${index}`,
+    };
+}
+
 class Messages extends Component {
 
     state = {
-        contacts: [],
-        isLoadingContacts: false,
+        //contacts: [],
+        //isLoadingContacts: false,
+        //selectedContact: null, 
 
         tabValue: 0,
     };
@@ -73,12 +97,15 @@ class Messages extends Component {
 
         messageApi.getAllContacts()
             .then(data => {
-                this.setState((prevState, props) => {
-                    return {
-                        contacts: data,
-                        isLoading: false,
-                    }
-                })
+                if (data) {
+                    this.setState((prevState, props) => {
+                        return {
+                            contacts: data,
+                            isLoading: false,
+                            selectedContact: data.length > 0 ? data[0] : null 
+                        }
+                    })
+                }
             });
     }
 
@@ -138,19 +165,21 @@ class Messages extends Component {
     //     this.setState((prevState, props) => { return { userToVerify: user } });
     // }
 
-    handleChange = (e, newValue) => {
-        //const { name, value } = e.target;
+    handleChangeTab = (e, newValue) => {
         this.setState((prevState, props) => { return { tabValue: newValue } });
     }
 
-    handleChangeIndex = (newValue) => {
-        //const { name, value } = e.target;
+    handleChangeTabIndex = (newValue) => {
         this.setState((prevState, props) => { return { tabValue: newValue } });
     }
 
+    handleChangeSelectedContact = (index) => { 
+        this.setState((prevState, props) => { return { selectedContact: prevState.contacts[index] } });
+    } 
 
     render() {
-        const { contacts, tabValue } = this.state;
+        const { tabValue } = this.state;
+        const { contacts, selectedContact } = this.props;
 
         const { classes, theme } = this.props;
         return (
@@ -167,7 +196,12 @@ class Messages extends Component {
                         lg={2}
                     >
                         <Paper className={classes.leftPaper}>
-                            <ContactList contacts={contacts} />
+                            <ContactList 
+                                contacts={contacts} 
+                                selectedContact={selectedContact} 
+                                
+                                handleChangeSelectedContact={this.handleChangeSelectedContact}    
+                            />
                         </Paper>
                     </Grid>
 
@@ -193,7 +227,7 @@ class Messages extends Component {
                                 <AppBar className={classes.tabBar} position="static" color="default">
                                     <Tabs
                                         value={tabValue}
-                                        onChange={this.handleChange}
+                                        onChange={this.handleChangeTab}
                                         indicatorColor="primary"
                                         textColor="primary"
                                         //variant="fullWidth"
@@ -208,7 +242,7 @@ class Messages extends Component {
                                 <SwipeableViews
                                     axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
                                     index={tabValue}
-                                    onChangeIndex={this.handleChangeIndex}
+                                    onChangeIndex={this.handleChangeTabIndex}
                                 >
                                     <TabPanel value={tabValue} index={0} dir={theme.direction}>
                                         <MessageList />
@@ -235,53 +269,21 @@ class Messages extends Component {
     }
 }
 
-const styledMessages = withStyles(styles)(Messages);
-const themedMessages = withTheme(styledMessages);
-export default themedMessages;
-
-
-
-function TabPanel(props) {
-    const { children, value, index, ...other } = props;
-
-    return (
-        <Typography
-            component="div"
-            role="tabpanel"
-            hidden={value !== index}
-            id={`full-width-tabpanel-${index}`}
-            aria-labelledby={`full-width-tab-${index}`}
-            {...other}
-        >
-            <Box p={3}>{children}</Box>
-        </Typography>
-    );
-}
-
-
-function a11yProps(index) {
+function mapStateToProps(state) {
+    const { messageStore } = state;
+    const { 
+        contacts, 
+        selectedContact,
+        isLoadingContacts,     
+    } = messageStore;
     return {
-        id: `full-width-tab-${index}`,
-        'aria-controls': `full-width-tabpanel-${index}`,
+        contacts, 
+        selectedContact,
+        isLoadingContacts
     };
 }
 
-// export default function FullWidthTabs() {
-//     const classes = useStyles();
-//     const theme = useTheme();
-//     const [value, setValue] = React.useState(0);
-
-//     function handleChange(event, newValue) {
-//         setValue(newValue);
-//     }
-
-//     function handleChangeIndex(index) {
-//         setValue(index);
-//     }
-
-//     return (
-//         <div className={classes.root}>
-
-//         </div>
-//     );
-// }
+const connectedMessages = connect(mapStateToProps)(Messages);
+const styledMessages = withStyles(styles)(connectedMessages);
+const themedMessages = withTheme(styledMessages);
+export default themedMessages;

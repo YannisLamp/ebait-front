@@ -16,10 +16,43 @@ const useStyles = makeStyles(theme => ({
     inline: {
         display: 'inline',
     },
+    listItem: {
+        cursor: 'pointer',
+        '&:hover': {
+        //backgroundColor: theme.palette.primary.light,
+        //borderLeft: `4px solid ${theme.palette.primary.main}`,
+        //borderRadius: '4px',
+        '& $listItemIcon': {
+            color: theme.palette.secondary.light,
+            //marginLeft: '-4px'
+        },
+        '& $listItemText': {
+            color: theme.palette.text.secondary,
+        },
+        },
+        '& + &': {
+        marginTop: theme.spacing(1)
+        }
+    },
+    activeListItem: {
+        //borderLeft: `4px solid ${theme.palette.primary.secondary}`,
+        //borderRadius: '4px',
+        backgroundColor: theme.palette.primary.main,
+        '& $listItemIcon': {
+            color: theme.palette.secondary.main,
+            //marginLeft: '-4px'
+        },
+        '& $listItemText': {
+        color: theme.palette.text.secondary
+        },
+        
+    },
 }));
 
 export default function ContactList(props) {
-    const { contacts } = props;
+    const { contacts, selectedContact } = props;
+    
+    const { handleChangeSelectedContact } = props;
 
     const classes = useStyles();
     return (
@@ -30,10 +63,16 @@ export default function ContactList(props) {
             />
             <List>
                 {
-                    contacts.map(contact => {
+                    contacts.map((contact, index) => {
                         return (
                             <>
-                                <ListItem alignItems="center">
+                                <ListItem
+                                    className={classes.listItem}
+                                    //activeClassName={classes.activeListItem}
+                                    selected={contact.userId === selectedContact.userId}
+                                    onClick={event => handleChangeSelectedContact(index)} 
+                                    alignItems="center"
+                                >
                                     <ListItemAvatar>
                                         <Avatar>
                                             {contact.firstName.charAt(0) + contact.lastName.charAt(0)}
