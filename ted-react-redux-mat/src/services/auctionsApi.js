@@ -29,11 +29,11 @@ const createAuction = async (name, description, ends, firstBid, buyout, categori
                 // the user has uploaded
                 const itemID = response.data.itemID;
                 return uploadMultiplePhotos(itemID, photos)
-                    .then(response => {   
+                    .then(response => {
                         return response.data;
                     });
             })
-        .catch(error => {handleError(error)});
+        .catch(error => { handleError(error) });
 }
 
 
@@ -62,7 +62,7 @@ const editAuction = async (itemID, name, description, ends, firstBid, buyout, ca
                 // Then delete all the photos that the iser has deleted in the UI
                 for (const photo of deletedPhotos) {
                     deleteAuctionPhoto(photo.photoId)
-                        .catch(error => {handleError(error)});;
+                        .catch(error => { handleError(error) });;
                 }
 
                 // After the auction is edited, make a request to append all the new photos
@@ -70,7 +70,7 @@ const editAuction = async (itemID, name, description, ends, firstBid, buyout, ca
                 return uploadMultiplePhotos(itemID, photos);
             },
         )
-        .catch(error => {handleError(error)});
+        .catch(error => { handleError(error) });
 }
 
 
@@ -99,7 +99,154 @@ const getAllAuctions = (categories, description, lowestPrice, highestPrice, loca
         .then(response => {
             return response.data;
         })
-        .catch(error => {handleError(error)});
+        .catch(error => { handleError(error) });
+}
+
+const getRecommendedAuctions = () => {
+    return axios.get('/search/auctions/recommend_auctions')
+        .then(response => {
+            return response.data;
+        })
+        .catch(error => { handleError(error) });
+}
+
+const getAuctionById = (auctionId) => {
+    return axios.get('/search/auctions/' + auctionId)
+        .then(response => {
+            return response.data;
+        })
+        .catch(error => { handleError(error) });
+}
+
+function getActiveAuctions() {
+    return axios.get('/search/auctions/active', {
+        params: {
+
+            // category: 
+            // description: 'substring'
+
+            // gia to currentbid
+            // belowPrice:
+            // abovePrice:
+
+            // location: location.text
+
+            // orderBy: orderBy,
+            // pageNo: currPage,
+
+            // pageSize: pageSize,
+            // order: order,
+        }
+    })
+        .then(response => {
+            return response.data;
+        })
+        .catch(error => { handleError(error) });
+}
+
+const buyoutAuction = async (id) => {
+    return axios.put('/auctions/buyout/' + id)
+        .then(response => {
+            return response.data;
+        })
+        .catch(error => { handleError(error) });
+}
+
+const placeBid = async (id, amount) => {
+    const jsonRequest = {
+        amount: amount
+    }
+
+    return axios.put('/auctions/add_bid/' + id, jsonRequest)
+        .then(response => {
+            return response.data;
+        })
+        .catch(error => { handleError(error) });
+}
+
+const deleteAuctionPhoto = async (photoId) => {
+    return axios.delete('/auctions/delete_photo/' + photoId, {
+
+    })
+        .then(response => {
+            return response.data;
+        })
+        .catch(error => { handleError(error) });
+}
+
+const uploadMultiplePhotos = async (auctionId, photos) => {
+    const formData = new FormData();
+
+    for (const photo of photos) {
+        formData.append('imageFile', photo);
+    }
+
+    return axios.post('/auctions/' + auctionId + '/upload_multiple_photos', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    })
+        .then(
+            response => {
+                return response.data;
+            }
+        )
+        .catch(error => { handleError(error) });
+}
+
+const getUserAuctions = async (type) => {
+    return axios.get('/auctions', {
+        //'created', 'started', 'finished'
+        params: {
+            type,
+        }
+    })
+        .then(response => {
+            return response.data;
+        })
+        .catch(error => { handleError(error) });
+}
+
+const startAuction = async (itemID) => {
+    return axios.put('/auctions/start/' + itemID)
+        .then(response => {
+            return response.data;
+        })
+        .catch(error => { handleError(error) });
+}
+
+const deleteAuction = async (itemID) => {
+    return axios.delete('/auctions/' + itemID)
+        .then(response => {
+            return response.data;
+        })
+        .catch(error => { handleError(error) });
+}
+
+const getRootCategories = async () => {
+    return axios.get('/categories/root')
+        .then(response => {
+            return response.data;
+        })
+        .catch(error => { handleError(error) });
+}
+
+
+const getChildrenCategories = async (parentId) => {
+    return axios.get('/categories/children/' + parentId)
+        .then(response => {
+            return response.data;
+        })
+        .catch(error => { handleError(error) });
+}
+
+
+const getAllCats = async (reqs) => {
+    return Promise.all(reqs)
+        .then(allResp => {
+            return allResp;
+        })
+        .catch(error => { handleError(error) });
 }
 
 const getAllAuctionsThunk = (categories, description, lowestPrice, highestPrice, location, order, orderBy, currPage, pageSize) => {
@@ -128,157 +275,39 @@ const getAllAuctionsThunk = (categories, description, lowestPrice, highestPrice,
                 const totalFilteredAuctions = response.data.totalFilteredAuctions;
                 dispatch(auctionActions.getAuctionsSuccess(auctions, totalFilteredAuctions));
             })
-        .catch(error => {handleError(error)});
+            .catch(error => { handleError(error) });
     }
 }
 
-const getRecommendedAuctions = () => {
-    return axios.get('/search/auctions/recommend_auctions')
-        .then(response => {
-            return response.data;
-        })
-        .catch(error => {handleError(error)});
-}
-
-const getAuctionById = (auctionId) => {
-    return axios.get('/search/auctions/' + auctionId)
-        .then(response => {
-            return response.data;
-        })
-        .catch(error => {handleError(error)});
-}
-
-function getActiveAuctions() {
-    return axios.get('/search/auctions/active', {
-        params: {
-
-            // category: 
-            // description: 'substring'
-
-            // gia to currentbid
-            // belowPrice:
-            // abovePrice:
-
-            // location: location.text
-
-            // orderBy: orderBy,
-            // pageNo: currPage,
-
-            // pageSize: pageSize,
-            // order: order,
-        }
-    })
-        .then(response => {
-            return response.data;
-        })
-        .catch(error => {handleError(error)});
-}
-
-const buyoutAuction = async (id) => {
-    return axios.put('/auctions/buyout/' + id)
-        .then(response => {
-            return response.data;
-        })
-        .catch(error => {handleError(error)});
-}
-
-const placeBid = async (id, amount) => {
-    const jsonRequest = {
-        amount: amount
+const changePageThunk = (categories, description, lowestPrice, highestPrice, location, order, orderBy, newPage, pageSize) => {
+    return dispatch => {
+        dispatch(auctionActions.changeCurrentPage(newPage));
+        dispatch(getAllAuctionsThunk(categories, description, lowestPrice, highestPrice, location, order, orderBy, newPage, pageSize));
     }
-
-    return axios.put('/auctions/add_bid/' + id, jsonRequest)
-        .then(response => {
-            return response.data;
-        })
-        .catch(error => {handleError(error)});
 }
 
-const deleteAuctionPhoto = async (photoId) => {
-    return axios.delete('/auctions/delete_photo/' + photoId, {
-
-    })
-        .then(response => {
-            return response.data;
-        })
-        .catch(error => {handleError(error)});
-}
-
-const uploadMultiplePhotos = async (auctionId, photos) => {
-    const formData = new FormData();
-
-    for (const photo of photos) {
-        formData.append('imageFile', photo);
+const changePageSizeThunk = (categories, description, lowestPrice, highestPrice, location, order, orderBy, newPageSize) => {
+    return dispatch => {
+        dispatch(auctionActions.changePageSize(newPageSize));
+        dispatch(auctionActions.changeCurrentPage(0));
+        dispatch(getAllAuctionsThunk(categories, description, lowestPrice, highestPrice, location, order, orderBy, 0, newPageSize));
     }
-
-    return axios.post('/auctions/' + auctionId + '/upload_multiple_photos', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        })
-        .then(
-            response => {
-                return response.data;
-            }
-        )
-        .catch(error => {handleError(error)});
 }
 
-const getUserAuctions = async (type) => {
-    return axios.get('/auctions', {
-        //'created', 'started', 'finished'
-            params: {
-                type,
-            }
-        })
-        .then(response => {
-            return response.data;
-        })
-        .catch(error => {handleError(error)});
+const getRootCategoriesThunk = () => {
+    return dispatch => {
+        getRootCategories()
+            .then(data => {
+                if (data) {
+                    dispatch(auctionActions.initCategory({
+                        selectedIndex: '',
+                        selectedValue: '',
+                        allCategories: data,
+                    }));
+                }
+            });
+    }
 }
-
-const startAuction = async (itemID) => {
-    return axios.put('/auctions/start/' + itemID)
-        .then(response => {
-            return response.data;
-        })
-        .catch(error => {handleError(error)});
-}
-
-const deleteAuction = async (itemID) => {
-    return axios.delete('/auctions/' + itemID)
-        .then(response => {
-            return response.data;
-        })
-        .catch(error => {handleError(error)});
-}
-
-const getRootCategories = async () => {
-    return axios.get('/categories/root')
-        .then(response => {
-            return response.data;
-        })
-        .catch(error => {handleError(error)});
-}
-
-
-const getChildrenCategories = async (parentId) => {
-    return axios.get('/categories/children/' + parentId)
-        .then(response => {
-            return response.data;
-        })
-        .catch(error => {handleError(error)});
-}
-
-
-const getAllCats = async (reqs) => {
-    return Promise.all(reqs)
-        .then(allResp => {
-            return allResp;
-        })
-        .catch(error => {handleError(error)});
-}
-
 
 export const auctionsApi = {
     createAuction,
@@ -286,7 +315,6 @@ export const auctionsApi = {
     getUserAuctions,
     getActiveAuctions,
     getAllAuctions,
-    getAllAuctionsThunk,
     getRecommendedAuctions,
     getAuctionById,
     startAuction,
@@ -298,4 +326,9 @@ export const auctionsApi = {
     getRootCategories,
     getChildrenCategories,
     getAllCats,
+
+    getAllAuctionsThunk,
+    changePageThunk,
+    changePageSizeThunk,
+    getRootCategoriesThunk,
 };

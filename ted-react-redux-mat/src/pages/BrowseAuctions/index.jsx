@@ -71,15 +71,13 @@ const styles = theme => ({
 class BrowseAuctions extends Component {
 
     state = {
-        categoryFields: [{
-            selectedIndex: '',
-            selectedValue: '',
-            allCategories: [],
-        }],
+        // categoryFields: [{
+        //     selectedIndex: '',
+        //     selectedValue: '',
+        //     allCategories: [],
+        // }],
 
         // pageSizeOptions are [10, 20, 50]
-        pageSize: 10,
-        currPage: 0,
 
         order: 'asc',
         orderBy: '',
@@ -93,30 +91,16 @@ class BrowseAuctions extends Component {
     componentDidMount() {
         this.loadRecommendedAuctions();
 
-        auctionsApi.getRootCategories()
-            .then(data => {
-                if (data) {
-                    this.setState((prevState, props) => {
-                        return {
-                            categoryFields: [{
-                                selectedIndex: prevState.categoryFields[0].selectedIndex,
-                                selectedValue: prevState.categoryFields[0].selectedValue,
-                                allCategories: data,
-                            }],
-                        }
-                    });
-                }
-            });
+        const { dispatch } = this.props;
+        dispatch(auctionsApi.getRootCategoriesThunk());
     }
 
     refreshAuctions = () => {
-        const { categoryFields, lowestPrice, highestPrice,
-            location, order, orderBy, currPage, pageSize } = this.state;
+        const { categoryFields, description, lowestPrice, highestPrice,
+            location, order, orderBy, currPage, pageSize, dispatch } = this.props;
 
-        const { description } = this.props;
-
-        this.loadAuctions(categoryFields, description, lowestPrice, highestPrice,
-            location, order, orderBy, currPage, pageSize);
+        dispatch(auctionsApi.getAllAuctionsThunk(categoryFields, description, lowestPrice, highestPrice, 
+            location, order, orderBy, currPage, pageSize));
     }
 
 
@@ -209,53 +193,36 @@ class BrowseAuctions extends Component {
             dispatch(auctionActions.addFilters());
         }
         
-
     }
 
     handleChangePage = (event, newPage) => {
-        this.setState((prevState, props) => {
-            const { categoryFields, description, lowestPrice, highestPrice,
-                location, order, orderBy, pageSize } = prevState;
+        const { categoryFields, description, lowestPrice, highestPrice,
+            location, order, orderBy, pageSize, dispatch } = this.props;
 
-            this.loadAuctions(categoryFields, description, lowestPrice, highestPrice,
-                location, order, orderBy, newPage, pageSize);
-            return {
-                currPage: newPage
-            }
-        });
+        dispatch(auctionsApi.changePageThunk(categoryFields, description, lowestPrice, highestPrice,
+            location, order, orderBy, newPage, pageSize));
     }
 
     handleChangeItemsPerPage = (event) => {
-        this.setState((prevState, props) => {
-            const { categoryFields, description, lowestPrice, highestPrice,
-                location, order, orderBy } = prevState;
-            const newPageSize = +event.target.value;
+        const { categoryFields, description, lowestPrice, highestPrice,
+            location, order, orderBy, dispatch } = this.props;
+        const newPageSize = +event.target.value;
 
-            this.loadAuctions(categoryFields, description, lowestPrice, highestPrice,
-                location, order, orderBy, 0, newPageSize);
-            return {
-                currPage: 0,
-                pageSize: newPageSize,
-            }
-        });
-
+        dispatch(auctionsApi.changePageSizeThunk(categoryFields, description, lowestPrice, highestPrice,
+            location, order, orderBy, newPageSize));
     }
 
     handleChange = (e) => {
         const { name, value } = e.target;
-        this.setState((prevState, props) => { return { [name]: value } });
+        const { dispatch } = this.props;
+        dispatch(auctionActions.updateFilters({ [name]: value }));
     }
 
     render() {
+        const { isRecoLoading, recoAuctions } = this.state;
 
-        const {  pageSize, currPage,
-             categoryFields, lowestPrice,
-            highestPrice, location, isRecoLoading, recoAuctions } = this.state;
-
-        const { auctions, totalAuctions, isLoading, 
-            showFilters, description } = this.props;
-        console.log('auctions props');
-        console.log(auctions);
+        const { categoryFields, auctions, totalAuctions, isLoading, showFilters, lowestPrice,
+            highestPrice, location, description, pageSize, currPage } = this.props;
 
         const { classes } = this.props;
         return (
@@ -323,7 +290,7 @@ class BrowseAuctions extends Component {
                         <Paper className={classes.recommendationPaper}>
                             <PaperTitle
                                 className={classes.bareTitle}
-                                title='You Also Might Like'
+                                title='You Might Also Like'
                                 suggestion={''}
                             />
                         </Paper>
@@ -345,20 +312,39 @@ class BrowseAuctions extends Component {
 
 function mapStateToProps(state) {
     const { auctionStore } = state;
-    const { 
+    const {
+        categoryFields,
+
         auctions, 
         totalAuctions, 
         isLoading,
 
         showFilters,
-        description } = auctionStore;
+        description,
+        lowestPrice, 
+        highestPrice, 
+        location,
+
+        pageSize, 
+        currPage,
+
+    } = auctionStore;
     return {
+        categoryFields,
+
         auctions, 
         totalAuctions,
         isLoading,
 
         showFilters,
         description,
+        lowestPrice, 
+        highestPrice, 
+        location,
+
+        pageSize, 
+        currPage,
+        
     };
 }
 
