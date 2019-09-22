@@ -36,7 +36,7 @@ const loginThunk = (username, password) => {
                             localStorage.setItem('user', JSON.stringify(user));
 
                             // Get user's contacts and messages
-                            dispatch(messageApi.refreshMessagesThunk());
+                            dispatch(messageApi.initInboxThunk());
 
                             // And redirect
                             if (user.userRole === 'ADMIN') {

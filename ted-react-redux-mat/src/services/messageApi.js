@@ -93,17 +93,59 @@ const markAsReadMessage = async (messageId) => {
         .catch(error => { handleError(error) });
 }
 
-const refreshMessagesThunk = () => {
+const initInboxThunk = () => {
     return dispatch => {
-        // get contacts
+        // Init contacts
         dispatch(messageActions.getContactsRequest());
         getAllContacts()
             .then(data => {
-                const selectedContact = data.length > 0 ? data[0] : null
-                dispatch(messageActions.getContactsSuccess(data, selectedContact));
+                dispatch(messageActions.getContactsSuccess(data));
             });
 
-        // get inbox
+        // Init notifications
+        getNotifications()
+            .then(data => {
+                console.log(data);
+            })
+
+        // Init inbox
+        getInboxAll()
+            .then(data => {
+                console.log(data);
+            })
+    }
+}
+
+const refreshInboxThunk = () => {
+    return dispatch => {
+        // Refresh notifications
+        getNotifications()
+            .then(data => {
+                console.log(data);
+            })
+
+        // If there are new notifications, then fetch new stuff
+        // Refresh contacts
+        dispatch(messageActions.getContactsRequest());
+        getAllContacts()
+            .then(data => {
+                dispatch(messageActions.getContactsSuccess(data));
+            });
+
+        // Refresh inbox
+        getInboxAll()
+            .then(data => {
+                console.log(data);
+            })
+    }
+}
+
+const getSentThunk = () => {
+    return dispatch => {
+        getSentAll()
+            .then(data => {
+
+            });
 
     }
 }
@@ -118,5 +160,7 @@ export const messageApi = {
 
     deleteMessage,
 
-    refreshMessagesThunk,
+    initInboxThunk,
+    refreshInboxThunk,
+    getSentThunk,
 };

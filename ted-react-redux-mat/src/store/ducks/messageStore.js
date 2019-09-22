@@ -3,6 +3,9 @@ const messageTypes = {
     GET_CONTACTS_REQUEST: 'ebait/message/GET_CONTACTS_REQUEST',
     GET_CONTACTS_SUCCESS: 'ebait/message/GET_CONTACTS_SUCCESS',
 
+    SELECT_CONTACT: 'ebait/message/SELECT_CONTACT',
+    SELECT_TAB: 'ebait/message/SELECT_TAB',
+
     GET_ALL_INBOX_REQUEST: 'ebait/message/GET_ALL_INBOX_REQUEST',
     GET_ALL_INBOX_SUCCESS: 'ebait/message/GET_ALL_INBOX_SUCCESS',
 
@@ -14,6 +17,9 @@ const messageTypes = {
 export const messageActions = {
     getContactsRequest,
     getContactsSuccess,
+    selectContact,
+
+    selectTab,
 
     getAllInboxRequest,
     getAllInboxSuccess,
@@ -26,8 +32,16 @@ function getContactsRequest() {
     return { type: messageTypes.GET_CONTACTS_REQUEST }
 }
 
-function getContactsSuccess(contacts, selectedContact) {
-    return { type: messageTypes.GET_CONTACTS_SUCCESS, contacts, selectedContact }
+function getContactsSuccess(contacts) {
+    return { type: messageTypes.GET_CONTACTS_SUCCESS, contacts}
+}
+
+function selectContact(selectedContact) {
+    return { type: messageTypes.SELECT_CONTACT, selectedContact }
+}
+
+function selectTab(selectedTab) {
+    return { type: messageTypes.SELECT_TAB, selectedTab }
 }
 
 function getAllInboxRequest() {
@@ -35,7 +49,7 @@ function getAllInboxRequest() {
 }
 
 function getAllInboxSuccess(inbox) {
-    return { type: messageTypes.GET_ALL_INBOX_SUCCESS, inbox}
+    return { type: messageTypes.GET_ALL_INBOX_SUCCESS, inbox }
 }
 
 function getNotifications(notifications) {
@@ -47,11 +61,11 @@ function getNotifications(notifications) {
 // Reducer Initialization
 const initialState = {
     contacts: [],
-    selectedContact: null, 
+    selectedContact: null,
     isLoadingContacts: false,
-    
+
     notifications: 0,
-    //tabValue: 0,
+    tabValue: 0,
 };
 // Reducer
 export default function reducer(state = initialState, action) {
@@ -69,8 +83,31 @@ export default function reducer(state = initialState, action) {
                 ...state,
 
                 contacts: action.contacts,
-                selectedContact: action.selectedContact, 
                 isLoadingContacts: false,
+            };
+        case messageTypes.SELECT_CONTACT:
+            return {
+                ...state,
+
+                selectedContact: action.selectedContact,
+            };
+        case messageTypes.SELECT_TAB:
+            return {
+                ...state,
+
+                tabValue: action.selectedTab,
+            };
+        case messageTypes.GET_ALL_INBOX_REQUEST:
+            return {
+                ...state,
+
+                isLoadingInbox: true,
+            };
+        case messageTypes.GET_ALL_INBOX_SUCCESS:
+            return {
+                ...state,
+
+                isLoadingInbox: false,
             };
         case messageTypes.GET_NOTIFICATIONS:
             return {
