@@ -63,7 +63,7 @@ class Navbar extends Component {
 
     componentDidMount() {
         const { dispatch } = this.props;
-        dispatch(auctionsApi.getAllAuctionsThunk([], '', null, null, null, null, null, 0, 5));
+        dispatch(auctionsApi.getAllAuctionsThunk([], '', null, null, null, null, null, 0, 10));
     }
 
     toggleSidebar = () => {

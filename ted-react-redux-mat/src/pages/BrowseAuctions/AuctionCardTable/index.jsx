@@ -42,6 +42,8 @@ export default function AuctionCardTable(props) {
     const { auctions, pageSize, isLoading, currPage, totalAuctions } = props;
     const { handleChangePage, handleChangeItemsPerPage } = props;
 
+    const pageSizeOptions = [10, 20, 50];
+
     const classes = useStyles();
 
     return (
@@ -77,7 +79,7 @@ export default function AuctionCardTable(props) {
                                 <TablePagination
                                     className={classes.pagination}
                                     labelRowsPerPage="Auctions Per Page"
-                                    rowsPerPageOptions={[5, 10, 15]}
+                                    rowsPerPageOptions={pageSizeOptions}
                                     component="div"
                                     count={totalAuctions}
                                     rowsPerPage={pageSize}
