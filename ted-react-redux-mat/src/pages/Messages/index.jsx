@@ -85,29 +85,29 @@ class Messages extends Component {
     };
 
     componentDidMount = () => {
-        this.getContacts();
+        //this.getContacts();
     }
 
 
-    getContacts = () => {
-        // Start Loading
-        this.setState((prevState, props) => {
-            return { isLoadingContacts: true }
-        })
+    // getContacts = () => {
+    //     // Start Loading
+    //     this.setState((prevState, props) => {
+    //         return { isLoadingContacts: true }
+    //     })
 
-        messageApi.getAllContacts()
-            .then(data => {
-                if (data) {
-                    this.setState((prevState, props) => {
-                        return {
-                            contacts: data,
-                            isLoading: false,
-                            selectedContact: data.length > 0 ? data[0] : null 
-                        }
-                    })
-                }
-            });
-    }
+    //     messageApi.getAllContacts()
+    //         .then(data => {
+    //             if (data) {
+    //                 this.setState((prevState, props) => {
+    //                     return {
+    //                         contacts: data,
+    //                         isLoading: false,
+    //                         selectedContact: data.length > 0 ? data[0] : null 
+    //                     }
+    //                 })
+    //             }
+    //         });
+    // }
 
     // handleRequestSort(event, property) {
     //     this.setState((prevState, props) => {

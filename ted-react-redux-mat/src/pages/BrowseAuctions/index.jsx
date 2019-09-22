@@ -77,35 +77,20 @@ class BrowseAuctions extends Component {
             allCategories: [],
         }],
 
-        //auctions: [],
-
-        //showFilters: false,
-        //description: '',
-        // lowestPrice: null,
-        // highestPrice: null,
-        // location: '',
-
-        pageSize: 5,
+        // pageSizeOptions are [10, 20, 50]
+        pageSize: 10,
         currPage: 0,
 
         order: 'asc',
         orderBy: '',
 
         //totalPages: null,
-        //totalAuctions: null,
-        //isLoading: true,
 
         recoAuctions: [],
         isRecoLoading: true,
     };
 
     componentDidMount() {
-        // const { categoryFields, description, lowestPrice, highestPrice,
-        //     location, order, orderBy, currPage, pageSize } = this.state;
-
-        //this.loadAuctions(categoryFields, description, lowestPrice, highestPrice,
-        //    location, order, orderBy, currPage, pageSize);
-
         this.loadRecommendedAuctions();
 
         auctionsApi.getRootCategories()
@@ -134,29 +119,6 @@ class BrowseAuctions extends Component {
             location, order, orderBy, currPage, pageSize);
     }
 
-    // loadAuctions = (categoryFields, description, lowestPrice, highestPrice, location, order, orderBy, currPage, pageSize) => {
-
-    //     this.setState((prevState, props) => { return { isLoading: true } });
-
-    //     let categories = []
-    //     for (const category of categoryFields.slice(0, categoryFields.length - 1)) {
-    //         categories.push(category.selectedValue);
-    //     }
-
-    //     auctionsApi.getAllAuctions(categories, description, lowestPrice, highestPrice, location,
-    //         order, orderBy, currPage, pageSize)
-    //         .then(data => {
-    //             if (data) {
-    //                 this.setState((prevState, props) => {
-    //                     return {
-    //                         auctions: data.auctions,
-    //                         totalAuctions: data.totalFilteredAuctions,
-    //                         isLoading: false,
-    //                     }
-    //                 });
-    //             }
-    //         });
-    // }
 
     loadRecommendedAuctions = () => {
         //this.setState((prevState, props) => { return { isRecoLoading: true } });
@@ -204,8 +166,13 @@ class BrowseAuctions extends Component {
 
                         const { description, lowestPrice, highestPrice,
                             location, order, orderBy, currPage, pageSize } = prevState;
-                        this.loadAuctions(prevCategories, description, lowestPrice, highestPrice,
-                            location, order, orderBy, currPage, pageSize);
+
+                        const { dispatch } = props;
+                        // this.loadAuctions(prevCategories, description, lowestPrice, highestPrice,
+                        //     location, order, orderBy, currPage, pageSize);
+
+                        dispatch(auctionsApi.getAllAuctionsThunk(prevCategories, description, lowestPrice, highestPrice,
+                                location, order, orderBy, currPage, pageSize));
 
                         return {
                             prevCategories,
@@ -234,9 +201,14 @@ class BrowseAuctions extends Component {
     }
 
     changeFilterVisibility = () => {
-        //this.setState((prevState, props) => { return { showFilters: !prevState.showFilters } });
-        const { dispatch } = this.props;
-        dispatch(auctionActions.toggleFilters());
+        const { dispatch, showFilters } = this.props;
+        if (showFilters) {
+            dispatch(auctionActions.removeFilters());
+        }
+        else {
+            dispatch(auctionActions.addFilters());
+        }
+        
 
     }
 
@@ -373,12 +345,16 @@ class BrowseAuctions extends Component {
 
 function mapStateToProps(state) {
     const { auctionStore } = state;
-    const { auctions, totalFilteredAuctions, isLoading, 
+    const { 
+        auctions, 
+        totalAuctions, 
+        isLoading,
+
         showFilters,
         description } = auctionStore;
     return {
         auctions, 
-        totalFilteredAuctions,
+        totalAuctions,
         isLoading,
 
         showFilters,

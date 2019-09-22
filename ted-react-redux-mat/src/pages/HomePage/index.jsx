@@ -62,7 +62,7 @@ function HomePage(props) {
                                         <Grid item xs={12}>
                                             <WarningMsg
                                                 style={{ borderColor: 'red' }}
-                                                warningText="Thank you for creating an account in eBait! Please be patient until your account is fully verified from one of our administrators and given access to all our features."
+                                                warningText="Thank you for creating an account in eBait! Please be patient until your account is verified from one of our administrators and given full access to all our features."
                                                 backgroundColor='white'
                                                 borderColor='red'
                                             />
