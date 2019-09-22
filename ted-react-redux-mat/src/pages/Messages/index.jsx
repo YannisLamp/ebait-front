@@ -10,8 +10,10 @@ import { connect } from 'react-redux';
 import PaperTitle from '../../sharedComp/PaperTitle';
 import MessageList from './MessageList';
 import ContactList from './ContactList';
+import CreateMessage from './CreateMessage';
 
 import { messageApi } from '../../services';
+import { messageActions } from '../../store/ducks';
 
 
 const styles = theme => ({
@@ -77,11 +79,8 @@ function a11yProps(index) {
 class Messages extends Component {
 
     state = {
-        //contacts: [],
-        //isLoadingContacts: false,
-        //selectedContact: null, 
-
-        tabValue: 0,
+        messageSubject: '',
+        message: '',
     };
 
     componentDidMount = () => {
@@ -109,77 +108,37 @@ class Messages extends Component {
     //         });
     // }
 
-    // handleRequestSort(event, property) {
-    //     this.setState((prevState, props) => {
-    //         const { order, orderBy, pageSize } = prevState;
-    //         const isDesc = orderBy === property && order === 'desc';
-    //         const newOrder = isDesc ? 'asc' : 'desc';
-
-    //         // Also alters State and needs to know the new state
-    //         this.queryTableData(property, newOrder, pageSize, 0);
-    //         return {
-    //             order: newOrder,
-    //             orderBy: property,
-    //             currPage: 0,
-    //         }
-    //     });
-    // }
-
-    // handleChangePage(event, newPage) {
-    //     this.setState((prevState, props) => {
-    //         const { order, orderBy, pageSize } = prevState;
-
-    //         this.queryTableData(orderBy, order, pageSize, newPage);
-    //         return {
-    //             currPage: newPage
-    //         }
-    //     });
-    // }
-
-    // handleChangeRowsPerPage(event) {
-    //     this.setState((prevState, props) => {
-    //         const { order, orderBy } = prevState;
-    //         const newPageSize = +event.target.value;
-
-    //         this.queryTableData(orderBy, order, newPageSize, 0);
-    //         return {
-    //             currPage: 0,
-    //             pageSize: newPageSize,
-    //         }
-    //     });
-
-    // }
-
-    // verifyUser() {
-    //     const { userId } = this.state.userToVerify;
-    //     this.setState((prevState, props) => { return { isVerifying: true } });
-    //     usersApi.verifyUser(userId)
-    //         .then(data => {
-    //             const { order, orderBy, currPage, pageSize } = this.state;
-    //             this.queryTableData(orderBy, order, pageSize, currPage);
-    //             this.setState((prevState, props) => { return { isVerifying: false } });
-    //         });
-    // }
-
-    // changeUser(user) {
-    //     this.setState((prevState, props) => { return { userToVerify: user } });
-    // }
+    handleChange = (e) => {
+        const { name, value } = e.target;
+        this.setState((prevState, props) => { return { [name]: value } });
+    }
 
     handleChangeTab = (e, newValue) => {
-        this.setState((prevState, props) => { return { tabValue: newValue } });
+        const { dispatch } = this.props;
+        dispatch(messageActions.selectTab(newValue));
     }
 
     handleChangeTabIndex = (newValue) => {
-        this.setState((prevState, props) => { return { tabValue: newValue } });
+        const { dispatch } = this.props;
+        dispatch(messageActions.selectTab(newValue));
     }
 
     handleChangeSelectedContact = (index) => { 
-        this.setState((prevState, props) => { return { selectedContact: prevState.contacts[index] } });
-    } 
+        const { dispatch, contacts } = this.props;
+        dispatch(messageActions.selectContact(contacts[index]));
+    }
+
+    sendMessage = () => {
+        const { messageSubject, message } = this.state;
+        const sendId = this.props.selectedContact.userId;
+
+        messageApi.sendMessage(sendId, messageSubject, message);
+
+        this.setState((prevState, props) => { return { messageSubject: '', message: '' } });
+    }
 
     render() {
-        const { tabValue } = this.state;
-        const { contacts, selectedContact } = this.props;
+        const { contacts, selectedContact, tabValue } = this.props;
 
         const { classes, theme } = this.props;
         return (
@@ -231,7 +190,6 @@ class Messages extends Component {
                                         indicatorColor="primary"
                                         textColor="primary"
                                         //variant="fullWidth"
-                                        aria-label="full width tabs example"
                                         centered
                                     >
                                         <Tab className={classes.tabLabel} label="Inbox" {...a11yProps(0)} />
@@ -251,11 +209,15 @@ class Messages extends Component {
                                         <MessageList />
                                     </TabPanel>
                                     <TabPanel value={tabValue} index={2} dir={theme.direction}>
-                                        Item Three
-                                        </TabPanel>
+                                        <CreateMessage 
+                                            selectedContact={selectedContact}
+
+                                            handleChange={this.handleChange}
+                                            sendMessage={this.sendMessage}
+                                        />
+                                    </TabPanel>
                                 </SwipeableViews>
 
-                                {/* <MessageList /> */}
                             </Paper>
 
                         </Grid>
@@ -274,12 +236,14 @@ function mapStateToProps(state) {
     const { 
         contacts, 
         selectedContact,
-        isLoadingContacts,     
+        isLoadingContacts,
+        tabValue,     
     } = messageStore;
     return {
         contacts, 
         selectedContact,
-        isLoadingContacts
+        isLoadingContacts,
+        tabValue,
     };
 }
 
