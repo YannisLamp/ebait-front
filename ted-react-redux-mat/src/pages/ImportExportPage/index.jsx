@@ -32,9 +32,20 @@ const styles = theme => ({
         minHeight: '80vh',
         //height: '75vh',
     },
+    paperGrid: {
+        minHeight: '80vh',
+    },
     input: {
         display: 'none',
     },
+    importButton: {
+        marginTop: theme.spacing(1),
+        marginBottom: theme.spacing(2),
+    },
+    exportButton: {
+        marginTop: theme.spacing(1),
+        marginBottom: theme.spacing(2),
+    }
 });
 
 
@@ -133,16 +144,19 @@ class ImportExportPage extends Component {
                         lg={5}
                     >
                         <Paper className={classes.paper}>
-                            <PaperTitle
-                                title='Import Auctions'
-                                suggestion={''}
-                            />
                             <Grid className={classes.paperGrid} container direction="column" justify="space-between">
+                                <Grid item>
+                                    <PaperTitle
+                                        title='Import Auctions'
+                                        suggestion={''}
+                                    />
+                                </Grid>
+
                                 <Grid item>
                                     Step 0
 
 
-                                    </Grid>
+                                </Grid>
 
 
                                 <Grid item alignContent="center">
@@ -155,12 +169,13 @@ class ImportExportPage extends Component {
                                         onChange={this.hasNewXml}
                                     />
                                     <label htmlFor="contained-button-file">
-                                        <Button variant="contained" component="span">
+                                        <Button className={classes.importButton} variant="contained" component="span">
                                             Upload Xml
-                                                </Button>
+                                        </Button>
                                     </label>
 
                                     <Button
+                                        className={classes.importButton}
                                         color="primary"
                                         type="submit"
                                         onClick={this.parse}
@@ -182,23 +197,30 @@ class ImportExportPage extends Component {
                         lg={5}
                     >
                         <Paper className={classes.paper}>
-                            <PaperTitle
-                                title='Export Auctions'
-                                suggestion={''}
-                            />
                             <Grid className={classes.paperGrid} container direction="column" justify="space-between">
 
-                                <Button
-                                    color="primary"
-                                    type="submit"
-                                    onClick={e => { this.export("xml") }}
-                                    //size="large"
-                                    variant="contained"
-                                >
-                                    Export xml
+                                <Grid item>
+                                    <PaperTitle
+                                        title='Export Auctions'
+                                        suggestion={''}
+                                    />
+                                </Grid>
+
+                                <Grid item>
+                                    <Button
+                                        className={classes.exportButton}
+                                        color="primary"
+                                        type="submit"
+                                        onClick={e => { this.export("xml") }}
+                                        //size="large"
+                                        variant="contained"
+                                    >
+                                        Export xml
                                     </Button>
+                                </Grid>
 
                                 <Button
+                                    className={classes.exportButton}
                                     color="primary"
                                     type="submit"
                                     onClick={e => { this.export("json") }}
@@ -206,7 +228,7 @@ class ImportExportPage extends Component {
                                     variant="contained"
                                 >
                                     Export json
-                                    </Button>
+                                </Button>
 
                             </Grid>
 
