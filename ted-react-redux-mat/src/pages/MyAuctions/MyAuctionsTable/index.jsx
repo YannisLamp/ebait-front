@@ -24,13 +24,15 @@ const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
         height: 'inherit',
+        overflowX: 'auto',
+        display: 'block',
+        whiteSpace: 'nowrap',
     },
     table: {
-        minWidth: 750,
+        //minWidth: 750,
     },
     tableWrapper: {
         marginTop: theme.spacing(4),
-        overflowX: 'auto',
     },
     notDecorated: {
         textDecoration: 'none',
