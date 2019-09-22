@@ -6,11 +6,6 @@ import {
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-
-import { CheckBox as CheckBoxIcon, CheckBoxOutlineBlank as CheckBoxBlankIcon } from '@material-ui/icons';
-
-import PaperTitle from '../../../sharedComp/PaperTitle';
-
 import { makeStyles } from '@material-ui/core';
 
 
@@ -25,19 +20,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-export default function MessageList() {
-
-    //const { users, order, orderBy, pageSize, isLoading, currPage, totalUsers } = this.props;
-    //const { changeUser, handleRequestSort, handleChangePage, handleChangeRowsPerPage } = this.props;
-
-    //const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.users.length - page * rowsPerPage);
-    // let emptyRows = pageSize;
-    // if (this.props.users) {
-    //     emptyRows = emptyRows - this.props.users.length;
-    // }
+export default function MessageList(props) {
+    //const { users, order, orderBy, pageSize, isLoading, currPage, totalUsers } = props;
 
     const classes = useStyles;
-
     return (
         <div className={classes.root}>
             <ExpansionPanel>
@@ -46,10 +32,10 @@ export default function MessageList() {
                     aria-controls="panel1a-content"
                     id="panel1a-header"
                 >
-                    <Typography className={classes.heading}>Expansion Panel 1</Typography>
+                    <Typography className={classes.heading} style={{fontWeight: 'bold'}}>Expansion Panel 1</Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
-                    <Typography>
+                    <Typography style={{fontWeight: 'bold'}}>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
                         sit amet blandit leo lobortis eget.
           </Typography>

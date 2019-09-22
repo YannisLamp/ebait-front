@@ -69,7 +69,7 @@ export default function ContactList(props) {
                                 <ListItem
                                     className={classes.listItem}
                                     //activeClassName={classes.activeListItem}
-                                    selected={contact.userId === selectedContact.userId}
+                                    selected={selectedContact && contact.userId === selectedContact.userId}
                                     onClick={event => handleChangeSelectedContact(index)} 
                                     alignItems="center"
                                 >
@@ -79,7 +79,7 @@ export default function ContactList(props) {
                                         </Avatar>
                                     </ListItemAvatar>
                                     <ListItemText
-                                        primary={contact.firstName + contact.lastName}
+                                        primary={contact.firstName + " " + contact.lastName}
                                     //   secondary={
                                     //     <React.Fragment>
                                     //       <Typography
