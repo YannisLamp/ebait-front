@@ -7,8 +7,12 @@ const auctionTypes = {
     ALTER_CATEGORIES: 'ebait/auction/ALTER_CATEGORIES',
 
     ADD_FILTERS: 'ebait/auction/ADD_FILTERS',
-    UPDATE_FILTERS: 'ebait/auction/UPDATE_FILTERS',
     REMOVE_FILTERS: 'ebait/auction/REMOVE_FILTERS',
+
+    UPDATE_FILTERS: 'ebait/auction/UPDATE_FILTERS',
+
+    ADD_CATEGORY: 'ebait/auction/ADD_CATEGORY',
+    REMOVE_CATEGORY: 'ebait/auction/REMOVE_CATEGORY',
 }
 
 
@@ -17,9 +21,12 @@ export const auctionActions = {
     getAuctionsRequest,
     getAuctionsSuccess,
 
-    updateFilters,
     addFilters,
     removeFilters,
+    updateFilters,
+
+    addCategory,
+    removeCategory,
 }
 
 
@@ -43,17 +50,25 @@ function removeFilters() {
     return { type: auctionTypes.REMOVE_FILTERS }
 }
 
+function addCategory(category) {
+    return { type: auctionTypes.ADD_CATEGORY, category }
+}
+
+function removeCategory() {
+    return { type: auctionTypes.REMOVE_CATEGORY }
+}
+
 
 
 // Reducer Initialization
 const initialState = {
     auctions: [], totalAuctions: 0, isLoading: true,
-    description: '', lowestPrice: null, highestPrice: null, location: '', showFilters: false
+    description: '', lowestPrice: null, highestPrice: null, location: '', showFilters: false,
+    categories: [],
+
 };
 // Reducer
 export default function reducer(state = initialState, action) {
-    //const { showFilters } = state;
-
     switch (action.type) {
         case auctionTypes.GET_AUCTIONS_REQUEST:
             return {
@@ -84,6 +99,7 @@ export default function reducer(state = initialState, action) {
                 showFilters: true
             };
         case auctionTypes.REMOVE_FILTERS:
+            const allCategories = state.categories[0].allCategories;    
             return {
                 ...state,
 
@@ -91,7 +107,24 @@ export default function reducer(state = initialState, action) {
                 lowestPrice: null,
                 highestPrice: null,
                 location: '',
+                categories: [{
+                    allCategories: allCategories,
+                    selectedIndex: '',
+                    selectedValue: '',
+                }],
                 showFilters: false
+            };
+        case auctionTypes.ADD_CATEGORY:
+            return {
+                ...state,
+                
+
+            };
+        case auctionTypes.REMOVE_CATEGORY:
+            return {
+                ...state,
+
+                
             };
 
         default:
