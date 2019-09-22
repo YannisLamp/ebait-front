@@ -23,19 +23,19 @@ export const messageActions = {
 
 
 function getContactsRequest() {
-    return { type: messageTypes.REFRESH_MESSAGES_REQUEST }
+    return { type: messageTypes.GET_CONTACTS_REQUEST }
 }
 
-function getContactsSuccess(contacts) {
-    return { type: messageTypes.REFRESH_MESSAGES_SUCCESS, contacts}
+function getContactsSuccess(contacts, selectedContact) {
+    return { type: messageTypes.GET_CONTACTS_SUCCESS, contacts, selectedContact }
 }
 
 function getAllInboxRequest() {
-    return { type: messageTypes.REFRESH_MESSAGES_REQUEST }
+    return { type: messageTypes.GET_ALL_INBOX_REQUEST }
 }
 
 function getAllInboxSuccess(inbox) {
-    return { type: messageTypes.REFRESH_MESSAGES_SUCCESS, inbox}
+    return { type: messageTypes.GET_ALL_INBOX_SUCCESS, inbox}
 }
 
 function getNotifications(notifications) {
@@ -58,17 +58,17 @@ export default function reducer(state = initialState, action) {
     //const { showFilters } = state;
 
     switch (action.type) {
-        case messageTypes.REFRESH_MESSAGES_REQUEST:
+        case messageTypes.GET_CONTACTS_REQUEST:
             return {
                 ...state,
 
                 isLoadingContacts: true,
             };
-        case messageTypes.REFRESH_MESSAGES_SUCCESS:
+        case messageTypes.GET_CONTACTS_SUCCESS:
             return {
                 ...state,
 
-                contacts: contacts,
+                contacts: action.contacts,
                 selectedContact: action.selectedContact, 
                 isLoadingContacts: false,
             };

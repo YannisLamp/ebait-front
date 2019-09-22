@@ -5,12 +5,10 @@ import { userActions } from '../store/ducks/userStore';
 import { alertActions } from '../store/ducks/alertStore';
 
 import { usersApi } from './usersApi';
+import { messageApi } from './messageApi';
 import handleError from './handleError';
 
 // response.headers
-
-
-
 const loginThunk = (username, password) => {
     return dispatch => {
         dispatch(userActions.loginRequest({ username }));
@@ -36,6 +34,9 @@ const loginThunk = (username, password) => {
                             dispatch(userActions.loginSuccess(user))
                             // Also store retrieved information locally so that they persist
                             localStorage.setItem('user', JSON.stringify(user));
+
+                            // Get user's contacts and messages
+                            dispatch(messageApi.refreshMessagesThunk());
 
                             // And redirect
                             if (user.userRole === 'ADMIN') {

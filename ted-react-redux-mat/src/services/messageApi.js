@@ -96,10 +96,12 @@ const markAsReadMessage = async (messageId) => {
 const refreshMessagesThunk = () => {
     return dispatch => {
         // get contacts
+        dispatch(messageActions.getContactsRequest());
         getAllContacts()
-            .then(contacts => {
-                messageActions
-            })
+            .then(data => {
+                const selectedContact = data.length > 0 ? data[0] : null
+                dispatch(messageActions.getContactsSuccess(data, selectedContact));
+            });
 
         // get inbox
 
@@ -115,4 +117,6 @@ export const messageApi = {
     getSentTo,
 
     deleteMessage,
+
+    refreshMessagesThunk,
 };
