@@ -3,6 +3,8 @@ import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { userActions } from '../../store/ducks/userStore';
 import { auctionsApi } from '../../services/auctionsApi';
+import { messageApi } from '../../services/messageApi';
+
 import { AppBar, Toolbar, Typography, IconButton, TextField, MenuItem, Badge, Menu, Box } from '@material-ui/core';
 
 // Material icons
@@ -64,6 +66,22 @@ class Navbar extends Component {
     componentDidMount() {
         const { dispatch } = this.props;
         dispatch(auctionsApi.getAllAuctionsThunk([], '', null, null, null, null, null, 0, 10));
+
+        if (this.props.user) {
+            dispatch(messageApi.refreshInboxThunk());
+        }
+        this.dataPolling = setInterval( 
+            () => { 
+                if (this.props.user) {
+                    dispatch(messageApi.refreshInboxThunk());
+                }
+            }, 
+            20000
+        );
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.dataPolling);
     }
 
     toggleSidebar = () => {
@@ -89,6 +107,7 @@ class Navbar extends Component {
             }
         });
     }
+
 
     render() {
         const { anchorEl } = this.state;
@@ -197,10 +216,12 @@ class Navbar extends Component {
 
 
 function mapStateToProps(state) {
-    const { userStore } = state;
-    const { user, sidebarOpen } = userStore;
+    const { userStore, messageStore } = state;
+    const { user } = userStore;
+    const { notifications } = messageStore;
     return {
-        user
+        user,
+        notifications
     };
 }
 
