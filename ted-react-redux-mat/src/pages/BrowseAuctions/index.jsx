@@ -123,65 +123,17 @@ class BrowseAuctions extends Component {
     handleCategoryPick = (e, level) => {
         // Value is the category's index in the level's all categories
         const catIndex = e.target.value;
-        const cat = this.state.categoryFields[level].allCategories[catIndex];
-        // Get the categories of the next level
-        auctionsApi.getChildrenCategories(cat.id)
-            .then(data => {
-                if (data) {
-                    this.setState((prevState, props) => {
-                        let prevCategories = prevState.categoryFields;
+        const { categoryFields, description, lowestPrice, highestPrice,
+            location, order, orderBy, currPage, pageSize, dispatch } = this.props;
 
-                        // Change current field value
-                        prevCategories[cat.level].selectedIndex = catIndex;
-                        prevCategories[cat.level].selectedValue = cat.name;
-
-                        if (data.length > 0) {
-                            // We want an extra object to be in the list 
-                            prevCategories.splice(cat.level + 2);
-                            prevCategories[cat.level + 1] = {
-                                selectedIndex: '',
-                                selectedValue: '',
-                                allCategories: data,
-                            }
-                        }
-                        else {
-                            prevCategories.splice(cat.level + 1);
-                        }
-
-                        const { description, lowestPrice, highestPrice,
-                            location, order, orderBy, currPage, pageSize } = prevState;
-
-                        const { dispatch } = props;
-                        // this.loadAuctions(prevCategories, description, lowestPrice, highestPrice,
-                        //     location, order, orderBy, currPage, pageSize);
-
-                        dispatch(auctionsApi.getAllAuctionsThunk(prevCategories, description, lowestPrice, highestPrice,
-                                location, order, orderBy, currPage, pageSize));
-
-                        return {
-                            prevCategories,
-                        }
-                    });
-                }
-            });
+        dispatch(auctionsApi.pickCategoryThunk(catIndex, level, categoryFields, description, lowestPrice, highestPrice, location, order, orderBy, currPage, pageSize));
     }
 
     deleteCategory = () => {
-        this.setState((prevState, props) => {
-            let prevCategories = prevState.categoryFields;
+        const { categoryFields, description, lowestPrice, highestPrice,
+            location, order, orderBy, currPage, pageSize, dispatch } = this.props;
 
-            if (prevCategories.length === 1) {
-                prevCategories[0].selectedIndex = '';
-                prevCategories[0].selectedValue = '';
-            }
-            else {
-                prevCategories.pop();
-            }
-
-            return {
-                categoryFields: prevCategories
-            }
-        });
+        dispatch(auctionsApi.deleteCategoryThunk(categoryFields, description, lowestPrice, highestPrice, location, order, orderBy, currPage, pageSize));
     }
 
     changeFilterVisibility = () => {
@@ -265,6 +217,7 @@ class BrowseAuctions extends Component {
                                     <CategoryList
                                         categoryFields={categoryFields}
                                         handleCategoryPick={this.handleCategoryPick}
+                                        deleteCategory={this.deleteCategory}
                                     />
                                 </Collapse>
                             </div>

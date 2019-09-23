@@ -12,8 +12,9 @@ const auctionTypes = {
     CHANGE_CURRENT_PAGE: 'ebait/auction/CHANGE_CURRENT_PAGE',
 
     INIT_CATEGORY: 'ebait/auction/INIT_CATEGORY',
-    ADD_CATEGORY: 'ebait/auction/ADD_CATEGORY',
-    REMOVE_CATEGORY: 'ebait/auction/REMOVE_CATEGORY',
+    SET_CATEGORIES: 'ebait/auction/SET_CATEGORIES',
+
+    CLEAR_STORE: 'ebait/auction/CLEAR_STORE',
 }
 
 
@@ -30,8 +31,7 @@ export const auctionActions = {
     changeCurrentPage,
 
     initCategory,
-    addCategory,
-    removeCategory,
+    setCategories,
 }
 
 
@@ -68,12 +68,8 @@ function initCategory(category) {
     return { type: auctionTypes.INIT_CATEGORY, category }
 }
 
-function addCategory(category) {
-    return { type: auctionTypes.ADD_CATEGORY, category }
-}
-
-function removeCategory() {
-    return { type: auctionTypes.REMOVE_CATEGORY }
+function setCategories(categoryFields) {
+    return { type: auctionTypes.SET_CATEGORIES, categoryFields }
 }
 
 
@@ -121,7 +117,7 @@ export default function reducer(state = initialState, action) {
                 showFilters: true
             };
         case auctionTypes.REMOVE_FILTERS:
-            const allCategories = state.categories[0].allCategories;
+            const allCategories = state.categoryFields[0].allCategories;
             return {
                 ...state,
 
@@ -142,17 +138,11 @@ export default function reducer(state = initialState, action) {
 
                 categoryFields: [action.category],
             };
-        case auctionTypes.ADD_CATEGORY:
+        case auctionTypes.SET_CATEGORIES:
             return {
                 ...state,
 
-
-            };
-        case auctionTypes.REMOVE_CATEGORY:
-            return {
-                ...state,
-
-
+                categoryFields: action.categoryFields
             };
         case auctionTypes.CHANGE_PAGE_SIZE:
             return {

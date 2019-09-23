@@ -309,6 +309,64 @@ const getRootCategoriesThunk = () => {
     }
 }
 
+const initFromScratchThunk = () => {
+    return dispatch => {
+        dispatch(getRootCategoriesThunk());
+        dispatch(getAllAuctionsThunk([], '', null, null, null, null, null, 0, 10));
+    }
+}
+
+const pickCategoryThunk = (catIndex, level, categoryFields, description, lowestPrice, highestPrice, location, order, orderBy, currPage, pageSize) => {
+
+    return dispatch => {
+        const cat = categoryFields[level].allCategories[catIndex];
+        // Get the categories of the next level
+        getChildrenCategories(cat.id)
+            .then(data => {
+                if (data) {
+                    // Change current field value
+                    categoryFields[cat.level].selectedIndex = catIndex;
+                    categoryFields[cat.level].selectedValue = cat.name;
+
+                    if (data.length > 0) {
+                        // We want an extra object to be in the list
+                        categoryFields.splice(cat.level + 2);
+                        categoryFields[cat.level + 1] = {
+                            selectedIndex: '',
+                            selectedValue: '',
+                            allCategories: data,
+                        }
+                    }
+                    else {
+                        categoryFields.splice(cat.level + 1);
+                    }
+
+                    dispatch(auctionsApi.getAllAuctionsThunk(categoryFields, description, lowestPrice, highestPrice,
+                        location, order, orderBy, currPage, pageSize));
+
+                    dispatch(auctionActions.setCategories(categoryFields));
+                }
+            });
+    }
+}
+
+const deleteCategoryThunk = (categoryFields, description, lowestPrice, highestPrice, location, order, orderBy, currPage, pageSize) => {
+    return dispatch => {
+        if (categoryFields.length === 1) {
+            categoryFields[0].selectedIndex = '';
+            categoryFields[0].selectedValue = '';
+        }
+        else {
+            categoryFields.pop();
+        }
+
+        dispatch(auctionsApi.getAllAuctionsThunk(categoryFields, description, lowestPrice, highestPrice,
+            location, order, orderBy, currPage, pageSize));
+
+        dispatch(auctionActions.setCategories(categoryFields));
+    }
+}
+
 export const auctionsApi = {
     createAuction,
     editAuction,
@@ -331,4 +389,7 @@ export const auctionsApi = {
     changePageThunk,
     changePageSizeThunk,
     getRootCategoriesThunk,
+    initFromScratchThunk,
+    pickCategoryThunk,
+    deleteCategoryThunk,
 };

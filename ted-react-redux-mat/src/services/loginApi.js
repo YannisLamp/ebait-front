@@ -3,9 +3,11 @@ import axios from './axiosConfig';
 
 import { userActions } from '../store/ducks/userStore';
 import { alertActions } from '../store/ducks/alertStore';
+import { messageActions } from '../store/ducks/messageStore';
 
 import { usersApi } from './usersApi';
 import { messageApi } from './messageApi';
+import { auctionsApi } from './auctionsApi';
 import handleError from './handleError';
 
 // response.headers
@@ -89,7 +91,11 @@ const logoutThunk = () => {
     // Clean up local storage
     localStorage.removeItem('user');
     localStorage.removeItem('jwt');
-    return dispatch => dispatch(userActions.logoutAction());
+    return dispatch => {
+        dispatch(userActions.logoutAction());
+        dispatch(messageActions.clearStore());
+        dispatch(auctionsApi.initFromScratchThunk());
+    }
 }
 
 export const loginApi = {

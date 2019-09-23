@@ -65,7 +65,7 @@ class Navbar extends Component {
 
     componentDidMount() {
         const { dispatch } = this.props;
-        dispatch(auctionsApi.getAllAuctionsThunk([], '', null, null, null, null, null, 0, 10));
+        dispatch(auctionsApi.initFromScratchThunk());
 
         if (this.props.user) {
             dispatch(messageApi.refreshInboxThunk());
@@ -75,7 +75,7 @@ class Navbar extends Component {
                 if (this.props.user) {
                     dispatch(messageApi.refreshInboxThunk());
                 }
-            }, 
+            },
             20000
         );
     }
