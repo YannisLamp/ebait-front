@@ -16,8 +16,13 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
         height: 'inherit',
     },
-    marginFromTitle: {
+    description: {
         marginTop: theme.spacing(4),
+        marginBottom: theme.spacing(2),
+
+        overflow: 'auto',
+        display: 'block',
+        height: '60vh',
     },
     notDecorated: {
         textDecoration: 'none',
@@ -53,7 +58,7 @@ function AuctionDetails(props) {
                     //suggestion={'Auction Details'}
                     />
 
-                    <div className={classes.marginFromTitle}>
+                    <div className={classes.description}>
                         <Typography >
                             {'Description: ' + auction.description}
                         </Typography>
