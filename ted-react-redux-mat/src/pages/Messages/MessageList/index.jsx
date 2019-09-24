@@ -39,7 +39,7 @@ export default function MessageList(props) {
                         <ExpansionPanel key={message.id}>
                             <ExpansionPanelSummary
                                 expandIcon={<ExpandMoreIcon />}
-                                onClick={e => { onClickMessage(message.id) }}
+                                onClick={e => { if (!message.read) { onClickMessage(message.id) } }}
                             // aria-controls="panel1a-content"
                             // id="panel1a-header"
                             >
