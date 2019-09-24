@@ -92,6 +92,8 @@ class ViewAuction extends Component {
                     this.setState((prevState, props) => {
                         return {
                             auction: data,
+                            isBidding: false,
+                            isBuying: false,
                         }
                     });
                 }
@@ -123,7 +125,7 @@ class ViewAuction extends Component {
 
         auctionsApi.placeBid(itemID, myBid)
             .then(response => {
-                this.setState((prevState, props) => { return { isBidding: false } });
+                this.refreshAuctionById();
             })
     }
 
@@ -134,7 +136,7 @@ class ViewAuction extends Component {
 
         auctionsApi.buyoutAuction(itemID)
             .then(response => {
-                this.setState((prevState, props) => { return { isBuying: false } });
+                this.refreshAuctionById();
             })
     }
 

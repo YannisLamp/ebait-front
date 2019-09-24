@@ -65,8 +65,8 @@ function AuctionDetails(props) {
 
                     </div>
 
-                    <Typography >
-                        {'Ends On: ' + auction.ends}
+                    <Typography>
+                        {'Auction Ends On: ' + auction.ends}
                     </Typography>
                 </Grid>
 
@@ -74,12 +74,12 @@ function AuctionDetails(props) {
                 <Grid item>
                     <Typography >
                         {'Current Bid: ' + auction.currently}
-                        {auction.bids.length > 0 ? 'From: ' : ' '}
+                        {/* {auction.bids.length > 0 ? 'From: ' : ' '} */}
                     </Typography>
-                    <Typography >
+                    {/* <Typography >
                         {'Started From: ' + auction.firstBid}
-                    </Typography>
-
+                    </Typography> */}
+                    <Grid container justify="flex-end">
                     <Button
                         className={classes.bidButton}
                         color="primary"
@@ -87,10 +87,12 @@ function AuctionDetails(props) {
                         onClick={buyoutAuction}
                         size="large"
                         variant="contained"
-                        disabled={auction.eventFinished || !hasPriv}
+                        disabled={!auction.buyPrice || auction.eventFinished || !hasPriv}
                     >
                         Buyout
                     </Button>
+                    </Grid>
+
                     <Grid container justify="flex-end">
                         <TextField
                             name="myBid"
