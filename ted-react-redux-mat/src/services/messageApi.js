@@ -139,7 +139,7 @@ const notificationsClickThunk = () => {
     return dispatch => {
         dispatch(messageActions.selectTab(0));
         dispatch(messageActions.selectContact(null));
-        history.push("./messages");
+        history.push("/messages");
     }
 }
 
