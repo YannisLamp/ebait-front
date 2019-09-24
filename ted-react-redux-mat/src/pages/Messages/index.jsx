@@ -24,7 +24,7 @@ const styles = theme => ({
         paddingLeft: theme.spacing(3),
         paddingRight: theme.spacing(3),
         marginBottom: theme.spacing(2),
-        height: '80vh',
+        minHeight: '80vh',
     },
     leftPaper: {
         width: '100%',
@@ -81,6 +81,8 @@ class Messages extends Component {
     state = {
         messageSubject: '',
         message: '',
+
+        userIdToNames: [],
     };
 
     componentDidMount = () => {
@@ -108,6 +110,11 @@ class Messages extends Component {
         dispatch(messageActions.selectContact(contacts[index]));
     }
 
+    handleChangeSelectedContactAll = () => {
+        const { dispatch } = this.props;
+        dispatch(messageActions.selectContact(null));
+    }
+
     sendMessage = () => {
         const { messageSubject, message } = this.state;
         const sendId = this.props.selectedContact.userId;
@@ -122,6 +129,14 @@ class Messages extends Component {
     render() {
         const { messageSubject, message } = this.state;
         const { contacts, selectedContact, tabValue, inbox, sent } = this.props;
+
+        // Make userId To display names map
+        let userIdToNames = [];
+        if (this.props.contacts) {
+            for (const user of this.props.contacts) {
+                userIdToNames[user.userId] = user.firstName + " " + user.lastName
+            }
+        }
 
         const { classes, theme } = this.props;
         return (
@@ -142,7 +157,8 @@ class Messages extends Component {
                                 contacts={contacts} 
                                 selectedContact={selectedContact} 
                                 
-                                handleChangeSelectedContact={this.handleChangeSelectedContact}    
+                                handleChangeSelectedContact={this.handleChangeSelectedContact}
+                                handleChangeSelectedContactAll={this.handleChangeSelectedContactAll}  
                             />
                         </Paper>
                     </Grid>
@@ -188,11 +204,21 @@ class Messages extends Component {
                                     <TabPanel value={tabValue} index={0} dir={theme.direction}>
                                         <MessageList 
                                             messages={inbox}
+                                            userIdToNames={userIdToNames}
+                                            selectedContact={selectedContact}
+                                            listType="inbox"
+
+                                            markAsReadMessage={messageApi.markAsReadMessage}
                                         />
                                     </TabPanel>
                                     <TabPanel value={tabValue} index={1} dir={theme.direction}>
                                         <MessageList 
                                             messages={sent}
+                                            userIdToNames={userIdToNames}
+                                            selectedContact={selectedContact}
+                                            listType="sent"
+
+                                            markAsReadMessage={messageApi.markAsReadMessage}
                                         />
                                     </TabPanel>
                                     <TabPanel value={tabValue} index={2} dir={theme.direction}>

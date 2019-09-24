@@ -83,6 +83,7 @@ const deleteMessage = async (messageId) => {
         .catch(error => { handleError(error) });
 }
 
+//return axios.put('/messages/', {id: messageId})
 const markAsReadMessage = async (messageId) => {
     return axios.put('/messages/' + messageId, {})
         .then(
@@ -95,29 +96,6 @@ const markAsReadMessage = async (messageId) => {
 
 const initInboxThunk = () => {
     return dispatch => {
-        // Init contacts
-        dispatch(messageActions.getContactsRequest());
-        getAllContacts()
-            .then(data => {
-                dispatch(messageActions.getContactsSuccess(data));
-            });
-
-        // Init notifications
-        getNotifications()
-            .then(data => {
-                console.log(data);
-            })
-
-        // Init inbox
-        getInboxAll()
-            .then(data => {
-                console.log(data);
-            })
-    }
-}
-
-const refreshInboxThunk = () => {
-    return dispatch => {
         // Refresh notifications
         getNotifications()
             .then(data => {
@@ -128,6 +106,35 @@ const refreshInboxThunk = () => {
 
         // If there are new notifications, then fetch new stuff
         // Refresh contacts
+        dispatch(messageActions.getContactsRequest());
+        getAllContacts()
+            .then(data => {
+                dispatch(messageActions.getContactsSuccess(data));
+            });
+
+        // Refresh inbox
+        dispatch(messageActions.getAllInboxRequest());
+        getInboxAll()
+            .then(data => {
+                if (data) {
+                    dispatch(messageActions.getAllInboxSuccess(data));
+                }
+            })
+    }
+}
+
+const refreshInboxThunk = (prevNotifications) => {
+    return dispatch => {
+        // Refresh notifications
+        getNotifications()
+            .then(data => {
+                if (data) {
+                    dispatch(messageActions.getNotifications(data));
+                }
+            })
+
+        // If there are new notifications, then fetch new stuff
+        //if ()
         dispatch(messageActions.getContactsRequest());
         getAllContacts()
             .then(data => {
@@ -166,6 +173,7 @@ export const messageApi = {
     getInboxFrom,
     getSentTo,
 
+    markAsReadMessage,
     deleteMessage,
 
     initInboxThunk,

@@ -19,19 +19,19 @@ const useStyles = makeStyles(theme => ({
     listItem: {
         cursor: 'pointer',
         '&:hover': {
-        //backgroundColor: theme.palette.primary.light,
-        //borderLeft: `4px solid ${theme.palette.primary.main}`,
-        //borderRadius: '4px',
-        '& $listItemIcon': {
-            color: theme.palette.secondary.light,
-            //marginLeft: '-4px'
-        },
-        '& $listItemText': {
-            color: theme.palette.text.secondary,
-        },
+            //backgroundColor: theme.palette.primary.light,
+            //borderLeft: `4px solid ${theme.palette.primary.main}`,
+            //borderRadius: '4px',
+            '& $listItemIcon': {
+                color: theme.palette.secondary.light,
+                //marginLeft: '-4px'
+            },
+            '& $listItemText': {
+                color: theme.palette.text.secondary,
+            },
         },
         '& + &': {
-        marginTop: theme.spacing(1)
+            marginTop: theme.spacing(1)
         }
     },
     activeListItem: {
@@ -43,16 +43,16 @@ const useStyles = makeStyles(theme => ({
             //marginLeft: '-4px'
         },
         '& $listItemText': {
-        color: theme.palette.text.secondary
+            color: theme.palette.text.secondary
         },
-        
+
     },
 }));
 
 export default function ContactList(props) {
     const { contacts, selectedContact } = props;
-    
-    const { handleChangeSelectedContact } = props;
+
+    const { handleChangeSelectedContact, handleChangeSelectedContactAll } = props;
 
     const classes = useStyles();
     return (
@@ -62,15 +62,31 @@ export default function ContactList(props) {
                 suggestion={''}
             />
             <List>
+                <ListItem
+                    className={classes.listItem}
+                    //activeClassName={classes.activeListItem}
+                    selected={!selectedContact}
+                    onClick={handleChangeSelectedContactAll}
+                    alignItems="center"
+                >
+                    {/* <ListItemAvatar>
+                        <Avatar>
+                            {contact.firstName.charAt(0) + contact.lastName.charAt(0)}
+                        </Avatar>
+                    </ListItemAvatar> */}
+                    <ListItemText
+                        primary={"All"}
+                    />
+                </ListItem>
                 {
                     contacts.map((contact, index) => {
                         return (
-                            <>
+                            <div key={index}>
                                 <ListItem
                                     className={classes.listItem}
                                     //activeClassName={classes.activeListItem}
                                     selected={selectedContact && contact.userId === selectedContact.userId}
-                                    onClick={event => handleChangeSelectedContact(index)} 
+                                    onClick={event => handleChangeSelectedContact(index)}
                                     alignItems="center"
                                 >
                                     <ListItemAvatar>
@@ -97,7 +113,7 @@ export default function ContactList(props) {
                                 </ListItem>
 
                                 <Divider variant="inset" component="li" />
-                            </>
+                            </div>
                         );
                     })
                 }

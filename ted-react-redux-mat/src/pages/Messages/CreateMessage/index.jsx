@@ -8,14 +8,17 @@ import { makeStyles } from '@material-ui/core';
 const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
-        height: '60vh',
+        minHeight: '60vh',
     },
     heading: {
         fontSize: theme.typography.pxToRem(15),
         fontWeight: theme.typography.fontWeightRegular,
     },
     grid: {
-        height: '60vh',
+        minHeight: '60vh',
+    },
+    messageInput: {
+        marginTop: theme.spacing(6),
     },
     sendButton: {
         marginTop: theme.spacing(1),
@@ -74,7 +77,7 @@ export default function MessageList(props) {
                         multiline
                         rows="6"
                         fullWidth
-                        className={classes.textField}
+                        className={classes.messageInput}
                         variant="outlined"
                         onChange={handleChange}
                         InputLabelProps={{
@@ -90,6 +93,7 @@ export default function MessageList(props) {
                         type="submit"
                         fullWidth
                         onClick={sendMessage}
+                        disabled={ !selectedContact || messageSubject === ''}
                         //size="large"
                         variant="contained"
                     >
