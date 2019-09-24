@@ -105,7 +105,7 @@ class Messages extends Component {
         dispatch(messageActions.selectTab(newValue));
     }
 
-    handleChangeSelectedContact = (index) => { 
+    handleChangeSelectedContact = (index) => {
         const { dispatch, contacts } = this.props;
         dispatch(messageActions.selectContact(contacts[index]));
     }
@@ -119,9 +119,11 @@ class Messages extends Component {
         const { messageSubject, message } = this.state;
         const sendId = this.props.selectedContact.userId;
 
-        messageApi.sendMessage(sendId, messageSubject, message);
-        const { dispatch } = this.props;
-        dispatch(messageApi.getSentThunk());
+        messageApi.sendMessage(sendId, messageSubject, message)
+            .then(data => {
+                const { dispatch } = this.props;
+                dispatch(messageApi.getSentThunk());
+            })
 
         this.setState((prevState, props) => { return { messageSubject: '', message: '' } });
     }
@@ -153,12 +155,12 @@ class Messages extends Component {
                         lg={2}
                     >
                         <Paper className={classes.leftPaper}>
-                            <ContactList 
-                                contacts={contacts} 
-                                selectedContact={selectedContact} 
-                                
+                            <ContactList
+                                contacts={contacts}
+                                selectedContact={selectedContact}
+
                                 handleChangeSelectedContact={this.handleChangeSelectedContact}
-                                handleChangeSelectedContactAll={this.handleChangeSelectedContactAll}  
+                                handleChangeSelectedContactAll={this.handleChangeSelectedContactAll}
                             />
                         </Paper>
                     </Grid>
@@ -202,7 +204,7 @@ class Messages extends Component {
                                     onChangeIndex={this.handleChangeTabIndex}
                                 >
                                     <TabPanel value={tabValue} index={0} dir={theme.direction}>
-                                        <MessageList 
+                                        <MessageList
                                             messages={inbox}
                                             userIdToNames={userIdToNames}
                                             selectedContact={selectedContact}
@@ -212,7 +214,7 @@ class Messages extends Component {
                                         />
                                     </TabPanel>
                                     <TabPanel value={tabValue} index={1} dir={theme.direction}>
-                                        <MessageList 
+                                        <MessageList
                                             messages={sent}
                                             userIdToNames={userIdToNames}
                                             selectedContact={selectedContact}
@@ -222,7 +224,7 @@ class Messages extends Component {
                                         />
                                     </TabPanel>
                                     <TabPanel value={tabValue} index={2} dir={theme.direction}>
-                                        <CreateMessage 
+                                        <CreateMessage
                                             selectedContact={selectedContact}
                                             messageSubject={messageSubject}
                                             message={message}
@@ -248,22 +250,22 @@ class Messages extends Component {
 
 function mapStateToProps(state) {
     const { messageStore } = state;
-    const { 
-        contacts, 
-        selectedContact,
-        isLoadingContacts,
-        tabValue,
-        
-        inbox,
-        sent,
-    } = messageStore;
-    return {
-        contacts, 
+    const {
+        contacts,
         selectedContact,
         isLoadingContacts,
         tabValue,
 
-        inbox, 
+        inbox,
+        sent,
+    } = messageStore;
+    return {
+        contacts,
+        selectedContact,
+        isLoadingContacts,
+        tabValue,
+
+        inbox,
         sent,
     };
 }

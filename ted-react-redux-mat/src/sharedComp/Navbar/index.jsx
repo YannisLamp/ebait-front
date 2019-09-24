@@ -105,6 +105,11 @@ class Navbar extends Component {
         });
     }
 
+    onNotificationsClick = () => {
+        const { dispatch } = this.props;
+        dispatch(messageApi.notificationsClickThunk());
+    }
+
 
     render() {
         const { anchorEl } = this.state;
@@ -145,7 +150,10 @@ class Navbar extends Component {
                         {/* <div className={classes.grow} /> */}
                         {user ? (
                             <div className={classes.sectionDesktop}>
-                                <IconButton color="inherit">
+                                <IconButton
+                                    onClick={this.onNotificationsClick} 
+                                    color="inherit"
+                                >
                                     <Badge badgeContent={notifications} color="primary">
                                         <MailIcon />
                                     </Badge>

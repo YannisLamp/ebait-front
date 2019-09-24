@@ -1,5 +1,6 @@
 import axios from './axiosConfig';
 import handleError from './handleError';
+import { history } from '../utils';
 
 import { messageActions } from '../store/ducks/messageStore';
 
@@ -94,7 +95,7 @@ const markAsReadMessage = async (messageId) => {
         .catch(error => { handleError(error) });
 }
 
-const initInboxThunk = () => {
+const refreshInboxThunk = () => {
     return dispatch => {
         // Refresh notifications
         getNotifications()
@@ -104,37 +105,7 @@ const initInboxThunk = () => {
                 }
             })
 
-        // If there are new notifications, then fetch new stuff
         // Refresh contacts
-        dispatch(messageActions.getContactsRequest());
-        getAllContacts()
-            .then(data => {
-                dispatch(messageActions.getContactsSuccess(data));
-            });
-
-        // Refresh inbox
-        dispatch(messageActions.getAllInboxRequest());
-        getInboxAll()
-            .then(data => {
-                if (data) {
-                    dispatch(messageActions.getAllInboxSuccess(data));
-                }
-            })
-    }
-}
-
-const refreshInboxThunk = (prevNotifications) => {
-    return dispatch => {
-        // Refresh notifications
-        getNotifications()
-            .then(data => {
-                if (data) {
-                    dispatch(messageActions.getNotifications(data));
-                }
-            })
-
-        // If there are new notifications, then fetch new stuff
-        //if ()
         dispatch(messageActions.getContactsRequest());
         getAllContacts()
             .then(data => {
@@ -165,6 +136,13 @@ const getSentThunk = () => {
     }
 }
 
+const notificationsClickThunk = () => {
+    return dispatch => {
+        dispatch(messageActions.selectTab(0));
+        history.push("./messages");
+    }
+}
+
 export const messageApi = {
     getAllContacts,
     getNotifications,
@@ -176,7 +154,7 @@ export const messageApi = {
     markAsReadMessage,
     deleteMessage,
 
-    initInboxThunk,
     refreshInboxThunk,
     getSentThunk,
+    notificationsClickThunk,
 };
