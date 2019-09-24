@@ -44,7 +44,7 @@ export default function App(props) {
                     <Route exact path="/register" component={Register} />
                     <Route exact path="/browse" component={BrowseAuctions} />
 
-                    <Route exact path="/viewauction" component={ViewAuction} />
+                    <Route exact path="/viewauction/:id" component={ViewAuction} />
 
                     <Route path="/notfound" component={NotFound} />
 
