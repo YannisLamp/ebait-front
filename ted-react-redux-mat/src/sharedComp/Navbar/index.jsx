@@ -64,16 +64,13 @@ class Navbar extends Component {
     }
 
     componentDidMount() {
-        const { dispatch } = this.props;
+        const { notifications, dispatch } = this.props;
         dispatch(auctionsApi.initFromScratchThunk());
 
-        if (this.props.user) {
-            dispatch(messageApi.refreshInboxThunk());
-        }
         this.dataPolling = setInterval( 
             () => { 
                 if (this.props.user) {
-                    dispatch(messageApi.refreshInboxThunk());
+                    dispatch(messageApi.refreshInboxThunk(notifications));
                 }
             },
             20000
@@ -113,7 +110,7 @@ class Navbar extends Component {
         const { anchorEl } = this.state;
         const isMenuOpen = Boolean(anchorEl);
 
-        const { classes, user } = this.props;
+        const { classes, user, notifications } = this.props;
         return (
             <ElevationScroll {...this.props}>
                 <AppBar>
@@ -148,8 +145,8 @@ class Navbar extends Component {
                         {/* <div className={classes.grow} /> */}
                         {user ? (
                             <div className={classes.sectionDesktop}>
-                                <IconButton aria-label="show 4 new mails" color="inherit">
-                                    <Badge badgeContent={4} color="primary">
+                                <IconButton color="inherit">
+                                    <Badge badgeContent={notifications} color="primary">
                                         <MailIcon />
                                     </Badge>
                                 </IconButton>
