@@ -40,11 +40,13 @@ const styles = theme => ({
     },
     importButton: {
         marginTop: theme.spacing(1),
-        marginBottom: theme.spacing(2),
+        marginBottom: theme.spacing(3),
+        width: '100%',
     },
     exportButton: {
         marginTop: theme.spacing(1),
-        marginBottom: theme.spacing(2),
+        marginBottom: theme.spacing(3),
+        width: '100%',
     }
 });
 
@@ -130,6 +132,7 @@ class ImportExportPage extends Component {
 
 
     render() {
+        const { xmls } = this.state;
 
         const { classes } = this.props;
         return (
@@ -152,25 +155,17 @@ class ImportExportPage extends Component {
                                     />
                                 </Grid>
 
-                                <Grid item>
-                                    Step 0
-
-
-                                </Grid>
-
-
                                 <Grid item alignContent="center">
                                     <input
                                         accept="*.xml"
                                         className={classes.input}
                                         id="contained-button-file"
-                                        multiple
                                         type="file"
                                         onChange={this.hasNewXml}
                                     />
                                     <label htmlFor="contained-button-file">
                                         <Button className={classes.importButton} variant="contained" component="span">
-                                            Upload Xml
+                                            Upload Xml File
                                         </Button>
                                     </label>
 
@@ -181,9 +176,10 @@ class ImportExportPage extends Component {
                                         onClick={this.parse}
                                         //size="large"
                                         variant="contained"
+                                        disabled={xmls.length === 0}
                                     >
-                                        Parse xml
-                                            </Button>
+                                        Parse Xml File
+                                    </Button>
                                 </Grid>
 
                             </Grid>
@@ -215,20 +211,21 @@ class ImportExportPage extends Component {
                                         //size="large"
                                         variant="contained"
                                     >
-                                        Export xml
+                                        Export As Xml
                                     </Button>
-                                </Grid>
 
-                                <Button
-                                    className={classes.exportButton}
-                                    color="primary"
-                                    type="submit"
-                                    onClick={e => { this.export("json") }}
-                                    //size="large"
-                                    variant="contained"
-                                >
-                                    Export json
-                                </Button>
+                                    <Button
+                                        className={classes.exportButton}
+                                        color="primary"
+                                        type="submit"
+                                        onClick={e => { this.export("json") }}
+                                        //size="large"
+                                        variant="contained"
+                                    >
+                                        Export As Json
+                                    </Button>
+
+                                </Grid>
 
                             </Grid>
 
