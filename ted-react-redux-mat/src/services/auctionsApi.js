@@ -322,6 +322,7 @@ const initFromScratchThunk = () => {
     return dispatch => {
         dispatch(getRootCategoriesThunk());
         dispatch(getAllAuctionsThunk([], '', null, null, null, null, null, 0, 10));
+        dispatch(auctionActions.removeFilters());
     }
 }
 
