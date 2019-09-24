@@ -43,7 +43,7 @@ export default function MessageList(props) {
                             // aria-controls="panel1a-content"
                             // id="panel1a-header"
                             >
-                                <Typography className={classes.heading} style={!message.read ? { fontWeight: 'bold' } : ''}>{startLabel + nameLabel + " - " + message.subject}</Typography>
+                            <Typography className={classes.heading} style={!message.read ? { fontWeight: 'bold' } : {}}>{startLabel + nameLabel + " - " + message.subject}</Typography>
                             </ExpansionPanelSummary>
                             <ExpansionPanelDetails>
                                 <Typography>
