@@ -67,6 +67,9 @@ class Navbar extends Component {
         const { notifications, dispatch } = this.props;
         dispatch(auctionsApi.initFromScratchThunk());
 
+        if (this.props.user) {
+            dispatch(messageApi.refreshInboxThunk(notifications));
+        }
         this.dataPolling = setInterval( 
             () => { 
                 if (this.props.user) {
