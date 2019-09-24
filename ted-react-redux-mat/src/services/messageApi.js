@@ -132,7 +132,6 @@ const getSentThunk = () => {
                     dispatch(messageActions.getAllSentSuccess(data));
                 }
             });
-
     }
 }
 
