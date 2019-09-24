@@ -13,14 +13,14 @@ const getAllContacts = async () => {
 
 const getNotifications = async () => {
     return axios.get('/messages/notifs', {})
-    .then(
-        response => {
-            return response.data;
-        }
-    )
-    .catch(error => { handleError(error) });
+        .then(
+            response => {
+                return response.data;
+            }
+        )
+        .catch(error => { handleError(error) });
 }
- 
+
 const sendMessage = async (userId, subject, message) => {
     const jsonRequest = {
         userId,
@@ -121,7 +121,9 @@ const refreshInboxThunk = () => {
         // Refresh notifications
         getNotifications()
             .then(data => {
-                console.log(data);
+                if (data) {
+                    dispatch(messageActions.getNotifications(data));
+                }
             })
 
         // If there are new notifications, then fetch new stuff
@@ -133,18 +135,24 @@ const refreshInboxThunk = () => {
             });
 
         // Refresh inbox
+        dispatch(messageActions.getAllInboxRequest());
         getInboxAll()
             .then(data => {
-                console.log(data);
+                if (data) {
+                    dispatch(messageActions.getAllInboxSuccess(data));
+                }
             })
     }
 }
 
 const getSentThunk = () => {
     return dispatch => {
+        dispatch(messageActions.getAllSentRequest());
         getSentAll()
             .then(data => {
-
+                if (data) {
+                    dispatch(messageActions.getAllSentSuccess(data));
+                }
             });
 
     }

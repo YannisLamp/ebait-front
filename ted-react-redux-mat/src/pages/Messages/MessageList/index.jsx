@@ -21,24 +21,46 @@ const useStyles = makeStyles(theme => ({
 
 
 export default function MessageList(props) {
-    //const { users, order, orderBy, pageSize, isLoading, currPage, totalUsers } = props;
+    const { messages } = props;
+    console.log('messages');
+    console.log(messages);
 
     const classes = useStyles;
     return (
         <div className={classes.root}>
+            { messages.map(message => {
+                return (
+                <ExpansionPanel>
+                    <ExpansionPanelSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1a-content"
+                        id="panel1a-header"
+                    >
+                        <Typography className={classes.heading} style={{ fontWeight: 'bold' }}>Expansion Panel 1</Typography>
+                    </ExpansionPanelSummary>
+                    <ExpansionPanelDetails>
+                        <Typography style={{ fontWeight: 'bold' }}>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
+                            sit amet blandit leo lobortis eget.
+                        </Typography>
+                    </ExpansionPanelDetails>
+                </ExpansionPanel>
+                );
+            })
+        }
             <ExpansionPanel>
                 <ExpansionPanelSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1a-content"
                     id="panel1a-header"
                 >
-                    <Typography className={classes.heading} style={{fontWeight: 'bold'}}>Expansion Panel 1</Typography>
+                    <Typography className={classes.heading} style={{ fontWeight: 'bold' }}>Expansion Panel 1</Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
-                    <Typography style={{fontWeight: 'bold'}}>
+                    <Typography style={{ fontWeight: 'bold' }}>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
                         sit amet blandit leo lobortis eget.
-          </Typography>
+                    </Typography>
                 </ExpansionPanelDetails>
             </ExpansionPanel>
             <ExpansionPanel>

@@ -84,8 +84,8 @@ class Messages extends Component {
     };
 
     componentDidMount = () => {
-        //
-        //this.getContacts();
+        const { dispatch } = this.props;
+        dispatch(messageApi.getSentThunk());
     }
 
 
@@ -139,7 +139,8 @@ class Messages extends Component {
     }
 
     render() {
-        const { contacts, selectedContact, tabValue } = this.props;
+        const { messageSubject, message } = this.state;
+        const { contacts, selectedContact, tabValue, inbox, sent } = this.props;
 
         const { classes, theme } = this.props;
         return (
@@ -205,17 +206,19 @@ class Messages extends Component {
                                 >
                                     <TabPanel value={tabValue} index={0} dir={theme.direction}>
                                         <MessageList 
-                                        
+                                            messages={inbox}
                                         />
                                     </TabPanel>
                                     <TabPanel value={tabValue} index={1} dir={theme.direction}>
                                         <MessageList 
-                                        
+                                            messages={sent}
                                         />
                                     </TabPanel>
                                     <TabPanel value={tabValue} index={2} dir={theme.direction}>
                                         <CreateMessage 
                                             selectedContact={selectedContact}
+                                            messageSubject={messageSubject}
+                                            message={message}
 
                                             handleChange={this.handleChange}
                                             sendMessage={this.sendMessage}
@@ -242,13 +245,19 @@ function mapStateToProps(state) {
         contacts, 
         selectedContact,
         isLoadingContacts,
-        tabValue,     
+        tabValue,
+        
+        inbox,
+        sent,
     } = messageStore;
     return {
         contacts, 
         selectedContact,
         isLoadingContacts,
         tabValue,
+
+        inbox, 
+        sent,
     };
 }
 
