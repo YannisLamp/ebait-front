@@ -128,6 +128,14 @@ class Messages extends Component {
         this.setState((prevState, props) => { return { messageSubject: '', message: '' } });
     }
 
+    onClickMessage = (id) => {
+        messageApi.markAsReadMessage(id)
+            .then(data => {
+                const { dispatch } = this.props;
+                dispatch(messageApi.refreshInboxThunk());
+            })
+    }
+
     render() {
         const { messageSubject, message } = this.state;
         const { contacts, selectedContact, tabValue, inbox, sent } = this.props;
@@ -210,7 +218,7 @@ class Messages extends Component {
                                             selectedContact={selectedContact}
                                             listType="inbox"
 
-                                            markAsReadMessage={messageApi.markAsReadMessage}
+                                            onClickMessage={this.onClickMessage}
                                         />
                                     </TabPanel>
                                     <TabPanel value={tabValue} index={1} dir={theme.direction}>
@@ -220,7 +228,7 @@ class Messages extends Component {
                                             selectedContact={selectedContact}
                                             listType="sent"
 
-                                            markAsReadMessage={messageApi.markAsReadMessage}
+                                            onClickMessage={this.onClickMessage}
                                         />
                                     </TabPanel>
                                     <TabPanel value={tabValue} index={2} dir={theme.direction}>

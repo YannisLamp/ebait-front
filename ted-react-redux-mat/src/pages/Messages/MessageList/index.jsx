@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function MessageList(props) {
     const { messages, userIdToNames, listType, selectedContact } = props;
-    const { markAsReadMessage } = props;
+    const { onClickMessage } = props;
 
     const startLabel = listType === "inbox" ? "From: " : "To: ";
 
@@ -39,7 +39,7 @@ export default function MessageList(props) {
                         <ExpansionPanel key={message.id}>
                             <ExpansionPanelSummary
                                 expandIcon={<ExpandMoreIcon />}
-                                onClick={e => { markAsReadMessage(message.id) }}
+                                onClick={e => { onClickMessage(message.id) }}
                             // aria-controls="panel1a-content"
                             // id="panel1a-header"
                             >
