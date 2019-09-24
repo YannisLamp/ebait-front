@@ -88,27 +88,6 @@ class Messages extends Component {
         dispatch(messageApi.getSentThunk());
     }
 
-
-    // getContacts = () => {
-    //     // Start Loading
-    //     this.setState((prevState, props) => {
-    //         return { isLoadingContacts: true }
-    //     })
-
-    //     messageApi.getAllContacts()
-    //         .then(data => {
-    //             if (data) {
-    //                 this.setState((prevState, props) => {
-    //                     return {
-    //                         contacts: data,
-    //                         isLoading: false,
-    //                         selectedContact: data.length > 0 ? data[0] : null 
-    //                     }
-    //                 })
-    //             }
-    //         });
-    // }
-
     handleChange = (e) => {
         const { name, value } = e.target;
         this.setState((prevState, props) => { return { [name]: value } });
@@ -134,6 +113,8 @@ class Messages extends Component {
         const sendId = this.props.selectedContact.userId;
 
         messageApi.sendMessage(sendId, messageSubject, message);
+        const { dispatch } = this.props;
+        dispatch(messageApi.getSentThunk());
 
         this.setState((prevState, props) => { return { messageSubject: '', message: '' } });
     }
