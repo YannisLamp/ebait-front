@@ -84,6 +84,7 @@ class Messages extends Component {
     };
 
     componentDidMount = () => {
+        //
         //this.getContacts();
     }
 
@@ -203,10 +204,14 @@ class Messages extends Component {
                                     onChangeIndex={this.handleChangeTabIndex}
                                 >
                                     <TabPanel value={tabValue} index={0} dir={theme.direction}>
-                                        <MessageList />
+                                        <MessageList 
+                                        
+                                        />
                                     </TabPanel>
                                     <TabPanel value={tabValue} index={1} dir={theme.direction}>
-                                        <MessageList />
+                                        <MessageList 
+                                        
+                                        />
                                     </TabPanel>
                                     <TabPanel value={tabValue} index={2} dir={theme.direction}>
                                         <CreateMessage 

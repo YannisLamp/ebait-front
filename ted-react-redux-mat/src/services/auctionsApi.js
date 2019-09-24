@@ -249,11 +249,20 @@ const getAllCats = async (reqs) => {
         .catch(error => { handleError(error) });
 }
 
-const getAllAuctionsThunk = (categories, description, lowestPrice, highestPrice, location, order, orderBy, currPage, pageSize) => {
+const getAllAuctionsThunk = (categoryFields, description, lowestPrice, highestPrice, location, order, orderBy, currPage, pageSize) => {
+    let categories = [];
+    for (let cat of categoryFields) {
+        if (cat.selectedValue != "") {
+            //categories.push({ name: cat.selectedValue });
+            categories.push(cat.selectedValue);
+        }
+    }
+
     const jsonRequest = {
         params: {
 
             categories: categories,
+
             description: description,
             lowestPrice: lowestPrice,
             highestPrice: highestPrice,
