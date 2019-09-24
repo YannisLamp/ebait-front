@@ -100,7 +100,7 @@ const refreshInboxThunk = () => {
         // Refresh notifications
         getNotifications()
             .then(data => {
-                if (data) {
+                if (data !== null) {
                     dispatch(messageActions.getNotifications(data));
                 }
             })
