@@ -72,8 +72,6 @@ class MyAuctions extends Component {
 
     handleChangePage = (event, newPage) => {
         this.setState((prevState, props) => {
-            //const { order, orderBy, pageSize } = prevState;
-            //this.queryTableData(orderBy, order, pageSize, newPage);
             return {
                 currPage: newPage
             }
@@ -82,10 +80,7 @@ class MyAuctions extends Component {
 
     handleChangeRowsPerPage = (event) => {
         this.setState((prevState, props) => {
-            //const { order, orderBy } = prevState;
             const newPageSize = +event.target.value;
-
-            //this.queryTableData(orderBy, order, newPageSize, 0);
             return {
                 currPage: 0,
                 pageSize: newPageSize,
@@ -93,8 +88,16 @@ class MyAuctions extends Component {
         });
     }
 
-    handleRequestSort() {
+    handleRequestSort = (event, property) => {
+        this.setState((prevState, props) => {
+            const { order, orderBy } = prevState;
+            const isDesc = orderBy === property && order === 'desc';
 
+            return {
+                order: isDesc ? 'asc' : 'desc',
+                orderBy: property
+            }
+        });
     }
 
     startAuction = (itemID) => {
@@ -110,6 +113,7 @@ class MyAuctions extends Component {
                 this.loadAuctions();
             });
     }
+    
 
     render() {
         const { pageSize, currPage, auctions, totalAuctions, order, orderBy, isLoading } = this.state;
@@ -158,7 +162,6 @@ class MyAuctions extends Component {
                                     <Button
                                         className={classes.auctionButton}
                                         color="primary"
-                                        //onClick={handleSubmit}
                                         size="large"
                                         variant="contained"
                                     >

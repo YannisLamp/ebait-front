@@ -91,8 +91,28 @@ export default function MyAuctionsTable(props) {
         emptyRows = emptyRows - props.auctions.length;
     }
 
-    function getActions() {
+    function desc(a, b, orderBy) {
+        if (b[orderBy] < a[orderBy]) {
+            return -1;
+        }
+        if (b[orderBy] > a[orderBy]) {
+            return 1;
+        }
+        return 0;
+    }
 
+    function stableSort(array, cmp) {
+        const stabilizedThis = array.map((el, index) => [el, index]);
+        stabilizedThis.sort((a, b) => {
+            const order = cmp(a[0], b[0]);
+            if (order !== 0) return order;
+            return a[1] - b[1];
+        });
+        return stabilizedThis.map(el => el[0]);
+    }
+
+    function getSorting(order, orderBy) {
+        return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
     }
 
     const classes = useStyles();
@@ -115,6 +135,7 @@ export default function MyAuctionsTable(props) {
                                 <Table
                                     className={classes.table}
                                     aria-labelledby="Auctions"
+                                    size={'small'}
                                 >
                                     <UserTableHead
                                         headRows={headRows}
@@ -124,7 +145,7 @@ export default function MyAuctionsTable(props) {
                                     />
                                     <TableBody>
                                         {
-                                            auctions
+                                            stableSort(auctions, getSorting(order, orderBy))
                                                 .slice(currPage * pageSize, currPage * pageSize + pageSize)
                                                 .map((row, index) => {
                                                     return (
@@ -145,31 +166,31 @@ export default function MyAuctionsTable(props) {
                                                             <TableCell align="right">{row.ends}</TableCell>
                                                             <TableCell align="right">{row.eventStarted ? <CheckBoxIcon /> : <CheckBoxBlankIcon />}</TableCell>
                                                             <TableCell align="right">
-                                                                    {row.eventStarted ?
-                                                                        '' :
-                                                                        (<IconButton onClick={e => startAuction(row.itemID)}><PlayArrowIcon className={classes.start} /></IconButton>)
-                                                                    }
-                                                                    {((row.eventStarted && row.bids.length > 0) || row.eventFinished ) ? ''
-                                                                        : (<>
-                                                                            <IconButton>
-                                                                                <Link
-                                                                                    className={classes.edit}
-                                                                                    to={{
-                                                                                        pathname: '/myauctions/edit-auction',
-                                                                                        state: {
-                                                                                            auction: row
-                                                                                        }
-                                                                                    }}
-                                                                                >
-                                                                                    <EditIcon />
-                                                                                </Link>
-                                                                            </IconButton>
+                                                                {row.eventStarted ?
+                                                                    '' :
+                                                                    (<IconButton onClick={e => startAuction(row.itemID)}><PlayArrowIcon className={classes.start} /></IconButton>)
+                                                                }
+                                                                {((row.eventStarted && row.bids.length > 0) || row.eventFinished) ? ''
+                                                                    : (<>
+                                                                        <IconButton>
+                                                                            <Link
+                                                                                className={classes.edit}
+                                                                                to={{
+                                                                                    pathname: '/myauctions/edit-auction',
+                                                                                    state: {
+                                                                                        auction: row
+                                                                                    }
+                                                                                }}
+                                                                            >
+                                                                                <EditIcon />
+                                                                            </Link>
+                                                                        </IconButton>
 
-                                                                            <IconButton onClick={e => deleteAuction(row.itemID)}>
-                                                                                <DeleteIcon className={classes.delete} />
-                                                                            </IconButton>
-                                                                        </>)
-                                                                    }
+                                                                        <IconButton onClick={e => deleteAuction(row.itemID)}>
+                                                                            <DeleteIcon className={classes.delete} />
+                                                                        </IconButton>
+                                                                    </>)
+                                                                }
                                                             </TableCell>
                                                         </TableRow>
                                                     );
