@@ -18,6 +18,9 @@ const useStyles = makeStyles(theme => ({
         // height: 0,
         // paddingTop: '56.25%', // 16:9
     },
+    lastCategory: {
+        marginTop: theme.spacing(1),
+    }
 }));
 
 export default function MediaCard(props) {
@@ -27,38 +30,59 @@ export default function MediaCard(props) {
 
     const classes = useStyles();
     return (
-        <Card className={classes.card}>
-            <Grid container style={{ height: '100%' }} direction="column" justify="space-between">
+        <Card 
+            className={classes.card}
+        >
+            <Grid 
+                container 
+                style={{ height: '100%' }} 
+                direction="column" 
+                justify="space-between"
+            >
                 <CardActionArea
                     style={{ flexGrow: 1 }}
                     component={Link}
                     to={{
-                        pathname: '/viewauction',
+                        pathname: '/viewauction/' + auction.itemID,
                         state: {
                             auction: auction
                         }
                     }}
                 >
-                    <Grid item container direction="column" justify="flex-end">
+                    <Grid 
+                        item 
+                        container 
+                        direction="column" 
+                        justify="flex-end"
+                    >
                         <CardMedia
                             className={classes.media}
                             image={imageUrl}
                             title={auction.name}
                         />
                         <CardContent style={{ flexGrow: 1 }}>
-                            <Grid container direction="column" justify="space-between">
+                            <Grid 
+                                container 
+                                direction="column" 
+                                justify="space-between"
+                            >
                                 <Grid item>
                                     <Typography gutterBottom variant="h5" component="h2">
                                         {auction.name}
                                     </Typography>
-                                    <Typography variant="body2" color="textPrimary" component="p">
+                                    <Typography 
+                                        className={classes.lastCategory} 
+                                        variant="body2" 
+                                        color="textPrimary" 
+                                        component="p"
+                                    >
                                         {lastCategory}
                                     </Typography>
                                 </Grid>
                                 <Grid item>
                                     <Grid container justify="flex-end">
                                         <Typography variant="body2" color="textPrimary" component="p">
-                                            {"Current bid: " + auction.currently}
+                                            {"Currently at: " + auction.currently + "$"}
                                         </Typography>
                                     </Grid>
                                 </Grid>
