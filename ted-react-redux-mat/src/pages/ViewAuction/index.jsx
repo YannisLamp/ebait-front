@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import produce from "immer";
 
 // Material
 import { Grid, Paper } from '@material-ui/core';
@@ -107,12 +108,11 @@ class ViewAuction extends Component {
                     const coords = data.features[0].geometry.coordinates;
                     // Coordinates are given in reverse order from API
                     this.setState((prevState, props) => {
-                        let { auction } = prevState;
-                        auction.location.latitude = coords[1];
-                        auction.location.longitude = coords[0];
-                        return {
-                            auction
-                        }
+                        return produce(prevState, draft => {
+                            let { auction } = draft;
+                            auction.location.latitude = coords[1];
+                            auction.location.longitude = coords[0];
+                        });
                     });
                 }
             })
