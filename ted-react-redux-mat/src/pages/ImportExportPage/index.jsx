@@ -155,7 +155,7 @@ class ImportExportPage extends Component {
                                     />
                                 </Grid>
 
-                                <Grid item alignContent="center">
+                                <Grid item container alignContent="center">
                                     <input
                                         accept="*.xml"
                                         className={classes.input}

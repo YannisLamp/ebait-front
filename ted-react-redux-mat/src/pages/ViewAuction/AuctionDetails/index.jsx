@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
 
         overflow: 'auto',
         display: 'block',
-        height: '60vh',
+        height: '50vh',
     },
     notDecorated: {
         textDecoration: 'none',
