@@ -54,14 +54,15 @@ class MyAuctions extends Component {
     loadAuctions = () => {
         auctionsApi.getUserAuctions()
             .then(data => {
-                console.log(data);
-                this.setState((prevState, props) => {
-                    return {
-                        auctions: data,
-                        totalAuctions: data.length,
-                        isLoading: false,
-                    }
-                });
+                if (data) {
+                    this.setState((prevState, props) => {
+                        return {
+                            auctions: data,
+                            totalAuctions: data.length,
+                            isLoading: false,
+                        }
+                    });
+                }
             });
     }
 
@@ -103,17 +104,21 @@ class MyAuctions extends Component {
     startAuction = (itemID) => {
         auctionsApi.startAuction(itemID)
             .then(data => {
-                this.loadAuctions();
+                if (data) {
+                    this.loadAuctions();
+                }
             });
     }
 
     deleteAuction = (itemID) => {
         auctionsApi.deleteAuction(itemID)
             .then(data => {
-                this.loadAuctions();
+                if (data) {
+                    this.loadAuctions();
+                }
             });
     }
-    
+
 
     render() {
         const { pageSize, currPage, auctions, totalAuctions, order, orderBy, isLoading } = this.state;
