@@ -312,10 +312,8 @@ class CreateAuction extends Component {
             }
         }
 
-        // Convert Date object to proper format
-
-
-        if (name !== "" && ends !== "" && firstBid !== "") {
+        if (name !== "" && ends !== "" && ends !== null && firstBid !== "") {
+            // Convert Date object to proper format
             const convertedends = format(ends, 'MMM-dd-yy HH:mm:ss');
             this.setState((prevState, props) => { return { isLoading: true, } });
             auctionsApi.createAuction(name, description, convertedends,
@@ -328,7 +326,7 @@ class CreateAuction extends Component {
         }
         else {
             const { dispatch } = this.props;
-            dispatch(alertActions("Auction details missing, name, ending date, first bid are required"));
+            dispatch(alertActions.error("Auction details missing, name, ending date, first bid are required"));
             this.setState((prevState, props) => { return { isLoading: false, } });
         }
     }

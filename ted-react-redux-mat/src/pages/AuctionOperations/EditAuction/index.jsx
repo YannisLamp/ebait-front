@@ -156,9 +156,11 @@ class EditAuction extends Component {
 
     setInitCategoryState() {
         function findCategoryIndex(data, searchCategory) {
-            for (const [index, inCategory] of data.entries()) {
-                if (inCategory.name === searchCategory)
-                    return index;
+            if (data) {
+                for (const [index, inCategory] of data.entries()) {
+                    if (inCategory.name === searchCategory)
+                        return index;
+                }
             }
             return -1;
         }
@@ -386,15 +388,13 @@ class EditAuction extends Component {
             }
         }
 
-        // Convert Date object to proper format
-
-
         // Remove any photos that have been uploaded from photos
         const onlyNewPhotos = photos.filter((value, index, arr) => {
             return !value.photoId;
         });
 
-        if (name !== "" && ends !== "" && firstBid !== "") {
+        if (name !== "" && ends !== "" && ends !== null && firstBid !== "") {
+            // Convert Date object to proper format
             const convertedends = format(ends, 'MMM-dd-yy HH:mm:ss');
             this.setState((prevState, props) => { return { isLoading: true, } });
             auctionsApi.editAuction(itemID, name, description, convertedends,
@@ -407,7 +407,7 @@ class EditAuction extends Component {
         }
         else {
             const { dispatch } = this.props;
-            dispatch(alertActions("Auction details missing, name, ending date, first bid are required"));
+            dispatch(alertActions.error("Auction details missing, name, ending date, first bid are required"));
             this.setState((prevState, props) => { return { isLoading: false, } });
         }
     }
