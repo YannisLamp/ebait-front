@@ -57,7 +57,7 @@ export default function CredentialForm(props) {
                 variant="outlined"
                 onChange={(e) => { handleChange(e); checkPasswordMatch(); }}
                 error={!passwordsMatch}
-                helperText={!passwordsMatch ? "Passwords should match" : ""}
+                helperText={!passwordsMatch ? "Passwords should match and must be over 8 characters" : ""}
             />
         </div>
     );

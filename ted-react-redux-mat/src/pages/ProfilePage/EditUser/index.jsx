@@ -85,7 +85,7 @@ class EditUser extends Component {
         const { userId, firstName, lastName, email, phoneNumber, country, address, afm } = this.state;
         const { dispatch } = this.props;
         
-        if (firstName !== "" && firstName.length > 2 && lastName !== "" && lastName.length > 2 &&
+        if (firstName !== "" && firstName.length > 1 && lastName !== "" && lastName.length > 1 &&
             email !== "" && email.includes("@") && country !== "" && address !== "") {
         usersApi.editUserInfo(userId, firstName, lastName, email, phoneNumber, country, address, afm)
             .then(response => {

@@ -34,6 +34,8 @@ export default function BasicInfoForm(props) {
                 type="text"
                 variant="outlined"
                 onChange={handleChange}
+                error={firstName.length === 1}
+                helperText={firstName.length === 1 ? "First Name should be over 1 character" : ""}
             />
             <TextField
                 className={classes.textField}
@@ -43,6 +45,8 @@ export default function BasicInfoForm(props) {
                 type="text"
                 variant="outlined"
                 onChange={handleChange}
+                error={lastName.length === 1}
+                helperText={lastName.length === 1 ? "Last Name should be over 1 character" : ""}
             />
             <TextField
                 className={classes.textField}
@@ -52,6 +56,8 @@ export default function BasicInfoForm(props) {
                 type="text"
                 variant="outlined"
                 onChange={handleChange}
+                error={(!email.includes("@") || email.length === 1 ) && email !== ""}
+                helperText={(!email.includes("@") || email.length === 1 ) && email !== "" ? "Email should character and be over 1 character and include an @" : ""}
             />
             <TextField
                 className={classes.textField}

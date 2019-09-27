@@ -3,6 +3,8 @@ import { history } from '../../../utils';
 import { connect } from 'react-redux';
 import { registerApi } from '../../../services';
 
+import { alertActions } from '../../../store/ducks/alertStore';
+
 import { Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core';
 
@@ -137,16 +139,19 @@ class RegisterForm extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
 
-        this.setState({ submitted: true });
         const { username, password, firstName, lastName, email, phoneNumber,
             country, address, afm} = this.state;
         const { dispatch } = this.props;
 
         // Check validity 
-        if (username && password && firstName && lastName && email && phoneNumber && 
-                country && address && afm) {
+        if (username !== "" && username.length > 1 && password !== "" && firstName !== "" 
+            && firstName.length > 1 && lastName !== "" && lastName.length > 1 && email !== "" 
+            && email.length > 1 && email.includes("@") && country !== "" && address !== "") {
             dispatch(registerApi.registerThunk(username, password, firstName, 
                 lastName, email, phoneNumber, country, address, afm));
+        }
+        else {
+            dispatch(alertActions.error("Personal Information must not be empty, user email must contain an @"));
         }
 
     }
@@ -154,7 +159,7 @@ class RegisterForm extends Component {
 
     checkPasswordMatch = () => {
         this.setState((prevState, props) => { 
-            return { 'passwordsMatch': prevState.password === prevState.confirmPassword } 
+            return { 'passwordsMatch': prevState.password === prevState.confirmPassword && prevState.password.length >= 8} 
         });
     }
 
