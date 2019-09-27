@@ -97,7 +97,7 @@ function AuctionDetails(props) {
                                 return (
                                     <Typography key={index}>
                                         {/* {'Bid: ' + index + ": " + bid.amount + "$ On: " + bid.time + " From: " + user.firstName + " " + user.lastName} */}
-                                        {bid.time + ", " + bid.amount + "$ from " + user.firstName + " " + user.lastName}
+                                        {bid.time + ", " + bid.amount + "$ from " + bid.bidder.user.firstName + " " + bid.bidder.user.lastName}
                                     </Typography>
                                 );
                             })}

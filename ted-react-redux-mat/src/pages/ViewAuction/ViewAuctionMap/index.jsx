@@ -18,8 +18,6 @@ const useStyles = makeStyles(theme => ({
 export default function CreateAuctionMap(props) {
 
     const { lat, lng } = props;
-    console.log('LATATAT');
-    console.log(lat);
     //const style = { height: '200px' };
 
     const classes = useStyles();

@@ -329,7 +329,6 @@ class EditAuction extends Component {
 
     onPhotoAddition(event) {
         event.persist();
-        console.log(event);
         this.setState((prevState, props) => {
             const { photos } = prevState;
             for (const photo of event.target.files) {

@@ -267,7 +267,6 @@ class CreateAuction extends Component {
 
     onPhotoAddition(event) {
         event.persist();
-        console.log(event);
         this.setState((prevState, props) => {
             return produce(prevState, draft => {
                 for (const photo of event.target.files) {

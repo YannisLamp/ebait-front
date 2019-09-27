@@ -74,16 +74,37 @@ class ViewAuction extends Component {
 
         modalBidOpen: false,
         modalBuyOpen: false,
+
+        lat: '',
+        lng: '',
     };
 
     componentDidMount = () => {
         const { auction } = this.state;
         this.refreshAuctionById();
+        this.auctionPolling = setInterval( 
+            () => { 
+                this.refreshAuctionById();
+            },
+            20000
+        );
 
         if (auction && (!auction.location.latitude || !auction.location.longitude)) {
             const { text } = auction.location;
             this.queryAuctionLocation(text);
         }
+        else if (auction) {
+            this.setState((prevState, props) => {
+                return {
+                    lat: auction.location.latitude,
+                    lng: auction.location.longitude
+                }
+            });
+        }
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.dataPolling);
     }
 
     refreshAuctionById = () => {
@@ -114,6 +135,9 @@ class ViewAuction extends Component {
                             let { auction } = draft;
                             auction.location.latitude = coords[1];
                             auction.location.longitude = coords[0];
+
+                            draft.lat = coords[1];
+                            draft.lng = coords[0];
                         });
                     });
                 }
@@ -164,7 +188,7 @@ class ViewAuction extends Component {
     }
 
     render() {
-        const { auction, isFullscreenPhotos, fullscreenIndex, myBid, modalBidOpen, modalBuyOpen } = this.state;
+        const { auction, isFullscreenPhotos, fullscreenIndex, myBid, modalBidOpen, modalBuyOpen, lat, lng } = this.state;
 
         if (auction) {
             let photos = [];
@@ -211,7 +235,7 @@ class ViewAuction extends Component {
 
                                 {/* <Grid item> */}
                                 <Paper className={classes.mapPaper}>
-                                    <ViewAuctionMap lat={auction.location.latitude} lng={auction.location.longitude} />
+                                    <ViewAuctionMap lat={lat} lng={lng} />
                                 </Paper>
                                 {/* </Grid> */}
 

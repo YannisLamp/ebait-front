@@ -84,7 +84,6 @@ export default function AuctionPhotoUpload(props) {
                 >
                     {
                         photos.map((photo, index) => {
-                            console.log(photo);
                             return (
                                 <ListItem
                                     key={index}

@@ -116,7 +116,6 @@ class LoginForm extends Component {
         const { username, password } = this.state;
         const { dispatch } = this.props;
         if (username && password) {
-            console.log('username and pass');
             dispatch(loginApi.loginThunk(username, password));
         }
     }

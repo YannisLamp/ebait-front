@@ -77,7 +77,7 @@ function setCategories(categoryFields) {
 // Reducer Initialization
 const initialState = {
     auctions: [], totalAuctions: 0, isLoading: true, pageSize: 10, currPage: 0,
-    description: null, lowestPrice: null, highestPrice: null, location: null, showFilters: false,
+    description: '', lowestPrice: '', highestPrice: '', location: '', showFilters: false,
     order: 'asc', orderBy: 'name',
     categoryFields: [{
         selectedIndex: '',
@@ -125,8 +125,8 @@ export default function reducer(state = initialState, action) {
                 ...state,
 
                 description: '',
-                lowestPrice: null,
-                highestPrice: null,
+                lowestPrice: '',
+                highestPrice: '',
                 location: '',
                 categoryFields: [{
                     allCategories: allCategories,

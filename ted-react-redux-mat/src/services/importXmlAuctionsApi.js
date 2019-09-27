@@ -37,7 +37,6 @@ const getUsersFromAuctions = (auctionObjects) => {
 
         // Now for each bid (there may be some users that bid and have not created auctions)
         if (auction.Bids.Bid) {
-            console.log(auction.Bids.Bid);
             if (Array.isArray(auction.Bids.Bid)) {
                 
                 for (const bid of auction.Bids.Bid) {
@@ -74,7 +73,7 @@ const getUsersFromAuctions = (auctionObjects) => {
     }
     // Convert map to array, as map property is not needed anymore
     const userArray = Array.from(map);
-    console.log(userArray);
+    //console.log(userArray);
     return userArray;
 }
 

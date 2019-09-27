@@ -71,7 +71,6 @@ class ImportExportPage extends Component {
 
     hasNewXml = (event) => {
         event.persist();
-        console.log(event);
         //var reader = new FileReader();
         //reader.readAsText(inputXml);
 

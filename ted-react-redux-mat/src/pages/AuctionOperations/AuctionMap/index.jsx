@@ -33,16 +33,6 @@ export default function AuctionMap(props) {
     const { handleCountryChange, handleLocationChange, handleChange, handleMapClick, updateMap } = props;
     const style = { height: '450px' };
 
-    // console.log('HASLOC');
-    // console.log(hasLocation);
-
-    // console.log('LAT');
-    // console.log(startingLat);
-
-    // console.log('LNG');
-    // console.log(selectedLng);
-
-
     const classes = useStyles();
 
     // If the user has clicked on the map, place a marker

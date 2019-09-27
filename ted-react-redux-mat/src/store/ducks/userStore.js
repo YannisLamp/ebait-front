@@ -69,8 +69,8 @@ function toggleSidebar() {
 
 // Reducer Initialization
 let user = JSON.parse(localStorage.getItem('user'));
-console.log('stored user?');
-console.log(user);
+// console.log('stored user?');
+// console.log(user);
 const initialState = user ? { loggedIn: true, user, sidebarOpen: true } : { loggedIn: false, sidebarOpen: true };
 // Reducer
 export default function reducer(state = initialState, action) {

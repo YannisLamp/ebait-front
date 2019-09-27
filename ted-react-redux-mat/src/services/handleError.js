@@ -6,15 +6,18 @@ export default function handleError(error) {
     if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
+         console.log(error.response.data);
+        // console.log(error.response.status);
+        // console.log(error.response.headers);
 
         // If error was 403 Forbidden, then user is not authorized, or jwt expired
         // Auto logout 
         if (error.response.status === 403) {
             store.dispatch(alertActions.error('Forbidden, Logging out'));
             history.push('/login');
+        }
+        else {
+            store.dispatch(alertActions.error(error.response.data.message));
         }
     }
     else if (error.request) {
@@ -29,5 +32,5 @@ export default function handleError(error) {
         store.dispatch(alertActions.error('Error', error.message));
         //console.log('Error', error.message);
     }
-    console.log(error.config);
+    //console.log(error.config);
 }
