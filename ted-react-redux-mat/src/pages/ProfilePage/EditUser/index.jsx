@@ -5,7 +5,7 @@ import { loginApi } from '../../../services';
 import { connect } from 'react-redux';
 
 // Material
-import { Grid, Button, CircularProgress, TextField, Typography, Divider } from '@material-ui/core';
+import { Grid, Button, CircularProgress, TextField, Typography } from '@material-ui/core';
 
 import PaperTitle from '../../../sharedComp/PaperTitle';
 
