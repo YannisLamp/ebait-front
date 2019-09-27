@@ -98,4 +98,5 @@ export const usersApi = {
     verifyUser,
     editUserInfo,
     changeUserPassword,
+    verifyAll,
 };
