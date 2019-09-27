@@ -23,6 +23,17 @@ const useStyles = makeStyles(theme => ({
         display: 'block',
         height: '50vh',
     },
+    bidHistoryTitle: {
+        marginBottom: theme.spacing(1),
+    },
+    bidHistory: {
+        marginBottom: theme.spacing(4),
+    },
+    bidList: {
+        height: '16vh',
+        overflow: 'auto',
+        display: 'block',
+    },
     notDecorated: {
         textDecoration: 'none',
         cursor: 'pointer',
@@ -65,35 +76,37 @@ function AuctionDetails(props) {
                         title={auction.name}
                     //suggestion={'Auction Details'}
                     />
-
                     <div className={classes.description}>
                         <Typography >
                             {'Description: ' + auction.description}
                         </Typography>
-
                     </div>
-
-                    <Typography>
+                    <Typography variant="h5">
                         {'Auction Ends On: ' + auction.ends}
                     </Typography>
                 </Grid>
 
 
                 <Grid item>
-                    {auction.bids.map((bid, index) => {
-                        return (
-                            <Typography variant="h6" key={index}>
-                                {'Bid: ' + index + ": " + bid.amount + "$ On: " + bid.time + " From: " + user.firstName + " " + user.lastName}
-                            </Typography>
-                        );
-                    })}
-                    <Typography variant="h6">
-                        {'Current Bid: ' + auction.currently}
-                        {/* {auction.bids.length > 0 ? 'From: ' : ' '} */}
+                    <Typography className={classes.bidHistoryTitle} variant="h5">
+                        {"Bid history:"}
                     </Typography>
-                    {/* <Typography >
-                        {'Started From: ' + auction.firstBid}
-                    </Typography> */}
+                    <div className={classes.bidHistory}>
+                        <div className={classes.bidList}>
+                            {auction.bids.map((bid, index) => {
+                                return (
+                                    <Typography key={index}>
+                                        {/* {'Bid: ' + index + ": " + bid.amount + "$ On: " + bid.time + " From: " + user.firstName + " " + user.lastName} */}
+                                        {bid.time + ", " + bid.amount + "$ from " + user.firstName + " " + user.lastName}
+                                    </Typography>
+                                );
+                            })}
+                        </div>
+                        <Typography variant="h6">
+                            {'Current Bid: ' + auction.currently + "$"}
+                            {/* {auction.bids.length > 0 ? 'From: ' : ' '} */}
+                        </Typography>
+                    </div>
                     <Grid container justify="flex-end">
                         <Button
                             className={classes.bidButton}
@@ -121,7 +134,7 @@ function AuctionDetails(props) {
                             className={classes.bidText}
                             name="myBid"
                             value={myBid}
-                            label="myBid"
+                            label="Bid"
                             type="text"
                             variant="outlined"
                             onChange={handleChange}

@@ -163,7 +163,7 @@ class ImportExportPage extends Component {
                                         type="file"
                                         onChange={this.hasNewXml}
                                     />
-                                    <label htmlFor="contained-button-file">
+                                    <label htmlFor="contained-button-file" style={{width: '100%'}}>
                                         <Button className={classes.importButton} variant="contained" component="span">
                                             Upload Xml File
                                         </Button>
