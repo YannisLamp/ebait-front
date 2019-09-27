@@ -115,7 +115,7 @@ function AuctionDetails(props) {
                             onClick={changeBuyModal}
                             size="large"
                             variant="contained"
-                            disabled={!auction.buyPrice || auction.eventFinished || !hasPriv}
+                            disabled={!auction.buyPrice || auction.eventFinished || !hasPriv || auction.bids.length > 0}
                         >
                             &nbsp;&nbsp;Buyout&nbsp;&nbsp;
                     </Button>
