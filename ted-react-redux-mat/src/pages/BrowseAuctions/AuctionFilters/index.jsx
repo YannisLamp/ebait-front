@@ -21,61 +21,92 @@ const useStyles = makeStyles(theme => ({
 
 
 export default function AuctionFilters(props) {
-    const { description, lowestPrice, highestPrice, location } = props;
+    const { description, lowestPrice, highestPrice, location, order, orderBy } = props;
     const { handleChange, refreshAuctions } = props;
 
     const classes = useStyles();
     return (
         <div className={classes.root}>
-            <Grid container justify="flex-start">
-                <Grid item>
-                    <TextField
-                        className={classes.textField}
-                        label="Item Description"
-                        name="description"
-                        value={description}
-                        type="text"
-                        variant="outlined"
-                        onChange={handleChange}
-                        onBlur={refreshAuctions}
-                    />
+            <Grid container justify="space-between">
+                <Grid container item justify="flex-start">
+                    <Grid item>
+                        <TextField
+                            className={classes.textField}
+                            label="Item Description"
+                            name="description"
+                            value={description}
+                            type="text"
+                            variant="outlined"
+                            onChange={handleChange}
+                            onBlur={refreshAuctions}
+                        />
+                    </Grid>
+                    <Grid item>
+                        <TextField
+                            className={classes.textField}
+                            label="Lowest Price"
+                            name="lowestPrice"
+                            value={lowestPrice}
+                            type="text"
+                            variant="outlined"
+                            onChange={handleChange}
+                            onBlur={refreshAuctions}
+                        />
+                    </Grid>
+                    <Grid item>
+                        <TextField
+                            className={classes.textField}
+                            label="Highest Price"
+                            name="highestPrice"
+                            value={highestPrice}
+                            type="text"
+                            variant="outlined"
+                            onChange={handleChange}
+                            onBlur={refreshAuctions}
+                        />
+                    </Grid>
+                    <Grid item>
+                        <TextField
+                            className={classes.textField}
+                            label="Location"
+                            name="location"
+                            value={location}
+                            type="text"
+                            variant="outlined"
+                            onChange={handleChange}
+                            onBlur={refreshAuctions}
+                        />
+                    </Grid>
                 </Grid>
-                <Grid item>
-                    <TextField
-                        className={classes.textField}
-                        label="Lowest Price"
-                        name="lowestPrice"
-                        value={lowestPrice}
-                        type="text"
-                        variant="outlined"
-                        onChange={handleChange}
-                        onBlur={refreshAuctions}
-                    />
+
+                <Grid container item justify="flex-start">
+                    <Grid item>
+                        <TextField
+                            className={classes.textField}
+                            label="Order By"
+                            name="orderBy"
+                            value={orderBy}
+                            type="text"
+                            variant="outlined"
+                            onChange={handleChange}
+                            onBlur={refreshAuctions}
+                        />
+                    </Grid>
+                    <Grid item>
+                        <TextField
+                            className={classes.textField}
+                            label="Order"
+                            name="order"
+                            value={order}
+                            type="text"
+                            variant="outlined"
+                            onChange={handleChange}
+                            onBlur={refreshAuctions}
+                        />
+                    </Grid>
+
                 </Grid>
-                <Grid item>
-                    <TextField
-                        className={classes.textField}
-                        label="Highest Price"
-                        name="highestPrice"
-                        value={highestPrice}
-                        type="text"
-                        variant="outlined"
-                        onChange={handleChange}
-                        onBlur={refreshAuctions}
-                    />
-                </Grid>
-                <Grid item>
-                    <TextField
-                        className={classes.textField}
-                        label="Location"
-                        name="location"
-                        value={location}
-                        type="text"
-                        variant="outlined"
-                        onChange={handleChange}
-                        onBlur={refreshAuctions}
-                    />
-                </Grid>
+
             </Grid>
         </div>
     );

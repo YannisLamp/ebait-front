@@ -52,8 +52,8 @@ function removeFilters() {
     return { type: auctionTypes.REMOVE_FILTERS }
 }
 
-function updateFilters({ description, lowestPrice, highestPrice, location }) {
-    return { type: auctionTypes.UPDATE_FILTERS, description, lowestPrice, highestPrice, location }
+function updateFilters({ description, lowestPrice, highestPrice, location, order, orderBy }) {
+    return { type: auctionTypes.UPDATE_FILTERS, description, lowestPrice, highestPrice, location, order, orderBy }
 }
 
 function changePageSize(pageSize) {
@@ -78,6 +78,7 @@ function setCategories(categoryFields) {
 const initialState = {
     auctions: [], totalAuctions: 0, isLoading: true, pageSize: 10, currPage: 0,
     description: null, lowestPrice: null, highestPrice: null, location: null, showFilters: false,
+    order: 'asc', orderBy: null,
     categoryFields: [{
         selectedIndex: '',
         selectedValue: '',
@@ -110,6 +111,8 @@ export default function reducer(state = initialState, action) {
                 lowestPrice: action.lowestPrice || action.lowestPrice === '' ? action.lowestPrice : state.lowestPrice,
                 highestPrice: action.highestPrice || action.highestPrice === '' ? action.highestPrice : state.highestPrice,
                 location: action.location || action.location === '' ? action.location : state.location,
+                order: action.order || action.order === '' ? action.order : state.order,
+                orderBy: action.orderBy || action.orderBy === '' ? action.orderBy : state.orderBy,
             };
         case auctionTypes.ADD_FILTERS:
             return {
@@ -130,6 +133,9 @@ export default function reducer(state = initialState, action) {
                     selectedIndex: '',
                     selectedValue: '',
                 }],
+                order: 'asc', 
+                orderBy: null,
+                
                 showFilters: false
             };
         case auctionTypes.INIT_CATEGORY:

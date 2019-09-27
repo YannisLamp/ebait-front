@@ -79,8 +79,8 @@ class BrowseAuctions extends Component {
 
         // pageSizeOptions are [10, 20, 50]
 
-        order: 'asc',
-        orderBy: '',
+        //order: 'asc',
+        //orderBy: '',
 
         //totalPages: null,
 
@@ -174,7 +174,7 @@ class BrowseAuctions extends Component {
         const { isRecoLoading, recoAuctions } = this.state;
 
         const { categoryFields, auctions, totalAuctions, isLoading, showFilters, lowestPrice,
-            highestPrice, location, description, pageSize, currPage } = this.props;
+            order, orderBy, highestPrice, location, description, pageSize, currPage } = this.props;
 
         const { classes } = this.props;
         return (
@@ -209,6 +209,8 @@ class BrowseAuctions extends Component {
                                         lowestPrice={lowestPrice}
                                         highestPrice={highestPrice}
                                         location={location}
+                                        order={order}
+                                        orderBy={orderBy}
 
                                         handleChange={this.handleChange}
                                         refreshAuctions={this.refreshAuctions}
@@ -277,6 +279,8 @@ function mapStateToProps(state) {
         lowestPrice, 
         highestPrice, 
         location,
+        order,
+        orderBy,
 
         pageSize, 
         currPage,
@@ -294,6 +298,8 @@ function mapStateToProps(state) {
         lowestPrice, 
         highestPrice, 
         location,
+        order, 
+        orderBy,
 
         pageSize, 
         currPage,
