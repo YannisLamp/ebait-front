@@ -30,7 +30,7 @@ export default function MessageList(props) {
 
     const startLabel = listType === "inbox" ? "From: " : "To: ";
 
-    const classes = useStyles;
+    const classes = useStyles();
     return (
         <div className={classes.root}>
             {messages.map(message => {
@@ -43,26 +43,25 @@ export default function MessageList(props) {
                         <ExpansionPanel key={message.id}>
                             <ExpansionPanelSummary
                                 expandIcon={<ExpandMoreIcon />}
-                                onClick={e => { if (!message.read) { onClickMessage(message.id) } }}
+                                onClick={e => { if (!message.read && listType === "inbox") { onClickMessage(message.id) } }}
                             >
-                                <Typography className={classes.heading} style={!message.read ? { fontWeight: 'bold' } : {}}>
+                                <Typography className={classes.heading} style={!message.read && listType === "inbox" ? { fontWeight: 'bold' } : {}}>
                                     {startLabel + nameLabel + " - " + message.subject}
                                 </Typography>
                             </ExpansionPanelSummary>
                             <ExpansionPanelDetails>
-                                <Typography>
-                                    <Grid container justify="space-between">
-                                        <Grid item>
+                                <Grid container justify="space-between">
+                                    <Grid item sm={11}>
+                                        <Typography>
                                             {message.message}
-                                        </Grid>
-
-                                        <Grid item>
-                                            <IconButton className={classes.deleteBtn} onClick={e => deleteMessage(message.id)}>
-                                                <DeleteIcon />
-                                            </IconButton>
-                                        </Grid>
+                                        </Typography>
                                     </Grid>
-                                </Typography>
+                                    <Grid item sm={1}>
+                                        <IconButton className={classes.deleteBtn} onClick={e => deleteMessage(message.id)}>
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </Grid>
+                                </Grid>
                             </ExpansionPanelDetails>
                         </ExpansionPanel>
                     );
