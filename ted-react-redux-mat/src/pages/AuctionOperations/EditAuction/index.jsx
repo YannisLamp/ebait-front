@@ -387,14 +387,15 @@ class EditAuction extends Component {
         }
 
         // Convert Date object to proper format
-        const convertedends = format(ends, 'MMM-dd-yy HH:mm:ss');
+
 
         // Remove any photos that have been uploaded from photos
         const onlyNewPhotos = photos.filter((value, index, arr) => {
             return !value.photoId;
         });
 
-        if (name !== "" && convertedends && firstBid !== "") {
+        if (name !== "" && ends !== "" && firstBid !== "") {
+            const convertedends = format(ends, 'MMM-dd-yy HH:mm:ss');
             this.setState((prevState, props) => { return { isLoading: true, } });
             auctionsApi.editAuction(itemID, name, description, convertedends,
                 firstBid, buyout, categories, country, locationDescription,
@@ -405,7 +406,7 @@ class EditAuction extends Component {
                 });
         }
         else {
-            const { dispatch } = this.props; 
+            const { dispatch } = this.props;
             dispatch(alertActions("Auction details missing, name, ending date, first bid are required"));
             this.setState((prevState, props) => { return { isLoading: false, } });
         }

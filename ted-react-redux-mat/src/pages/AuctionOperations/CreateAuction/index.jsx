@@ -313,17 +313,18 @@ class CreateAuction extends Component {
         }
 
         // Convert Date object to proper format
-        const convertedends = format(ends, 'MMM-dd-yy HH:mm:ss');
 
-        if (name !== "" && convertedends && firstBid !== "") {
-        this.setState((prevState, props) => { return { isLoading: true, } });
-        auctionsApi.createAuction(name, description, convertedends,
-            firstBid, buyout, categories, country, locationDescription,
-            selectedLat, selectedLng, photos)
-            .then(data => {
-                this.setState((prevState, props) => { return { isLoading: false, } });
-                this.redirectToMyAuctions();
-            });
+
+        if (name !== "" && ends !== "" && firstBid !== "") {
+            const convertedends = format(ends, 'MMM-dd-yy HH:mm:ss');
+            this.setState((prevState, props) => { return { isLoading: true, } });
+            auctionsApi.createAuction(name, description, convertedends,
+                firstBid, buyout, categories, country, locationDescription,
+                selectedLat, selectedLng, photos)
+                .then(data => {
+                    this.setState((prevState, props) => { return { isLoading: false, } });
+                    this.redirectToMyAuctions();
+                });
         }
         else {
             const { dispatch } = this.props;
