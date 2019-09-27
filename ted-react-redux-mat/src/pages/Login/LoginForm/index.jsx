@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { loginApi } from '../../../services';
 
 // Material
-import { Grid, Button, IconButton, CircularProgress, TextField, Typography } from '@material-ui/core';
+import { Button, CircularProgress, TextField, Typography } from '@material-ui/core';
 
 // For importing my custom styles  
 import { withStyles } from '@material-ui/core';
