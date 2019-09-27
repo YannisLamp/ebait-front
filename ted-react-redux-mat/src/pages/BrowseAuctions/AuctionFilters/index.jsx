@@ -97,7 +97,7 @@ export default function AuctionFilters(props) {
                                 <em>Name</em>
                             </MenuItem>
                             <MenuItem value="description">Description</MenuItem>
-                            {/* <MenuItem value={20}></MenuItem> */}
+                            <MenuItem value={"currently"}>Current Bid</MenuItem>
                         </Select>
                     </FormControl>
                     <FormControl variant="outlined" className={classes.textField}>
