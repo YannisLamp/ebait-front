@@ -5,10 +5,10 @@ import { userActions } from '../../store/ducks/userStore';
 import { auctionsApi } from '../../services/auctionsApi';
 import { messageApi } from '../../services/messageApi';
 
-import { AppBar, Toolbar, Typography, IconButton, TextField, MenuItem, Badge, Menu, Box } from '@material-ui/core';
+import { AppBar, Toolbar, IconButton, MenuItem, Badge, Menu, Box } from '@material-ui/core';
 
 // Material icons
-import { Menu as MenuIcon, Input as InputIcon, Mail as MailIcon, Notifications as NotificationsIcon, AccountCircle } from '@material-ui/icons/';
+import { Menu as MenuIcon, Input as InputIcon, Mail as MailIcon, AccountCircle } from '@material-ui/icons/';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 
 import MainImage from '../../static/logo_psonia_cropped.png';
