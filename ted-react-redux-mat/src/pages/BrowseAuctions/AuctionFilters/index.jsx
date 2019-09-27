@@ -1,7 +1,7 @@
 import React from 'react';
 
 // Material
-import { TextField, Grid } from '@material-ui/core';
+import { TextField, Grid, FormControl, InputLabel, Select, MenuItem, OutlinedInput } from '@material-ui/core';
 
 // For importing my custom styles  
 import { makeStyles } from '@material-ui/core';
@@ -23,6 +23,12 @@ const useStyles = makeStyles(theme => ({
 export default function AuctionFilters(props) {
     const { description, lowestPrice, highestPrice, location, order, orderBy } = props;
     const { handleChange, refreshAuctions } = props;
+
+    const inputLabel = React.useRef(null);
+    const [labelWidth, setLabelWidth] = React.useState(0);
+    React.useEffect(() => {
+        setLabelWidth(inputLabel.current.offsetWidth);
+    }, []);
 
     const classes = useStyles();
     return (
@@ -71,28 +77,48 @@ export default function AuctionFilters(props) {
                     />
                 </Grid>
 
-
                 <Grid item>
-                    <TextField
-                        className={classes.textField}
-                        label="Order By"
-                        name="orderBy"
-                        value={orderBy}
-                        type="text"
-                        variant="outlined"
-                        onChange={handleChange}
-                        onBlur={refreshAuctions}
-                    />
-                    <TextField
-                        className={classes.textField}
-                        label="Order"
-                        name="order"
-                        value={order}
-                        type="text"
-                        variant="outlined"
-                        onChange={handleChange}
-                        onBlur={refreshAuctions}
-                    />
+                    <FormControl variant="outlined" className={classes.textField}>
+                        <InputLabel ref={inputLabel} htmlFor="outlined-order-by">
+                            Order By
+                        </InputLabel>
+                        <Select
+                            value={orderBy}
+                            onChange={handleChange}
+                            onBlur={refreshAuctions}
+                            input={<OutlinedInput
+                                style={{ backgroundColor: 'white' }}
+                                labelWidth={labelWidth}
+                                name="orderBy"
+                                id={"outlined-order-by"}
+                            />}
+                        >
+                            <MenuItem value="name">
+                                <em>Name</em>
+                            </MenuItem>
+                            <MenuItem value="description">Description</MenuItem>
+                            {/* <MenuItem value={20}></MenuItem> */}
+                        </Select>
+                    </FormControl>
+                    <FormControl variant="outlined" className={classes.textField}>
+                        <InputLabel ref={inputLabel} htmlFor="outlined-order">
+                            Order
+                        </InputLabel>
+                        <Select
+                            value={order}
+                            onChange={handleChange}
+                            onBlur={refreshAuctions}
+                            input={<OutlinedInput
+                                style={{ backgroundColor: 'white' }}
+                                labelWidth={labelWidth}
+                                name="order"
+                                id={"outlined-order"}
+                            />}
+                        >
+                            <MenuItem value={'asc'}>Ascending</MenuItem>
+                            <MenuItem value={'desc'}>Descending</MenuItem>
+                        </Select>
+                    </FormControl>
                 </Grid>
             </Grid>
         </div>

@@ -78,7 +78,7 @@ function setCategories(categoryFields) {
 const initialState = {
     auctions: [], totalAuctions: 0, isLoading: true, pageSize: 10, currPage: 0,
     description: null, lowestPrice: null, highestPrice: null, location: null, showFilters: false,
-    order: 'asc', orderBy: null,
+    order: 'asc', orderBy: 'name',
     categoryFields: [{
         selectedIndex: '',
         selectedValue: '',
@@ -134,7 +134,7 @@ export default function reducer(state = initialState, action) {
                     selectedValue: '',
                 }],
                 order: 'asc', 
-                orderBy: null,
+                orderBy: 'name',
                 
                 showFilters: false
             };
