@@ -136,11 +136,19 @@ class Messages extends Component {
             })
     }
 
-    deleteMessage = (id) => {
+    deleteInboxMessage = (id) => {
         messageApi.deleteMessage(id)
             .then(data => {
                 const { dispatch } = this.props;
                 dispatch(messageApi.refreshInboxThunk());
+            })
+    }
+
+    deleteSentMessage = (id) => {
+        messageApi.deleteMessage(id)
+            .then(data => {
+                const { dispatch } = this.props;
+                dispatch(messageApi.getSentThunk());
             })
     }
 
@@ -227,7 +235,7 @@ class Messages extends Component {
                                             listType="inbox"
 
                                             onClickMessage={this.onClickMessage}
-                                            deleteMessage={this.deleteMessage}
+                                            deleteMessage={this.deleteInboxMessage}
                                         />
                                     </TabPanel>
                                     <TabPanel value={tabValue} index={1} dir={theme.direction}>
@@ -238,7 +246,7 @@ class Messages extends Component {
                                             listType="sent"
 
                                             onClickMessage={this.onClickMessage}
-                                            deleteMessage={this.deleteMessage}
+                                            deleteMessage={this.deleteSentMessage}
                                         />
                                     </TabPanel>
                                     <TabPanel value={tabValue} index={2} dir={theme.direction}>
