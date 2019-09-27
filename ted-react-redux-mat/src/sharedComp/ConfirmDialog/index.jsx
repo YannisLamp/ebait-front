@@ -21,7 +21,7 @@ export default function ConfirmDialog(props) {
             >
                 <DialogTitle id={"alert-dialog-title" + title}>{title}</DialogTitle>
                 <DialogContent>
-                    <DialogContentText id={"alert-dialog-description" + title}>
+                    <DialogContentText style={{color: 'black'}} id={"alert-dialog-description" + title}>
                         {text}
                     </DialogContentText>
                 </DialogContent>

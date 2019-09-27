@@ -71,6 +71,9 @@ class ViewAuction extends Component {
 
         isFullscreenPhotos: false,
         fullscreenIndex: 0,
+
+        modalBidOpen: false,
+        modalBuyOpen: false,
     };
 
     componentDidMount = () => {
@@ -153,8 +156,16 @@ class ViewAuction extends Component {
         this.setState((prevState, props) => { return { [name]: value } });
     }
 
+    changeBidModal = () => {
+        this.setState((prevState, props) => { return { modalBidOpen: !prevState.modalBidOpen } });
+    }
+
+    changeBuyModal = () => {
+        this.setState((prevState, props) => { return { modalBuyOpen: !prevState.modalBuyOpen } });
+    }
+
     render() {
-        const { auction, isFullscreenPhotos, fullscreenIndex, myBid } = this.state;
+        const { auction, isFullscreenPhotos, fullscreenIndex, myBid, modalBidOpen, modalBuyOpen } = this.state;
 
         if (auction) {
             let photos = [];
@@ -222,12 +233,15 @@ class ViewAuction extends Component {
                                 <Paper className={classes.paper}>
                                     <AuctionDetails
                                         auction={auction}
-
                                         myBid={myBid}
+                                        modalBidOpen={modalBidOpen}
+                                        modalBuyOpen={modalBuyOpen}
 
                                         handleChange={this.handleChange}
                                         placeBid={this.placeBid}
                                         buyoutAuction={this.buyoutAuction}
+                                        changeBidModal={this.changeBidModal}
+                                        changeBuyModal={this.changeBuyModal}
                                     />
                                 </Paper>
                             </Grid>
