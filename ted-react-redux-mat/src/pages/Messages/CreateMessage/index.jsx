@@ -84,7 +84,6 @@ export default function MessageList(props) {
                             shrink: true,
                         }}
                         value={message}
-                        onChange={handleChange}
                     />
 
                     <Button
