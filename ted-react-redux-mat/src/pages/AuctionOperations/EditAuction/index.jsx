@@ -6,6 +6,8 @@ import { Grid, Paper, Button, CircularProgress } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { format, parse } from 'date-fns';
 
+import { alertActions } from '../../../store/ducks/alertStore';
+
 import produce from "immer";
 
 // For importing my custom styles  
@@ -392,14 +394,21 @@ class EditAuction extends Component {
             return !value.photoId;
         });
 
-        this.setState((prevState, props) => { return { isLoading: true, } });
-        auctionsApi.editAuction(itemID, name, description, convertedends,
-            firstBid, buyout, categories, country, locationDescription,
-            selectedLat, selectedLng, onlyNewPhotos, deletedPhotos)
-            .then(data => {
-                this.setState((prevState, props) => { return { isLoading: false, } });
-                this.redirectToMyAuctions();
-            });
+        if (name !== "" && convertedends && firstBid !== "") {
+            this.setState((prevState, props) => { return { isLoading: true, } });
+            auctionsApi.editAuction(itemID, name, description, convertedends,
+                firstBid, buyout, categories, country, locationDescription,
+                selectedLat, selectedLng, onlyNewPhotos, deletedPhotos)
+                .then(data => {
+                    this.setState((prevState, props) => { return { isLoading: false, } });
+                    this.redirectToMyAuctions();
+                });
+        }
+        else {
+            const { dispatch } = this.props; 
+            dispatch(alertActions("Auction details missing, name, ending date, first bid are required"));
+            this.setState((prevState, props) => { return { isLoading: false, } });
+        }
     }
 
 
