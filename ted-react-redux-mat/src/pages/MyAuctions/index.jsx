@@ -104,18 +104,14 @@ class MyAuctions extends Component {
     startAuction = (itemID) => {
         auctionsApi.startAuction(itemID)
             .then(data => {
-                if (data) {
-                    this.loadAuctions();
-                }
+                this.loadAuctions();
             });
     }
 
     deleteAuction = (itemID) => {
         auctionsApi.deleteAuction(itemID)
             .then(data => {
-                if (data) {
-                    this.loadAuctions();
-                }
+                this.loadAuctions();
             });
     }
 

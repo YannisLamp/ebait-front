@@ -153,14 +153,110 @@ export default function MyAuctionsTable(props) {
                                                             //component={Button} to={"/admin/" + row.username}
                                                             className={classes.notDecorated}
                                                         >
-                                                            <TableCell align="left">{row.name}</TableCell>
-                                                            <TableCell align="right">{row.description}</TableCell>
-                                                            <TableCell align="right">{row.country}</TableCell>
-                                                            <TableCell align="right">{row.location.text}</TableCell>
-                                                            <TableCell align="right">{row.firstBid}</TableCell>
-                                                            <TableCell align="right">{row.buyPrice}</TableCell>
-                                                            <TableCell align="right">{row.ends}</TableCell>
-                                                            <TableCell align="right">{row.eventStarted ? <CheckBoxIcon /> : <CheckBoxBlankIcon />}</TableCell>
+                                                            <TableCell 
+                                                                align="left"
+                                                                className={classes.notDecorated}
+                                                                component={Link}
+                                                                to={{
+                                                                    pathname: '/viewauction/' + row.itemID,
+                                                                    state: {
+                                                                        auction: row
+                                                                    }
+                                                                }}
+                                                            >
+                                                                {row.name}
+                                                            </TableCell>
+                                                            <TableCell 
+                                                                align="right"
+                                                                className={classes.notDecorated}
+                                                                component={Link}
+                                                                to={{
+                                                                    pathname: '/viewauction/' + row.itemID,
+                                                                    state: {
+                                                                        auction: row
+                                                                    }
+                                                                }}
+                                                            >
+                                                                {row.description}
+                                                            </TableCell>
+                                                            <TableCell 
+                                                                align="right"
+                                                                className={classes.notDecorated}
+                                                                component={Link}
+                                                                to={{
+                                                                    pathname: '/viewauction/' + row.itemID,
+                                                                    state: {
+                                                                        auction: row
+                                                                    }
+                                                                }}
+                                                            >
+                                                                {row.country}
+                                                            </TableCell>
+                                                            <TableCell 
+                                                                align="right"
+                                                                className={classes.notDecorated}
+                                                                component={Link}
+                                                                to={{
+                                                                    pathname: '/viewauction/' + row.itemID,
+                                                                    state: {
+                                                                        auction: row
+                                                                    }
+                                                                }}
+                                                            >
+                                                                {row.location.text}
+                                                            </TableCell>
+                                                            <TableCell 
+                                                                align="right"
+                                                                className={classes.notDecorated}
+                                                                component={Link}
+                                                                to={{
+                                                                    pathname: '/viewauction/' + row.itemID,
+                                                                    state: {
+                                                                        auction: row
+                                                                    }
+                                                                }}
+                                                            >
+                                                                {row.firstBid}
+                                                            </TableCell>
+                                                            <TableCell 
+                                                                align="right"
+                                                                className={classes.notDecorated}
+                                                                component={Link}
+                                                                to={{
+                                                                    pathname: '/viewauction/' + row.itemID,
+                                                                    state: {
+                                                                        auction: row
+                                                                    }
+                                                                }}
+                                                            >
+                                                                {row.buyPrice}
+                                                            </TableCell>
+                                                            <TableCell 
+                                                                align="right"
+                                                                className={classes.notDecorated}
+                                                                component={Link}
+                                                                to={{
+                                                                    pathname: '/viewauction/' + row.itemID,
+                                                                    state: {
+                                                                        auction: row
+                                                                    }
+                                                                }}
+                                                            >
+                                                                {row.ends}
+                                                            </TableCell>
+                                                            <TableCell 
+                                                                align="right"
+                                                                className={classes.notDecorated}
+                                                                component={Link}
+                                                                to={{
+                                                                    pathname: '/viewauction/' + row.itemID,
+                                                                    state: {
+                                                                        auction: row
+                                                                    }
+                                                                }}
+                                                            >
+                                                                {row.eventStarted ? <CheckBoxIcon /> : <CheckBoxBlankIcon />}
+                                                            </TableCell>
                                                             <TableCell align="right">
                                                                 {row.eventStarted ?
                                                                     '' :
