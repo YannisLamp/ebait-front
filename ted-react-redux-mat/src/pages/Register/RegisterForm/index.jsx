@@ -3,7 +3,7 @@ import { history } from '../../../utils';
 import { connect } from 'react-redux';
 import { registerApi } from '../../../services';
 
-import { IconButton, CircularProgress, TextField, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core';
 
 import CredentialForm from './CredentialForm';
@@ -185,7 +185,6 @@ class RegisterForm extends Component {
 
     render() {
         const { passwordsMatch, currentStep, usernameTaken } = this.state;
-        const submitted = false;
 
         const { classes } = this.props;
 
