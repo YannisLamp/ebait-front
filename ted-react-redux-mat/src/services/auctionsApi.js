@@ -74,33 +74,33 @@ const editAuction = async (itemID, name, description, ends, firstBid, buyout, ca
 }
 
 
-const getAllAuctions = (categories, description, lowestPrice, highestPrice, location, order, orderBy, currPage, pageSize) => {
+// const getAllAuctions = (categories, description, lowestPrice, highestPrice, location, order, orderBy, currPage, pageSize) => {
 
-    //params
+//     //params
 
-    const jsonRequest = {
-        params: {
+//     const jsonRequest = {
+//         params: {
 
-            categories: categories,
-            description: description,
-            lowestPrice: lowestPrice,
-            highestPrice: highestPrice,
-            location: location,
+//             categories: categories,
+//             description: description,
+//             lowestPrice: lowestPrice,
+//             highestPrice: highestPrice,
+//             location: location,
 
-            //order: orderBy,
-            //orderBy: order,
+//             //order: orderBy,
+//             //orderBy: order,
 
-            pageNo: currPage,
-            pageSize: pageSize,
-        }
-    }
+//             pageNo: currPage,
+//             pageSize: pageSize,
+//         }
+//     }
 
-    return axios.get('/search/auctions/filters', jsonRequest)
-        .then(response => {
-            return response.data;
-        })
-        .catch(error => { handleError(error) });
-}
+//     return axios.get('/search/auctions/filters', jsonRequest)
+//         .then(response => {
+//             return response.data;
+//         })
+//         .catch(error => { handleError(error) });
+// }
 
 const getRecommendedAuctions = () => {
     return axios.get('/search/auctions/recommend_auctions')
@@ -268,8 +268,8 @@ const getAllAuctionsThunk = (categoryFields, description, lowestPrice, highestPr
             highestPrice: highestPrice,
             location: location,
 
-            //order: orderBy,
-            //orderBy: order,
+            order: order,
+            orderBy: orderBy,
 
             pageNo: currPage,
             pageSize: pageSize,
@@ -382,7 +382,7 @@ export const auctionsApi = {
     editAuction,
     getUserAuctions,
     getActiveAuctions,
-    getAllAuctions,
+    //getAllAuctions,
     getRecommendedAuctions,
     getAuctionById,
     startAuction,
