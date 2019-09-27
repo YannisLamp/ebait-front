@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { history } from '../../../utils';
 // Material
-import { Grid, Paper, Button, TextField, CircularProgress } from '@material-ui/core';
+import { Grid, Paper, Button, CircularProgress } from '@material-ui/core';
 
 import { connect } from 'react-redux';
 import { format, parse } from 'date-fns';
@@ -379,7 +379,7 @@ class EditAuction extends Component {
         // Convert category fields to categories for API
         let categories = [];
         for (let cat of categoryFields) {
-            if (cat.selectedValue != "") {
+            if (cat.selectedValue !== "") {
                 categories.push({ name: cat.selectedValue });
             }
         }

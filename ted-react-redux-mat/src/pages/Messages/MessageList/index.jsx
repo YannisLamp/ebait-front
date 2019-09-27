@@ -66,6 +66,9 @@ export default function MessageList(props) {
                         </ExpansionPanel>
                     );
                 }
+                else {
+                    return "";
+                }
             })
             }
         </div>

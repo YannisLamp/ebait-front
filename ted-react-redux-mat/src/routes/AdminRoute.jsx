@@ -4,7 +4,7 @@ import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 
-function AdminRoute({ component: Component, user: user, ...rest }) {
+function AdminRoute({ component: Component, user, ...rest }) {
     return (
         <Route {...rest} render={props => (
             (user && user.userRole === 'ADMIN')

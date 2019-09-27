@@ -1,8 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 // Material
-import { Grid, Paper, Button } from '@material-ui/core';
+import { Grid, Paper } from '@material-ui/core';
 
 // For importing my custom styles  
 import { makeStyles } from '@material-ui/core/styles';

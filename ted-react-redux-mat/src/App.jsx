@@ -28,8 +28,6 @@ import { UserRoute } from './routes';
 import 'react-image-lightbox/style.css'; // This only needs to be imported once
 import 'react-awesome-slider/dist/styles.css';
 
-import useStyles from './styles';
-
 export default function App(props) {
 
     return (

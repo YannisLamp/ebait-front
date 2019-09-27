@@ -1,11 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
-// Material
-import {
-    Grid, Paper, IconButton, Typography, CircularProgress,
-    Table, TableBody, TableRow, TableCell, Checkbox, TablePagination, Switch
-} from '@material-ui/core';
+import { Grid, IconButton, Table, TableBody, TableRow, TableCell, TablePagination } from '@material-ui/core';
 
 import { CheckBox as CheckBoxIcon, CheckBoxOutlineBlank as CheckBoxBlankIcon } from '@material-ui/icons';
 
@@ -86,10 +82,10 @@ export default function MyAuctionsTable(props) {
     const { handleRequestSort, handleChangePage, handleChangeRowsPerPage, deleteAuction, startAuction } = props;
 
     //const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.users.length - page * rowsPerPage);
-    let emptyRows = pageSize;
-    if (props.auctions) {
-        emptyRows = emptyRows - props.auctions.length;
-    }
+    // let emptyRows = pageSize;
+    // if (props.auctions) {
+    //     emptyRows = emptyRows - props.auctions.length;
+    // }
 
     function desc(a, b, orderBy) {
         if (b[orderBy] < a[orderBy]) {

@@ -3,9 +3,6 @@ import { Map, TileLayer, Marker, Popup } from "react-leaflet";
 
 import { makeStyles } from '@material-ui/core/styles';
 
-import PaperTitle from '../../../sharedComp/PaperTitle';
-//import ContainerDimensions from 'react-container-dimensions'
-
 
 const useStyles = makeStyles(theme => ({
     map: {

@@ -1,10 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
-// Material
 import { Avatar, Divider, Typography, Grid, Button, CircularProgress } from '@material-ui/core';
 
-// For importing my custom styles  
 import { makeStyles } from '@material-ui/core/styles';
 
 import PaperTitle from '../../../sharedComp/PaperTitle';

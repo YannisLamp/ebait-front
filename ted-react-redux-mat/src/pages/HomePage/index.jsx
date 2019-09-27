@@ -1,9 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 // Material
-import { Grid, Paper, Button } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 
 // For importing my custom styles  
 import { makeStyles } from '@material-ui/core/styles';

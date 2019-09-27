@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
-import { Grid, Paper, IconButton, FormControlLabel, Switch, Collapse } from '@material-ui/core';
-import FilterListIcon from '@material-ui/icons/FilterList';
+import { Grid, Paper, FormControlLabel, Switch, Collapse } from '@material-ui/core';
 import { connect } from 'react-redux';
 
 import { withStyles } from '@material-ui/core';

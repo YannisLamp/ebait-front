@@ -252,7 +252,7 @@ const getAllCats = async (reqs) => {
 const getAllAuctionsThunk = (categoryFields, description, lowestPrice, highestPrice, location, order, orderBy, currPage, pageSize) => {
     let categories = [];
     for (let cat of categoryFields) {
-        if (cat.selectedValue != "") {
+        if (cat.selectedValue !== "") {
             //categories.push({ name: cat.selectedValue });
             categories.push(cat.selectedValue);
         }

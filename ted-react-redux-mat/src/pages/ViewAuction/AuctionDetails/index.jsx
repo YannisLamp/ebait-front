@@ -1,8 +1,6 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 
-// Material
-import { Grid, Button, Typography, CircularProgress, TextField } from '@material-ui/core';
+import { Grid, Button, Typography, TextField } from '@material-ui/core';
 import { connect } from 'react-redux';
 
 import PaperTitle from '../../../sharedComp/PaperTitle';
@@ -39,7 +37,7 @@ const useStyles = makeStyles(theme => ({
 
 function AuctionDetails(props) {
 
-    const { user, auction, myBid, isBidding, isBuying, } = props;
+    const { user, auction, myBid } = props;
     const { handleChange, placeBid, buyoutAuction } = props;
     const hasPriv = !user || (user.userRole === 'USER' && user.verified === false) ? false : true;
 

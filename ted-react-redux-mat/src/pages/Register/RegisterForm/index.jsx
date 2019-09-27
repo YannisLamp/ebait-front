@@ -185,7 +185,6 @@ class RegisterForm extends Component {
 
     render() {
         const { passwordsMatch, currentStep, usernameTaken } = this.state;
-
         const { classes } = this.props;
 
         let isLoading = false;

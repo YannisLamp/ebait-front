@@ -270,7 +270,7 @@ const startAuctionsFromitemIDToDesc = async (itemIDToDesc) => {
             .catch(error => {handleError(error)});
     }
     const itemIDArray2 = Array.from(itemIDToDesc);
-    if (itemIDArray2.length != itemIDArray.length) {
+    if (itemIDArray2.length !== itemIDArray.length) {
         console.log('ERROR: itemIDToDesc was not ready on call time');
     }
 }

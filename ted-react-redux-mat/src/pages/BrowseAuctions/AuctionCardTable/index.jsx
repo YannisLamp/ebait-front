@@ -1,13 +1,7 @@
 import React from 'react';
 
-import {
-    Grid, Paper, Button, Typography, CircularProgress,
-    Table, TableBody, TableRow, TableCell, Checkbox, TablePagination, Switch
-} from '@material-ui/core';
+import { Grid, TablePagination } from '@material-ui/core';
 
-import { CheckBox as CheckBoxIcon, CheckBoxOutlineBlank as CheckBoxBlankIcon } from '@material-ui/icons';
-
-import PaperTitle from '../../../sharedComp/PaperTitle';
 import AuctionCard from './AuctionCard';
 
 import { makeStyles } from '@material-ui/core';

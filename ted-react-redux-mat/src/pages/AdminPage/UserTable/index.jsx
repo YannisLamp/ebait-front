@@ -1,7 +1,5 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 
-// Material
 import { Table, TableBody, TableRow, TableCell, TablePagination } from '@material-ui/core';
 
 import { CheckBox as CheckBoxIcon, CheckBoxOutlineBlank as CheckBoxBlankIcon } from '@material-ui/icons';
@@ -61,10 +59,10 @@ export default function UserTable(props) {
     const { changeUser, handleRequestSort, handleChangePage, handleChangeRowsPerPage } = props;
 
     //const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.users.length - page * rowsPerPage);
-    let emptyRows = pageSize;
-    if (props.users) {
-        emptyRows = emptyRows - props.users.length;
-    }
+    // let emptyRows = pageSize;
+    // if (props.users) {
+    //     emptyRows = emptyRows - props.users.length;
+    // }
 
     const classes = useStyles();
     return (

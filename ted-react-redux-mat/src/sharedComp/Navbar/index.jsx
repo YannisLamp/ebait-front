@@ -146,7 +146,7 @@ class Navbar extends Component {
                             <NavLink
                                 to="/"
                             >
-                                <img src={MainImage} style={{ height: '50px', width: 'auto' }} />
+                                <img src={MainImage} style={{ height: '50px', width: 'auto' }} alt={""} />
                             </NavLink>
                         </Box>
 

@@ -69,9 +69,9 @@ export default function AuctionPhotoUpload(props) {
                     {
                         photos.length > 0 ?
                             photos[shownPhoto].fileDownloadUri ? (
-                                <img className={classes.image} src={photos[shownPhoto].fileDownloadUri} />
+                                <img className={classes.image} src={photos[shownPhoto].fileDownloadUri} alt={""}/>
                             ) : (
-                                <img className={classes.image} src={URL.createObjectURL(photos[shownPhoto])} />
+                                <img className={classes.image} src={URL.createObjectURL(photos[shownPhoto])} alt={""}/>
                             )
                         : ''
                     }

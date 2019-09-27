@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Grid, TextField } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 import { Map, TileLayer, Marker, Popup } from "react-leaflet";
 
 import { makeStyles } from '@material-ui/core/styles';

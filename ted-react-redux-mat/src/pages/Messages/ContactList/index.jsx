@@ -2,7 +2,7 @@ import React from 'react';
 
 import {
     List, ListItem, ListItemAvatar, Avatar,
-    ListItemText, Divider, Typography
+    ListItemText, Divider,
 } from '@material-ui/core';
 import PaperTitle from '../../../sharedComp/PaperTitle';
 

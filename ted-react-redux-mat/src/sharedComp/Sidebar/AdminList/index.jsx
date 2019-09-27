@@ -1,9 +1,8 @@
 import React from 'react';
 
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
-import { List, ListItem, ListItemIcon, ListItemText, Divider,
-    ListSubheader, Typography } from '@material-ui/core';
+import { List, ListItem, ListItemIcon, ListItemText, Divider } from '@material-ui/core';
 
 // Material icons
 import {
@@ -11,11 +10,7 @@ import {
   PeopleOutlined as PeopleIcon,
   ShoppingBasketOutlined as ShoppingBasketIcon,
   LockOpenOutlined as LockOpenIcon,
-  TextFields as TextFieldsIcon,
-  ImageOutlined as ImageIcon,
-  InfoOutlined as InfoIcon,
   AccountBoxOutlined as AccountBoxIcon,
-  SettingsOutlined as SettingsIcon,
   MessageOutlined as MessageIcon,
   LibraryAddOutlined as LibraryAddOutlinedIcon,
   ImportExport as ImportExportIcon 

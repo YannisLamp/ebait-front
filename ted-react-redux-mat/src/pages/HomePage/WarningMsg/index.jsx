@@ -1,8 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
-// Material
-import { Card, CardContent, CardActions, CardActionArea, Typography } from '@material-ui/core';
+import { Card, CardContent, Typography } from '@material-ui/core';
 
 // For importing my custom styles  
 import { makeStyles } from '@material-ui/core/styles';
@@ -23,7 +21,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function WarningMsg(props) {
-    const { backgroundColor, borderColor, warningText } = props;
+    const { backgroundColor, warningText } = props;
 
     const classes = useStyles();
     return (

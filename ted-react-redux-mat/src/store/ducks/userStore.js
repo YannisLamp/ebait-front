@@ -1,5 +1,3 @@
-import { alertActions } from './alertStore';
-
 // Action types
 const userTypes = {
     REGISTER_REQUEST: 'ebait/user/REGISTER_REQUEST',

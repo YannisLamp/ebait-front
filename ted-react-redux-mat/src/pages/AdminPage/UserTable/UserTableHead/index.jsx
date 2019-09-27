@@ -1,8 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 // Material
-import { TableHead, TableRow, TableCell, TableSortLabel, Typography, Switch, Grid } from '@material-ui/core';
+import { TableHead, TableRow, TableCell, TableSortLabel } from '@material-ui/core';
 
 // For importing my custom styles  
 import { makeStyles } from '@material-ui/core/styles';

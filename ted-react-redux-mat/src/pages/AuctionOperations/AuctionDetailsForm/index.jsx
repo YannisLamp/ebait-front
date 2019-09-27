@@ -1,14 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import PaperTitle from '../../../sharedComp/PaperTitle';
 
-// Material
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import { KeyboardDateTimePicker } from "@material-ui/pickers";
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 
-import { Button, TextField, Typography } from '@material-ui/core';
+import { TextField, Typography } from '@material-ui/core';
 
 import CategoryList from '../../../sharedComp/CategoryList';
 

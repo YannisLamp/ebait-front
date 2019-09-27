@@ -1,4 +1,3 @@
-import { authHeader } from '../utils';
 import axios from './axiosConfig';
 
 import { loginApi } from './loginApi';

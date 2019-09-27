@@ -3,13 +3,12 @@ import { usersApi } from '../../../services';
 import { loginApi } from '../../../services';
 
 import { connect } from 'react-redux';
+import { alertActions } from '../../../store/ducks/alertStore';
 
-// Material
 import { Grid, Button, CircularProgress, TextField, Typography } from '@material-ui/core';
 
 import PaperTitle from '../../../sharedComp/PaperTitle';
 
-// For importing my custom styles  
 import { withStyles } from '@material-ui/core';
 
 
@@ -85,34 +84,38 @@ class EditUser extends Component {
         this.setState((prevState, props) => { return { infoLoading: true } });
         const { userId, firstName, lastName, email, phoneNumber, country, address, afm } = this.state;
         const { dispatch } = this.props;
-        // na elegxw gia adeia
-        //if (username) {
-             usersApi.editUserInfo(userId, firstName, lastName, email, phoneNumber, country, address, afm)
-                .then(response => {
-                    this.setState((prevState, props) => { return { infoLoading: false } });
-                    dispatch(loginApi.refreshUserThunk(userId));
-                })
-        //}
-    }
+        
+        if (firstName !== "" && firstName.length > 2 && lastName !== "" && lastName.length > 2 &&
+            email !== "" && email.includes("@") && country !== "" && address !== "") {
+        usersApi.editUserInfo(userId, firstName, lastName, email, phoneNumber, country, address, afm)
+            .then(response => {
+                this.setState((prevState, props) => { return { infoLoading: false } });
+                dispatch(loginApi.refreshUserThunk(userId));
+            })
+        }
+        else {
+            dispatch(alertActions.error("Personal Information must not be null, user email must contain an @"));
+            this.setState((prevState, props) => { return { infoLoading: false } });
+        }
 
-    checkPasswordMatch = () => {
-        this.setState((prevState, props) => {
-            return { 'passwordsMatch': prevState.password === prevState.confirmPassword }
-        });
     }
 
     handleChangePassword = () => {
         this.setState((prevState, props) => { return { passLoading: true } });
-        const { userId, oldPassword, password, confirmPassword } = this.state;
+        const { oldPassword, password, confirmPassword } = this.state;
         const { dispatch } = this.props;
-        // na elegxw gia adeia
-
-        //if (username) {
-             usersApi.changeUserPassword(oldPassword, password)
+        
+        // Password check
+        if (oldPassword !== "" && confirmPassword !== "" && password === confirmPassword && password.length >= 8) {
+            usersApi.changeUserPassword(oldPassword, password)
                 .then(response => {
                     this.setState((prevState, props) => { return { passLoading: false } });
                 })
-        //}
+        }
+        else {
+            dispatch(alertActions.error("Please provide valid passwords, with more than 8 characters"));
+            this.setState((prevState, props) => { return { passLoading: false } });
+        }
     }
 
     render() {
@@ -123,206 +126,206 @@ class EditUser extends Component {
 
         const { classes } = this.props;
         return (
-                <>
-                    <PaperTitle
-                        title='User Profile'
-                        suggestion='edit your profile info'
-                    />
+            <>
+                <PaperTitle
+                    title='User Profile'
+                    suggestion='edit your profile info'
+                />
 
-                    <Grid
-                        container
-                        justify="flex-start"
-                        className={classes.container}
+                <Grid
+                    container
+                    justify="flex-start"
+                    className={classes.container}
+                >
+                    <Typography
+                        className={classes.description}
+                        variant="body1"
                     >
-                        <Typography
-                            className={classes.description}
-                            variant="body1"
-                        >
-                            basic user information
+                        basic user information
                         </Typography>
 
 
 
-                        <Grid item xs={12}>
-                            <TextField
-                                className={classes.textField}
-                                label="First Name"
-                                name="firstName"
-                                value={firstName}
-                                type="text"
-                                variant="outlined"
-                                onChange={this.handleChange}
-                            />
-                            <TextField
-                                className={classes.textField}
-                                label="Last Name"
-                                name="lastName"
-                                value={lastName}
-                                type="text"
-                                variant="outlined"
-                                onChange={this.handleChange}
-                            />
+                    <Grid item xs={12}>
+                        <TextField
+                            className={classes.textField}
+                            label="First Name"
+                            name="firstName"
+                            value={firstName}
+                            type="text"
+                            variant="outlined"
+                            onChange={this.handleChange}
+                        />
+                        <TextField
+                            className={classes.textField}
+                            label="Last Name"
+                            name="lastName"
+                            value={lastName}
+                            type="text"
+                            variant="outlined"
+                            onChange={this.handleChange}
+                        />
 
-                            <TextField
-                                className={classes.textField}
-                                label="Tax Identification Number"
-                                name="afm"
-                                value={afm}
-                                type="text"
-                                variant="outlined"
-                                onChange={this.handleChange}
-                            />
-
-                        </Grid>
-
-
-
+                        <TextField
+                            className={classes.textField}
+                            label="Tax Identification Number"
+                            name="afm"
+                            value={afm}
+                            type="text"
+                            variant="outlined"
+                            onChange={this.handleChange}
+                        />
 
                     </Grid>
 
-                    {/* <Divider className={classes.divider} /> */}
 
-                    <Grid
-                        container
-                        justify="flex-start"
-                        className={classes.container}
+
+
+                </Grid>
+
+                {/* <Divider className={classes.divider} /> */}
+
+                <Grid
+                    container
+                    justify="flex-start"
+                    className={classes.container}
+                >
+                    <Typography
+                        className={classes.description}
+                        variant="body1"
                     >
-                        <Typography
-                            className={classes.description}
-                            variant="body1"
-                        >
-                            user contact information
+                        user contact information
                         </Typography>
 
 
 
-                        <Grid item xs={12} className={classes.accountBasic}>
-                            <TextField
-                                className={classes.textField}
-                                label="Email"
-                                name="email"
-                                value={email}
-                                type="text"
-                                variant="outlined"
-                                onChange={this.handleChange}
-                            />
-                            <TextField
-                                className={classes.textField}
-                                label="Phone number"
-                                name="phoneNumber"
-                                value={phoneNumber}
-                                type="text"
-                                variant="outlined"
-                                onChange={this.handleChange}
-                            />
-
-                        </Grid>
+                    <Grid item xs={12} className={classes.accountBasic}>
+                        <TextField
+                            className={classes.textField}
+                            label="Email"
+                            name="email"
+                            value={email}
+                            type="text"
+                            variant="outlined"
+                            onChange={this.handleChange}
+                        />
+                        <TextField
+                            className={classes.textField}
+                            label="Phone number"
+                            name="phoneNumber"
+                            value={phoneNumber}
+                            type="text"
+                            variant="outlined"
+                            onChange={this.handleChange}
+                        />
 
                     </Grid>
 
-
-                    <Grid
-                        container
-                        justify="flex-start"
-                        className={classes.container}
-                    >
-
-                        <Typography
-                            className={classes.description}
-                            variant="body1"
-                        >
-                            user location information
-                    </Typography>
-
-                        <Grid item xs={12}>
+                </Grid>
 
 
-
-                            <TextField
-                                className={classes.textField}
-                                label="Country"
-                                name="country"
-                                value={country}
-                                type="text"
-                                variant="outlined"
-                                onChange={this.handleChange}
-                            />
-                            <TextField
-                                className={classes.textField}
-                                label="Address"
-                                name="address"
-                                value={address}
-                                type="text"
-                                variant="outlined"
-                                onChange={this.handleChange}
-                            />
-
-
-                        </Grid>
-
-
-                    </Grid>
-
-
-                    <Grid
-                        container
-                        justify="flex-end"
-                        className={classes.container}
-                    >
-                        {infoLoading ?
-                            (
-                                <CircularProgress className={classes.progress} />
-                            ) : (
-                                <Button
-                                    className={classes.button}
-                                    color="primary"
-                                    type="submit"
-                                    onClick={this.handleEditUser}
-                                    size="large"
-                                    variant="contained"
-                                >
-                                    Save Changes
-                                </Button>
-                            )
-                        }
-                    </Grid>
-
-
+                <Grid
+                    container
+                    justify="flex-start"
+                    className={classes.container}
+                >
 
                     <Typography
                         className={classes.description}
                         variant="body1"
                     >
-                        change user password
+                        user location information
                     </Typography>
 
-                    <TextField
-                        className={classes.textField}
-                        label="Old Password"
-                        name="oldPassword"
-                        value={oldPassword}
-                        type="password"
-                        variant="outlined"
-                        onChange={this.handleChange}
-                    />
-                    <TextField
-                        className={classes.textField}
-                        label="Password"
-                        name="password"
-                        value={password}
-                        type="password"
-                        variant="outlined"
-                        onChange={this.handleChange}
-                    />
-                    <TextField
-                        className={classes.textField}
-                        label="Confirm Password"
-                        name="confirmPassword"
-                        value={confirmPassword}
-                        type="password"
-                        variant="outlined"
-                        onChange={this.handleChange}
-                    />
+                    <Grid item xs={12}>
+
+
+
+                        <TextField
+                            className={classes.textField}
+                            label="Country"
+                            name="country"
+                            value={country}
+                            type="text"
+                            variant="outlined"
+                            onChange={this.handleChange}
+                        />
+                        <TextField
+                            className={classes.textField}
+                            label="Address"
+                            name="address"
+                            value={address}
+                            type="text"
+                            variant="outlined"
+                            onChange={this.handleChange}
+                        />
+
+
+                    </Grid>
+
+
+                </Grid>
+
+
+                <Grid
+                    container
+                    justify="flex-end"
+                    className={classes.container}
+                >
+                    {infoLoading ?
+                        (
+                            <CircularProgress className={classes.progress} />
+                        ) : (
+                            <Button
+                                className={classes.button}
+                                color="primary"
+                                type="submit"
+                                onClick={this.handleEditUser}
+                                size="large"
+                                variant="contained"
+                            >
+                                Save Changes
+                                </Button>
+                        )
+                    }
+                </Grid>
+
+
+
+                <Typography
+                    className={classes.description}
+                    variant="body1"
+                >
+                    change user password
+                    </Typography>
+
+                <TextField
+                    className={classes.textField}
+                    label="Old Password"
+                    name="oldPassword"
+                    value={oldPassword}
+                    type="password"
+                    variant="outlined"
+                    onChange={this.handleChange}
+                />
+                <TextField
+                    className={classes.textField}
+                    label="Password"
+                    name="password"
+                    value={password}
+                    type="password"
+                    variant="outlined"
+                    onChange={this.handleChange}
+                />
+                <TextField
+                    className={classes.textField}
+                    label="Confirm Password"
+                    name="confirmPassword"
+                    value={confirmPassword}
+                    type="password"
+                    variant="outlined"
+                    onChange={this.handleChange}
+                />
 
 
 

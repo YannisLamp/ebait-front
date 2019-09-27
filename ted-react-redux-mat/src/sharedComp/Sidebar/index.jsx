@@ -1,21 +1,16 @@
-import React, { Component } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 import clsx from 'clsx';
 import { connect } from 'react-redux';
 
-import {
-    Avatar, Divider, Drawer, List, ListItem, ListItemIcon, ListItemText,
-    ListSubheader, Typography, IconButton
-} from '@material-ui/core';
+import { Avatar, Divider, Drawer, Typography } from '@material-ui/core';
 
 import LimitedList from './LimitedList';
 import UserList from './UserList';
 import AdminList from './AdminList';
 
-// Component styles
 import useStyles from './styles';
-
 
 
 function Sidebar(props) {
