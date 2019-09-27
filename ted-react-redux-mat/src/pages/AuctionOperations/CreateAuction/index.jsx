@@ -33,6 +33,8 @@ const styles = theme => ({
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
+
+        marginBottom: theme.spacing(2),
     },
     buttonWrapper: {
         marginTop: theme.spacing(1),

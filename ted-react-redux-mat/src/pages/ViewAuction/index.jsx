@@ -96,6 +96,7 @@ class ViewAuction extends Component {
                             auction: data,
                             isBidding: false,
                             isBuying: false,
+                            myBid: '',
                         }
                     });
                 }
