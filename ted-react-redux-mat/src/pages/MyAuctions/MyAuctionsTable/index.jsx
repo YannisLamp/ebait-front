@@ -258,7 +258,7 @@ export default function MyAuctionsTable(props) {
                                                                 {row.eventStarted ? <CheckBoxIcon /> : <CheckBoxBlankIcon />}
                                                             </TableCell>
                                                             <TableCell align="right">
-                                                                {row.eventStarted ?
+                                                                { (row.eventStarted || row.eventFinished) ?
                                                                     '' :
                                                                     (<IconButton onClick={e => startAuction(row.itemID)}><PlayArrowIcon className={classes.start} /></IconButton>)
                                                                 }
